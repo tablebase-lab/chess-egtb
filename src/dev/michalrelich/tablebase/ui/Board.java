@@ -8,13 +8,16 @@ public class Board {
         board = new char[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j] = '\u0000';
+                board[i][j] = ' ';
             }
         }
     }
 
-    public char[][] getBoard() {
-        return board;
+    public boolean addToBoard(Piece piece, int row, int col, boolean white) {
+        if (row > 8 || col > 8 || row < 0 || col < 0) return false;
+
+        board[row - 1][col - 1] = piece.asChar(white);
+        return true;
     }
 
     @Override

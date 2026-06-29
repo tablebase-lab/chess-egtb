@@ -9,8 +9,10 @@ public enum Piece {
     KNIGHT,
     PAWN;
 
-    private char asChar() {
-        return this.name().charAt(0);
+    public char asChar(boolean white) {
+        char name = this.name().charAt(0);
+
+        return white ? name : (char) (name + ('a' - 'A'));
     }
 
 
