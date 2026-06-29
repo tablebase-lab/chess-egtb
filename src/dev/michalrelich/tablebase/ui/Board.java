@@ -2,31 +2,29 @@ package dev.michalrelich.tablebase.ui;
 
 public class Board {
 
-    private int[][] board;
+    private char[][] board;
 
     public Board() {
-        board = new int[8][8];
+        board = new char[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j] = 0;
+                board[i][j] = '\u0000';
             }
         }
     }
 
-    public Board(int[][] board) {
-        this.board = board;
-    }
-
-    public int[][] getBoard() {
+    public char[][] getBoard() {
         return board;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                sb.append(board[i][j]).append(" ");
+        sb.append("\n");
+        for (char[] chars : board) {
+            for (int j = 0; j < chars.length; j++) {
+                if (j == 0) sb.append("| ");
+                sb.append(chars[j]).append(" | ");
             }
             sb.append("\n");
         }
