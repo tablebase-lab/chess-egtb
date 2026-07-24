@@ -13,12 +13,14 @@ public class Board {
         }
     }
 
-    public boolean addToBoard(Piece piece, int row, int col, boolean white) {
+    public boolean addToBoard(Piece piece, int row, int col) {
         if (row > 8 || col > 8 || row < 0 || col < 0) return false;
 
-        board[row - 1][col - 1] = piece.asChar(white);
+        board[row - 1][col - 1] = piece.asChar();
         return true;
     }
+
+
 
     @Override
     public String toString() {

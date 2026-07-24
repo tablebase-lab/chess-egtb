@@ -9,7 +9,7 @@ public class Main {
         Board  board = new Board();
         System.out.println(board);
 
-        board.addToBoard(Piece.BISHOP, 7, 5, false);
+        board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 7, 5);
         System.out.println(board);
     }
 }

@@ -1,19 +1,33 @@
 package dev.michalrelich.tablebase.ui;
 
-public enum Piece {
+public class Piece {
 
-    KING,
-    QUEEN,
-    ROOK,
-    BISHOP,
-    KNIGHT,
-    PAWN;
+    private PieceType type;
+    private PieceColor color;
 
-    public char asChar(boolean white) {
-        char name = this.name().charAt(0);
-
-        return white ? name : (char) (name + ('a' - 'A'));
+    public Piece(PieceType type, PieceColor color) {
+        this.type = type;
+        this.color = color;
     }
 
+    public enum PieceType {
+        KING,
+        QUEEN,
+        ROOK,
+        BISHOP,
+        KNIGHT,
+        PAWN
+    }
+
+    public enum PieceColor {
+        WHITE,
+        BLACK
+    }
+
+    public char asChar() {
+        char name = this.type.name().charAt(0);
+
+        return color == PieceColor.WHITE ? name : (char) (name + ('a' - 'A'));
+    }
 
 }
