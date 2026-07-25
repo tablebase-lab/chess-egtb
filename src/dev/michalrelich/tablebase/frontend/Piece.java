@@ -30,4 +30,11 @@ public class Piece {
         return color == PieceColor.WHITE ? name : (char) (name + ('a' - 'A'));
     }
 
+    public PieceType getType() {
+        return type;
+    }
+
+    public PieceColor getColor() {
+        return color;
+    }
 }
