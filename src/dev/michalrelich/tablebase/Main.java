@@ -1,7 +1,8 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.ui.Board;
-import dev.michalrelich.tablebase.ui.Piece;
+import dev.michalrelich.tablebase.frontend.Board;
+import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.tablebase.frontend.swing.App;
 
 public class Main {
 
@@ -11,5 +12,7 @@ public class Main {
 
         board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 7, 5);
         System.out.println(board);
+
+        App.launch();
     }
 }

@@ -1,4 +1,4 @@
-package dev.michalrelich.tablebase.ui;
+package dev.michalrelich.tablebase.frontend;
 
 public class Board {
 
@@ -19,8 +19,6 @@ public class Board {
         board[row - 1][col - 1] = piece.asChar();
         return true;
     }
-
-
 
     @Override
     public String toString() {

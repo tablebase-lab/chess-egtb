@@ -1,4 +1,4 @@
-package dev.michalrelich.tablebase.ui;
+package dev.michalrelich.tablebase.frontend;
 
 public class Piece {
 

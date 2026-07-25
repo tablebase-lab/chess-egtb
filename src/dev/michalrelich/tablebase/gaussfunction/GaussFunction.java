@@ -8,7 +8,7 @@ package dev.michalrelich.tablebase.gaussfunction;
 // largest legal integer would be 646263
 // 1 corresponds to a1, 64 to h8
 
-import dev.michalrelich.tablebase.ui.Board;
+import dev.michalrelich.tablebase.frontend.Board;
 
 public class GaussFunction {
 
