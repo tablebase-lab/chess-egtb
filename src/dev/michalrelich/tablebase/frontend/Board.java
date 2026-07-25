@@ -2,21 +2,12 @@ package dev.michalrelich.tablebase.frontend;
 
 public class Board {
 
-    private char[][] board;
-
-    public Board() {
-        board = new char[8][8];
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                board[i][j] = ' ';
-            }
-        }
-    }
+    private Piece[][] board = new Piece[8][8];
 
     public boolean addToBoard(Piece piece, int row, int col) {
         if (row > 8 || col > 8 || row < 0 || col < 0) return false;
 
-        board[row - 1][col - 1] = piece.asChar();
+        board[row - 1][col - 1] = piece;
         return true;
     }
 
@@ -24,10 +15,14 @@ public class Board {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
-        for (char[] chars : board) {
-            for (int j = 0; j < chars.length; j++) {
+        for (Piece[] pieces : board) {
+            for (int j = 0; j < pieces.length; j++) {
                 if (j == 0) sb.append("| ");
-                sb.append(chars[j]).append(" | ");
+                if (pieces[j] == null) {
+                    sb.append("  | ");
+                    continue;
+                }
+                sb.append(pieces[j]).append(" | ");
             }
             sb.append("\n");
         }

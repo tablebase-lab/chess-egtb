@@ -1,5 +1,6 @@
 package dev.michalrelich.tablebase.frontend.swing;
 
+import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 
 import javax.swing.*;
@@ -19,5 +20,9 @@ public class App {
 
     public static void loadPiece(Piece piece, int position) {
         panel.loadPiece(piece, position);
+    }
+
+    public static void loadBoard(Board board) {
+
     }
 }

@@ -7,7 +7,7 @@ import dev.michalrelich.tablebase.frontend.swing.App;
 public class Main {
 
     static void main() {
-        Board  board = new Board();
+        Board board = new Board();
         System.out.println(board);
 
         board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 7, 5);

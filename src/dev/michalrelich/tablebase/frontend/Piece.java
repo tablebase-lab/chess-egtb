@@ -30,6 +30,13 @@ public class Piece {
         return color == PieceColor.WHITE ? name : (char) (name + ('a' - 'A'));
     }
 
+    @Override
+    public String toString() {
+        char name = this.type.name().charAt(0);
+
+        return (color == PieceColor.WHITE ? name : (char) (name + ('a' - 'A'))) + "";
+    }
+
     public PieceType getType() {
         return type;
     }
