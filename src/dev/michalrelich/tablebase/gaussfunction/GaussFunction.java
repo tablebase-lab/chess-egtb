@@ -4,9 +4,9 @@ package dev.michalrelich.tablebase.gaussfunction;
 // transforms a Board layout into a single integer
 // the integer has 3-6 digits, each piece is translated into 1 or 2 digits
 // the piece is assigned digits at the right
-// the position of each piece is 1 - 64, therefore the maximum integer would be 646464, an illegal position, the
-// largest legal integer would be 646263
-// 1 corresponds to a1, 64 to h8
+// the position of each piece is 0 - 63, therefore the maximum integer would be 646464, an illegal position, the
+// largest legal integer would be 636162
+// 0 corresponds to a1, 63 to h8
 
 import dev.michalrelich.tablebase.frontend.Board;
 

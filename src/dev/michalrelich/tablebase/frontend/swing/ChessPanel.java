@@ -28,6 +28,7 @@ public class ChessPanel extends JPanel {
     private BufferedImage piecesImage;
     private ArrayList<PieceImage> pieces = new ArrayList<>();
     private final int IMAGE_MARGIN = 100;
+    private final int BOARD_EDGE_MARGIN = 15;
 
     public ChessPanel() {
 
@@ -65,7 +66,11 @@ public class ChessPanel extends JPanel {
         BufferedImage image = piecesImage.getSubimage(x, y,
                 piecesImage.getWidth() / 6, piecesImage.getHeight() / 2);
 
-        pieces.add(new PieceImage(image, 100, 100)); // UNFINISHED HERE!
+        int addX = position % 8;
+        int addY = 7 - position / 8;
+        pieces.add(new PieceImage(image,
+                IMAGE_MARGIN + BOARD_EDGE_MARGIN + 40 * addX,
+                IMAGE_MARGIN + BOARD_EDGE_MARGIN + 40 * addY)); // UNFISNIHDE
     }
 
     @Override

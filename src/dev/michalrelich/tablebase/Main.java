@@ -13,7 +13,10 @@ public class Main {
         board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 7, 5);
         System.out.println(board);
 
-        App.loadPiece(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 3);
+        for (int i = 0; i <= 63; i++) {
+            App.loadPiece(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), i);
+        }
+
         App.launch();
     }
 }
