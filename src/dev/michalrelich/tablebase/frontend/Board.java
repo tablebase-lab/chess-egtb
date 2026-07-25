@@ -1,5 +1,7 @@
 package dev.michalrelich.tablebase.frontend;
 
+import dev.michalrelich.tablebase.frontend.swing.App;
+
 public class Board {
 
     private Piece[][] board = new Piece[8][8];
@@ -9,6 +11,15 @@ public class Board {
 
         board[row - 1][col - 1] = piece;
         return true;
+    }
+
+    public Piece[][] getBoard() {
+        return board;
+    }
+
+    public void launchApp() {
+        App.loadBoard(this);
+        App.launch();
     }
 
     @Override

@@ -23,6 +23,16 @@ public class App {
     }
 
     public static void loadBoard(Board board) {
+        Piece[][] arr = board.getBoard();
+        int boardSize = arr.length;
 
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                if (arr[j][i] != null) {
+                    int position = boardSize * j + i;
+                    loadPiece(arr[j][i], position);
+                }
+            }
+        }
     }
 }
