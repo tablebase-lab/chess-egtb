@@ -27,7 +27,8 @@ public class App {
 
         for (var entry : map.entrySet()) {
             if (entry != null) {
-                loadPiece(entry.getKey(), entry.getValue());
+                Piece key = entry.getKey();
+                entry.getValue().forEach(p -> loadPiece(key, p));
             }
         }
     }
