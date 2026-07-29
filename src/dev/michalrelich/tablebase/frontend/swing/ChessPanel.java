@@ -70,7 +70,7 @@ public class ChessPanel extends JPanel {
         int addY = 7 - position / 8;
         pieces.add(new PieceImage(image,
                 IMAGE_MARGIN + BOARD_EDGE_MARGIN + 40 * addX,
-                IMAGE_MARGIN + BOARD_EDGE_MARGIN + 40 * addY)); // UNFISNIHDE
+                IMAGE_MARGIN + BOARD_EDGE_MARGIN + 40 * addY));
     }
 
     @Override

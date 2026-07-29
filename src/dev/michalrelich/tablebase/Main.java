@@ -14,6 +14,10 @@ public class Main {
 
         board.launchApp();
 
+        for (int i = 0; i <= 7; i++) {
+            System.out.println(board.getBoard()[6][4]);
+        }
+
 //        for (int i = 0; i <= 63; i++) {
 //            App.loadPiece(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), i);
 //        }

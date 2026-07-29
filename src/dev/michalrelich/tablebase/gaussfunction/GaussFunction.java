@@ -12,8 +12,20 @@ import dev.michalrelich.tablebase.frontend.Board;
 
 public class GaussFunction {
 
-    public static void toInt(Board board) {
+    public static long toLong(Board board) {
+//        long number = 0;
+//        Piece[][] arr = board.getBoard();
+//        int count = 0;
+//
+//        for (int i = 0; i <= arr.length; i++) {
+//            for (int j = 0; j <= arr.length; j++) {
+//                if (arr[i][j].getType() == Piece.PieceType.KING) {
+//                    count == 0 ? count
+//                }
+//            }
+//        }
 
+        return 0;
     }
 
     public static Board toBoard(int gaussNumber) {
