@@ -10,7 +10,7 @@ public class Main {
         board.launchApp();
 
         board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 7, 5);
-        board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 6, 5);
+        board.addToBoard(new Piece(Piece.PieceType.KNIGHT, Piece.PieceColor.WHITE), 7, 5);
         board.launchApp();
 
         for (int i = 0; i <= 10; i++) {

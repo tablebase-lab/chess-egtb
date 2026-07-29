@@ -1,6 +1,5 @@
 package dev.michalrelich.tablebase.frontend;
 
-import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
 
 import java.util.HashSet;
@@ -15,13 +14,12 @@ public class Board {
     public boolean addToBoard(Piece piece, int row, int col) {
         if (row > 8 || col > 8 || row < 0 || col < 0) return false;
 
-        for (var v : board.values()) {
+        for (var v : board.values()) { // should remove the previous instead of throwing exceptions probably
             v.forEach(position -> {
                 if (position == col - 1 + (row - 1) * BOARD_LENGTH) {
-                    throw new InvalidBoardException("Square already occupied.");
+                    removePiece(row, col);
                 }
             });
-
         }
 
         board.computeIfAbsent(piece, _ -> new HashSet<>())
@@ -37,5 +35,13 @@ public class Board {
     public void launchApp() {
         App.loadBoard(this);
         App.launch();
+    }
+
+    private void removePiece(int row, int col) {
+        int position = col - 1 + (row - 1) * 8;
+
+        for (var e : board.entrySet()) {
+            e.getValue().removeIf(p -> p == position);
+        }
     }
 }
