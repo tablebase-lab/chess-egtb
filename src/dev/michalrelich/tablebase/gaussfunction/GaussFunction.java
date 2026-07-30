@@ -13,14 +13,22 @@ import dev.michalrelich.tablebase.frontend.Board;
 public class GaussFunction {
 
     public static long toLong(Board board) {
-//        long number = 0;
-//        Piece[][] arr = board.getBoard();
-//        int count = 0;
+        var pieceInfo = board.getBoard();
+        System.out.println(pieceInfo);
+
+//        ArrayList<Piece> list = new ArrayList<>();
 //
-//        for (int i = 0; i <= arr.length; i++) {
-//            for (int j = 0; j <= arr.length; j++) {
-//                if (arr[i][j].getType() == Piece.PieceType.KING) {
-//                    count == 0 ? count
+//        StringBuilder sb = new StringBuilder();
+//        for (var entry : pieceInfo.entrySet()) {
+//            Piece.PieceType type = entry.getKey().getType();
+//            Piece.PieceColor color = entry.getKey().getColor();
+//            HashSet<Integer> locations = entry.getValue();
+//
+//            if (type == Piece.PieceType.KING) {
+//                switch (color) {
+//                    case WHITE -> {
+//
+//                    }
 //                }
 //            }
 //        }
@@ -28,7 +36,7 @@ public class GaussFunction {
         return 0;
     }
 
-    public static Board toBoard(int gaussNumber) {
+    public static Board toBoard(long gauss) {
         return null;
     }
 }
