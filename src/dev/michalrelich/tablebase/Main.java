@@ -2,6 +2,7 @@ package dev.michalrelich.tablebase;
 
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 public class Main {
 
@@ -9,16 +10,15 @@ public class Main {
 
         Board board = new Board();
 
-        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 7, 5);
-        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 7, 4);
+        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 1, 5);
+        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 1, 4);
 
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), 4, 4);
-        board.addToBoard(new Piece(Piece.PieceType.KNIGHT, Piece.PieceColor.WHITE), 3, 4);
-        board.addToBoard(new Piece(Piece.PieceType.ROOK, Piece.PieceColor.BLACK), 2, 4);
-        board.addToBoard(new Piece(Piece.PieceType.ROOK, Piece.PieceColor.BLACK), 1, 4);
+        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), 4, 2);
+        board.addToBoard(new Piece(Piece.PieceType.KNIGHT, Piece.PieceColor.WHITE), 3, 3);
+        board.addToBoard(new Piece(Piece.PieceType.ROOK, Piece.PieceColor.BLACK), 2, 3);
 
-        board.checkPieceConditions();
-
+        GaussFunction.gaussFunction(board, true);
+        board.launchApp();
 
 //        Random random = new Random();
 //        for (int i = 0; i <= 1000; i++) {

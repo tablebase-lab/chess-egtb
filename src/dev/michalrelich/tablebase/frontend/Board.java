@@ -3,14 +3,11 @@ package dev.michalrelich.tablebase.frontend;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Board {
 
-    private final Map<Piece, HashSet<Integer>> board = new TreeMap<>();
+    private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
     public static final int BOARD_LENGTH = 8;
 
     public boolean addToBoard(Piece piece, int row, int col) {
@@ -21,17 +18,17 @@ public class Board {
             v.removeIf(position -> position == col - 1 + (row - 1) * BOARD_LENGTH);
         }
 
-        board.computeIfAbsent(piece, _ -> new HashSet<>())
+        board.computeIfAbsent(piece, _ -> new TreeSet<>())
                 .add(col - 1 + (row - 1) * BOARD_LENGTH);
 
         return true;
     }
 
-    public NavigableMap<Piece, HashSet<Integer>> getBoard() { // or SortedMap, Map?
-        NavigableMap<Piece, HashSet<Integer>> deepCopy = new TreeMap<>();
+    public NavigableMap<Piece, NavigableSet<Integer>> getBoard() { // or SortedMap, Map?
+        NavigableMap<Piece, NavigableSet<Integer>> deepCopy = new TreeMap<>();
         for (var entry : board.entrySet()) {
             deepCopy.put(new Piece(entry.getKey().getType(), entry.getKey().getColor()),
-                    new HashSet<>(entry.getValue()));
+                    new TreeSet<>(entry.getValue()));
         }
         return deepCopy;
     }

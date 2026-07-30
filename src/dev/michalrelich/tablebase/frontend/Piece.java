@@ -20,7 +20,7 @@ public class Piece implements Comparable<Piece> {
         return Comparator.<PieceType> naturalOrder().compare(this.getType(), o.getType());
     }
 
-    public enum PieceType implements Comparable<PieceType> {
+    public enum PieceType implements Comparable<PieceType> { // CODE RELIANT ON ORDINAL! (in GaussFunction and for sorting)
         KING,
         QUEEN,
         ROOK,
