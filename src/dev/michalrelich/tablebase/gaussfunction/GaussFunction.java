@@ -8,6 +8,7 @@ package dev.michalrelich.tablebase.gaussfunction;
 // largest legal integer would be 636162
 // 0 corresponds to a1, 63 to h8
 
+import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 
@@ -55,6 +56,26 @@ public class GaussFunction {
     }
 
     public static Board inverse(long gauss) {
+
+        String s = gauss + "";
+        if (((s.length() + 1) % 3 != 0) || s.length() < 5 || s.length() > 14)
+            throw new InvalidBoardException("Gauss number has an incorrect number of digits");
+
+        Board b = new Board();
+
+        for (int i = 0; i <= 4; i += 2) {
+            int kingPos = Integer.parseInt(s.substring(i, i + 2));
+            kingPos = kingPos > 64 ? kingPos / 10 : kingPos;
+
+            b.addToBoard(new Piece(Piece.PieceType.KING,
+                    i == 0 ? Piece.PieceColor.WHITE : Piece.PieceColor.BLACK), kingPos);
+        }
+
+        String pieces = s.substring(4); // need to figure out where delimiter is
+        for (int i = 0; i <= pieces.length(); i += 3) {
+
+        }
+
         return null;
     }
 

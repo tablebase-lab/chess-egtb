@@ -24,6 +24,14 @@ public class Board {
         return true;
     }
 
+    // switch logic to second method?
+
+    public boolean addToBoard(Piece piece, int position) {
+        int row = position / 8;
+        int col = position % 8;
+        return addToBoard(piece, row, col);
+    }
+
     public NavigableMap<Piece, NavigableSet<Integer>> getBoard() { // or SortedMap, Map?
         NavigableMap<Piece, NavigableSet<Integer>> deepCopy = new TreeMap<>();
         for (var entry : board.entrySet()) {
