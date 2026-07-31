@@ -22,7 +22,6 @@ public class GaussFunction {
         System.out.println(pieceInfo);
         board.checkPieceConditions();
 
-        // somewhere is a fault here
         List<String> list = new ArrayList<>(5);
         boolean addDelimiter = true;
         for (var entry : pieceInfo.entrySet()) {
@@ -45,7 +44,7 @@ public class GaussFunction {
             }
 
             for (var loc : locations) {
-                list.add(type.ordinal() + "" + loc);
+                list.add((loc < 10 ? "0" : "") + type.ordinal() + loc);
             }
         }
 
