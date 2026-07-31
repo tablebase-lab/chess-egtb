@@ -7,9 +7,9 @@ import javax.swing.*;
 
 public class App {
 
-    private static final ChessPanel panel = new ChessPanel();
+    private final ChessPanel panel = new ChessPanel();
 
-    public static void launch() {
+    public void launch() {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(panel);
@@ -18,11 +18,11 @@ public class App {
         frame.setVisible(true);
     }
 
-    public static void loadPiece(Piece piece, int position) {
+    public void loadPiece(Piece piece, int position) {
         panel.loadPiece(piece, position);
     }
 
-    public static void loadBoard(Board board) {
+    public void loadBoard(Board board) {
         var map = board.getBoard();
 
         for (var entry : map.entrySet()) {

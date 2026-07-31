@@ -63,20 +63,41 @@ public class GaussFunction {
 
         Board b = new Board();
 
-        for (int i = 0; i <= 4; i += 2) {
+        for (int i = 0; i <= 2; i += 2) {
             int kingPos = Integer.parseInt(s.substring(i, i + 2));
-            kingPos = kingPos > 64 ? kingPos / 10 : kingPos;
+            kingPos = kingPos > 64 ? kingPos % 10 : kingPos;
 
             b.addToBoard(new Piece(Piece.PieceType.KING,
                     i == 0 ? Piece.PieceColor.WHITE : Piece.PieceColor.BLACK), kingPos);
         }
 
-        String pieces = s.substring(4); // need to figure out where delimiter is
-        for (int i = 0; i <= pieces.length(); i += 3) {
+        String pieces = s.substring(4);
 
+        int delimiter = -1;
+        for (int i = 0; i < pieces.length(); i += 3) {
+            if (pieces.charAt(i) == '9') {
+                delimiter = i;
+                break;
+            }
         }
 
-        return null;
+        boolean white = true;
+        for (int i = 0; i + 3 < pieces.length(); i += 3) {
+            if (i + 1 > delimiter) {
+                i++;
+                if (i == pieces.length()) break;
+
+                white = false;
+            }
+
+            String piece = pieces.substring(i, i + 3);
+            Piece.PieceType type = Piece.PieceType.values()[Integer.parseInt(piece.charAt(0) + "")];
+            Piece.PieceColor color = white ? Piece.PieceColor.WHITE : Piece.PieceColor.BLACK;
+            int position = Integer.parseInt(piece.substring(1, 3));
+            b.addToBoard(new Piece(type, color), position);
+        }
+
+        return b;
     }
 
 }

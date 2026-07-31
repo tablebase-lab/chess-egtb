@@ -9,9 +9,10 @@ public class Board {
 
     private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
     public static final int BOARD_LENGTH = 8;
+    public static final int MAX_PIECE_COUNT = 3;
 
     public boolean addToBoard(Piece piece, int row, int col) {
-        if (row > 8 || col > 8 || row < 0 || col < 0) return false;
+        if (row > BOARD_LENGTH || col > BOARD_LENGTH || row < 0 || col < 0) return false;
         if (piece == null) return false;
 
         for (var v : board.values()) {
@@ -27,8 +28,8 @@ public class Board {
     // switch logic to second method?
 
     public boolean addToBoard(Piece piece, int position) {
-        int row = position / 8;
-        int col = position % 8;
+        int row = position / BOARD_LENGTH + 1;
+        int col = position % BOARD_LENGTH + 1;
         return addToBoard(piece, row, col);
     }
 
@@ -56,11 +57,12 @@ public class Board {
         }
 
         if (kingCount != 2) throw new InvalidBoardException("Invalid number of kings: " + kingCount + ".");
-        if (pieceCount > 3) throw new InvalidBoardException("Piece count " + pieceCount + " larger than 3.");
+        if (pieceCount > MAX_PIECE_COUNT) throw new InvalidBoardException("Piece count " + pieceCount + " larger than 3.");
     }
 
     public void launchApp() {
-        App.loadBoard(this);
-        App.launch();
+        App app = new App();
+        app.loadBoard(this);
+        app.launch();
     }
 }

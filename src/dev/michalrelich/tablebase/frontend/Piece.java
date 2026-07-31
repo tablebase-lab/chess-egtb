@@ -30,7 +30,7 @@ public class Piece implements Comparable<Piece> {
 
     }
 
-    public enum PieceColor {
+    public enum PieceColor { // CODE RELIANT ON ORDINAL!
         WHITE,
         BLACK
     }
