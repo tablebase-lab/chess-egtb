@@ -1,4 +1,4 @@
-package dev.michalrelich.tablebase.move;
+package dev.michalrelich.tablebase.backend.move;
 
 public interface Movable {
 
