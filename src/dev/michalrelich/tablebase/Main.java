@@ -17,13 +17,17 @@ public class Main {
         addRandomKings(board);
         addRandomPieces(board);
 
+//        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 62);
+//        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 1);
+//        board.addToBoard(new Piece(Piece.PieceType.ROOK, Piece.PieceColor.WHITE), 63);
+//        board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 0);
+//        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 61);
+
         long gauss = GaussFunction.gaussFunction(board, true);
         board.launchApp();
 
         Board inverse = GaussFunction.inverse(gauss);
         inverse.launchApp();
-
-        System.out.println("eh");
     }
 
     public static void addRandomPieces(Board board) {

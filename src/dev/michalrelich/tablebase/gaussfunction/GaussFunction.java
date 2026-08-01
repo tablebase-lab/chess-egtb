@@ -45,7 +45,7 @@ public class GaussFunction {
             }
 
             for (var loc : locations) {
-                list.add((loc < 10 ? "0" : "") + type.ordinal() + loc);
+                list.add(type.ordinal() + (loc < 10 ? "0" : "") + loc);
             }
         }
 
@@ -82,12 +82,12 @@ public class GaussFunction {
         }
 
         boolean white = true;
-        for (int i = 0; i + 3 < pieces.length(); i += 3) {
+        for (int i = 0; i + 3 <= pieces.length(); i += 3) {
             if (i + 1 > delimiter) {
-                i++;
-                if (i == pieces.length()) break;
-
-                white = false;
+                if (white) {
+                    i++;
+                    white = false;
+                }
             }
 
             String piece = pieces.substring(i, i + 3);
