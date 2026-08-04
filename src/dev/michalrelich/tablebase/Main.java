@@ -1,9 +1,11 @@
 package dev.michalrelich.tablebase;
 
+import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
@@ -11,8 +13,7 @@ public class Main {
     private static final Random random = new Random();
 
     static void main() {
-
-        Board board = new Board(false);
+        Board board = new Board(Piece.PieceColor.BLACK);
 
 //        addRandomKings(board);
 //        addRandomPieces(board);
@@ -24,10 +25,11 @@ public class Main {
         board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 2);
 
         long gauss = GaussFunction.gaussFunction(board, true);
+        System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
         board.launchApp();
 
-        Board inverse = GaussFunction.inverse(gauss);
-        inverse.launchApp();
+//        Board inverse = GaussFunction.inverse(gauss);
+//        inverse.launchApp();
 
     }
 

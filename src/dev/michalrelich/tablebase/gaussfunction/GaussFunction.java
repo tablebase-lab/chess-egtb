@@ -6,6 +6,7 @@ import dev.michalrelich.tablebase.frontend.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableMap;
 import java.util.NavigableSet;
 
 public class GaussFunction {
@@ -15,6 +16,30 @@ public class GaussFunction {
         System.out.println(pieceInfo);
         board.checkPieceConditions();
 
+        List<String> list = getStrings(pieceInfo);
+
+        String prefix;
+        if (board.getTurn() == Piece.PieceColor.WHITE) {
+            if (board.isEnPassant()) {
+                prefix = "2";
+            } else {
+                prefix = "1";
+            }
+        } else {
+            if (board.isEnPassant()) {
+                prefix = "4";
+            } else {
+                prefix = "3";
+            }
+        }
+
+        if (printFormattedResult) System.out.println(prefix + "_" + String.join("_", list));
+
+        String s = prefix + String.join("", list);
+        return Long.parseLong(s);
+    }
+
+    private static List<String> getStrings(NavigableMap<Piece, NavigableSet<Integer>> pieceInfo) {
         List<String> list = new ArrayList<>(5);
         boolean addDelimiter = true;
         for (var entry : pieceInfo.entrySet()) {
@@ -40,26 +65,7 @@ public class GaussFunction {
                 list.add(type.ordinal() + (loc < 10 ? "0" : "") + loc);
             }
         }
-
-        String prefix = "";
-        if (board.isWhiteTurn()) {
-            if (board.isEnPassant()) {
-                prefix = "2";
-            } else {
-                prefix = "1";
-            }
-        } else {
-            if (board.isEnPassant()) {
-                prefix = "4";
-            } else {
-                prefix = "3";
-            }
-        }
-
-        if (printFormattedResult) System.out.println(prefix + "_" + String.join("_", list));
-
-        String s = prefix + String.join("", list);
-        return Long.parseLong(s);
+        return list;
     }
 
     public static Board inverse(long gauss) {
@@ -74,8 +80,8 @@ public class GaussFunction {
         Board b = null;
 
         switch (prefix) {
-            case '1', '2' -> b = new Board(true);
-            case '3', '4' -> b = new Board(false);
+            case '1', '2' -> b = new Board(Piece.PieceColor.WHITE);
+            case '3', '4' -> b = new Board(Piece.PieceColor.BLACK);
         }
 
         for (int i = 0; i <= 2; i += 2) {

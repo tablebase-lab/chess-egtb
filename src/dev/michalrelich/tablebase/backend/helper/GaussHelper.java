@@ -1,6 +1,8 @@
 package dev.michalrelich.tablebase.backend.helper;
 
-public class LongHelper {
+import dev.michalrelich.tablebase.frontend.Board;
+
+public class GaussHelper {
 
     private static final long[] POW10 = {
             1L, 10L, 100L, 1000L, 10000L, 100000L, 1000000L, 10000000L,
@@ -10,21 +12,24 @@ public class LongHelper {
     };
     // helpers designed for the chess tablebase. used for positive longs only.
 
+    // done
     public static long getLongByIndex(long number, int beginIndex, int endIndex) { // end is non-inclusive
         int length = getLongLength(number);
 
         if (beginIndex < 0 || beginIndex >= endIndex || endIndex > length + 1) throw new IllegalArgumentException();
 
         number = number % (POW10[length - beginIndex]);
-        number = number / (POW10[length - endIndex]);
+        number = number / (POW10[length - endIndex]); // idk if i should add the one??
 
         return number;
     }
 
+    // done
     public static long getLongByIndex(long number, int beginIndex) {
         return getLongByIndex(number, beginIndex, getLongLength(number));
     }
 
+    // done
     public static int getLongLength(long number) {
         if (number <= 0) throw new IllegalArgumentException("Non-positive argument.");
 
@@ -39,4 +44,33 @@ public class LongHelper {
 
         return digitCount;
     }
+
+    // doesn't have gauss check?
+    public static int[] getPiecesArr(long number) {
+        int[] arr = new int[Board.MAX_PIECE_COUNT + 2 + 2]; // + 2 kings + 2 numbers for turn and black/white delimiter
+
+        int indexOne = (int) GaussHelper.getLongByIndex(number, 0, 1);
+        arr[0] = indexOne;
+        arr[1] = (int) GaussHelper.getLongByIndex(number, 1, 3);
+        arr[2] = (int) GaussHelper.getLongByIndex(number, 3, 5);
+
+        boolean addDelimiter = true;
+        long pieces = GaussHelper.getLongByIndex(number, 5);
+        int piecesLength = GaussHelper.getLongLength(pieces);
+
+        for (int i = 0; i < piecesLength; i += 3) {
+            if (GaussHelper.getLongByIndex(pieces, i, i + 1) == 9 && addDelimiter) {
+                addDelimiter = false;
+                arr[3 + i / 3] = 9;
+                i++;
+            }
+
+            arr[3 + i / 3 + (!addDelimiter ? 1 : 0)] = (int) GaussHelper.getLongByIndex(pieces, i, i + 3);
+        }
+
+        return arr;
+     }
+
+    // shows an array of all pieces (so 3-digit ints) and the info about them
+
 }

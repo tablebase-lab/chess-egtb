@@ -1,9 +1,7 @@
 package dev.michalrelich.tablebase.frontend;
 
-import dev.michalrelich.tablebase.backend.helper.HasEnPassant;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
-import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.*;
 
@@ -13,10 +11,10 @@ public class Board {
     public static final int MAX_PIECE_COUNT = 3;
     private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
     private boolean isEnPassant;
-    private boolean isWhiteTurn;
+    private Piece.PieceColor turn;
 
-    public Board(boolean isWhiteTurn) {
-        this.isWhiteTurn = isWhiteTurn;
+    public Board(Piece.PieceColor turn) {
+        this.turn = turn;
     }
 
     public boolean addToBoard(Piece piece, int row, int col) {
@@ -50,6 +48,7 @@ public class Board {
         return deepCopy;
     }
 
+    // NEED TO MOVE TO POSITIONCHECK
     public void checkPieceConditions() { // only checks piece count, can still have kings next to each other, ...
         int kingCount = 0;
         int pieceCount = 0;
@@ -81,18 +80,18 @@ public class Board {
 
     // only method that needs focus on in Board
     public boolean setEnPassant(boolean enPassant) {
-        if (!HasEnPassant.forLong(GaussFunction.gaussFunction(this, false))) {
-            return false;
-        }
+//        if (!HasEnPassant.forLong(GaussFunction.gaussFunction(this, false))) {
+//            return false;
+//        }
         this.isEnPassant = enPassant;
         return true;
     }
 
-    public boolean isWhiteTurn() {
-        return isWhiteTurn;
+    public Piece.PieceColor getTurn() {
+        return turn;
     }
 
-    public void setWhiteTurn(boolean whiteTurn) {
-        this.isWhiteTurn = whiteTurn;
+    public void setTurn(Piece.PieceColor turn) {
+        this.turn = turn;
     }
 }
