@@ -1,15 +1,23 @@
 package dev.michalrelich.tablebase.frontend;
 
+import dev.michalrelich.tablebase.backend.helper.HasEnPassant;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.*;
 
 public class Board {
 
-    private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
     public static final int BOARD_LENGTH = 8;
     public static final int MAX_PIECE_COUNT = 3;
+    private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
+    private boolean isEnPassant;
+    private boolean isWhiteTurn;
+
+    public Board(boolean isWhiteTurn) {
+        this.isWhiteTurn = isWhiteTurn;
+    }
 
     public boolean addToBoard(Piece piece, int row, int col) {
         if (row > BOARD_LENGTH || col > BOARD_LENGTH || row < 0 || col < 0) return false;
@@ -57,12 +65,34 @@ public class Board {
         }
 
         if (kingCount != 2) throw new InvalidBoardException("Invalid number of kings: " + kingCount + ".");
-        if (pieceCount > MAX_PIECE_COUNT) throw new InvalidBoardException("Piece count " + pieceCount + " larger than 3.");
+        if (pieceCount > MAX_PIECE_COUNT)
+            throw new InvalidBoardException("Piece count " + pieceCount + " larger than 3.");
     }
 
     public void launchApp() {
         App app = new App();
         app.loadBoard(this);
         app.launch();
+    }
+
+    public boolean isEnPassant() {
+        return isEnPassant;
+    }
+
+    // only method that needs focus on in Board
+    public boolean setEnPassant(boolean enPassant) {
+        if (!HasEnPassant.forLong(GaussFunction.gaussFunction(this, false))) {
+            return false;
+        }
+        this.isEnPassant = enPassant;
+        return true;
+    }
+
+    public boolean isWhiteTurn() {
+        return isWhiteTurn;
+    }
+
+    public void setWhiteTurn(boolean whiteTurn) {
+        this.isWhiteTurn = whiteTurn;
     }
 }

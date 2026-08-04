@@ -41,24 +41,48 @@ public class GaussFunction {
             }
         }
 
-        String s = String.join("", list);
-        if (printFormattedResult) System.out.println(String.join("_", list));
+        String prefix = "";
+        if (board.isWhiteTurn()) {
+            if (board.isEnPassant()) {
+                prefix = "2";
+            } else {
+                prefix = "1";
+            }
+        } else {
+            if (board.isEnPassant()) {
+                prefix = "4";
+            } else {
+                prefix = "3";
+            }
+        }
 
+        if (printFormattedResult) System.out.println(prefix + "_" + String.join("_", list));
+
+        String s = prefix + String.join("", list);
         return Long.parseLong(s);
     }
 
     public static Board inverse(long gauss) {
 
         String s = gauss + "";
+        char prefix = s.charAt(0);
+        s = s.substring(1);
+
         if (((s.length() + 1) % 3 != 0) || s.length() < 5 || s.length() > 14)
             throw new InvalidBoardException("Gauss number has an incorrect number of digits");
 
-        Board b = new Board();
+        Board b = null;
+
+        switch (prefix) {
+            case '1', '2' -> b = new Board(true);
+            case '3', '4' -> b = new Board(false);
+        }
 
         for (int i = 0; i <= 2; i += 2) {
             int kingPos = Integer.parseInt(s.substring(i, i + 2));
             kingPos = kingPos > 64 ? kingPos % 10 : kingPos;
 
+            assert b != null;
             b.addToBoard(new Piece(Piece.PieceType.KING,
                     i == 0 ? Piece.PieceColor.WHITE : Piece.PieceColor.BLACK), kingPos);
         }

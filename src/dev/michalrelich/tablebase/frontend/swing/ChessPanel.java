@@ -34,9 +34,9 @@ public class ChessPanel extends JPanel {
 
         try {
         boardImage = ImageIO.read(Objects.requireNonNull(
-                this.getClass().getResource("/dev/michalrelich/tablebase/resources/board.png")));
+                this.getClass().getResource("/dev/michalrelich/tablebase/frontend/resources/board.png")));
         piecesImage = ImageIO.read(Objects.requireNonNull(
-                this.getClass().getResource("/dev/michalrelich/tablebase/resources/pieces.png")));
+                this.getClass().getResource("/dev/michalrelich/tablebase/frontend/resources/pieces.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

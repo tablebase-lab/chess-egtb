@@ -21,6 +21,10 @@ public class LongHelper {
         return number;
     }
 
+    public static long getLongByIndex(long number, int beginIndex) {
+        return getLongByIndex(number, beginIndex, getLongLength(number));
+    }
+
     public static int getLongLength(long number) {
         if (number <= 0) throw new IllegalArgumentException("Non-positive argument.");
 

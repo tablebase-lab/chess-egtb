@@ -1,8 +1,8 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.backend.helper.LongHelper;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
@@ -12,25 +12,23 @@ public class Main {
 
     static void main() {
 
-//        Board board = new Board();
-//
+        Board board = new Board(false);
+
 //        addRandomKings(board);
 //        addRandomPieces(board);
-//
-////        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 62);
-////        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 1);
-////        board.addToBoard(new Piece(Piece.PieceType.ROOK, Piece.PieceColor.WHITE), 63);
-////        board.addToBoard(new Piece(Piece.PieceType.BISHOP, Piece.PieceColor.WHITE), 0);
-////        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 61);
-//
-//        long gauss = GaussFunction.gaussFunction(board, true);
-//        board.launchApp();
-//
-//        Board inverse = GaussFunction.inverse(gauss);
-//        inverse.launchApp();
 
-        System.out.println(LongHelper.getLongByIndex(123456789987654321L, 0, 1));
-//            System.out.println(10 + " length: " + LongHelper.getLongLength(0));
+        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 62);
+        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 60);
+        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 5, 6);
+        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), 5,7);
+        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 2);
+
+        long gauss = GaussFunction.gaussFunction(board, true);
+        board.launchApp();
+
+        Board inverse = GaussFunction.inverse(gauss);
+        inverse.launchApp();
+
     }
 
     public static void addRandomPieces(Board board) {
