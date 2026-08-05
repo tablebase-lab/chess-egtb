@@ -20,17 +20,18 @@ public class Main {
 
         board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 62);
         board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 60);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 5, 6);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), 5,7);
+        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 3, 6);
+        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), 3,7);
         board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 2);
 
         long gauss = GaussFunction.gaussFunction(board, true);
         System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
         board.launchApp();
 
-//        Board inverse = GaussFunction.inverse(gauss);
-//        inverse.launchApp();
+        Board inverse = GaussFunction.inverse(gauss);
+        inverse.launchApp();
 
+        inverse.setEnPassant();
     }
 
     public static void addRandomPieces(Board board) {

@@ -1,7 +1,9 @@
 package dev.michalrelich.tablebase.frontend;
 
+import dev.michalrelich.tablebase.backend.helper.HasEnPassant;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.*;
 
@@ -78,13 +80,12 @@ public class Board {
         return isEnPassant;
     }
 
-    // only method that needs focus on in Board
-    public boolean setEnPassant(boolean enPassant) {
-//        if (!HasEnPassant.forLong(GaussFunction.gaussFunction(this, false))) {
-//            return false;
-//        }
-        this.isEnPassant = enPassant;
-        return true;
+    public boolean setEnPassant() {
+
+        this.isEnPassant = HasEnPassant.forLong(GaussFunction.gaussFunction(this, false));
+
+        System.out.println(this.isEnPassant);
+        return this.isEnPassant;
     }
 
     public Piece.PieceColor getTurn() {

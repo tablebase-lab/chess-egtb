@@ -19,7 +19,7 @@ public class GaussHelper {
         if (beginIndex < 0 || beginIndex >= endIndex || endIndex > length + 1) throw new IllegalArgumentException();
 
         number = number % (POW10[length - beginIndex]);
-        number = number / (POW10[length - endIndex]); // idk if i should add the one??
+        number = number / (POW10[length - endIndex]);
 
         return number;
     }
