@@ -18,11 +18,11 @@ public class Main {
 //        addRandomKings(board);
 //        addRandomPieces(board);
 
-        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 62);
-        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 60);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 3, 6);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), 3,7);
-        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 2);
+        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 3);
+        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 6);
+//        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 1, 1);
+//        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.BLACK), 1,2);
+//        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 7);
 
         long gauss = GaussFunction.gaussFunction(board, true);
         System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
@@ -35,7 +35,7 @@ public class Main {
     }
 
     public static void addRandomPieces(Board board) {
-        for (int i = 0; i <= 2; i++) {
+        for (int i = 0; i < Board.MAX_PIECE_COUNT; i++) {
             Piece piece = new Piece(
                     Piece.PieceType.values()[random.nextInt(1, Piece.PieceType.values().length)],
                     Piece.PieceColor.values()[random.nextInt(2)]);

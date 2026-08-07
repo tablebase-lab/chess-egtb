@@ -6,7 +6,8 @@ public class HasEnPassant {
 
     // checks if a position has two pawns next to each other on rows 4,5 (depending on the specified color)
 
-    public static boolean forLong(long gauss) { // returns the color for which en passant works, or null
+    // replace getLongByIndex and just do it manually?
+    public static boolean forLong(long gauss) {
 
         int[] pieces = GaussHelper.getPiecesArr(gauss);
         boolean whitesTurn = pieces[0] <= 2;

@@ -40,7 +40,7 @@ public class GaussFunction {
     }
 
     private static List<String> getStrings(NavigableMap<Piece, NavigableSet<Integer>> pieceInfo) {
-        List<String> list = new ArrayList<>(5);
+        List<String> list = new ArrayList<>(pieceInfo.size() + 2);
         boolean addDelimiter = true;
         for (var entry : pieceInfo.entrySet()) {
             Piece.PieceType type = entry.getKey().getType();

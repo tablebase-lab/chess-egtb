@@ -36,6 +36,7 @@ public class Board {
     // switch logic to second method?
 
     public boolean addToBoard(Piece piece, int position) {
+
         int row = position / BOARD_LENGTH + 1;
         int col = position % BOARD_LENGTH + 1;
         return addToBoard(piece, row, col);
