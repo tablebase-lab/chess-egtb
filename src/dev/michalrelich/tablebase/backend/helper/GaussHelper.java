@@ -16,7 +16,8 @@ public class GaussHelper {
     public static long getLongByIndex(long number, int beginIndex, int endIndex) { // end is non-inclusive
         int length = getLongLength(number);
 
-        if (beginIndex < 0 || beginIndex >= endIndex || endIndex > length + 1) throw new IllegalArgumentException();
+        assert !(beginIndex < 0 || beginIndex >= endIndex || endIndex > length + 1):
+                "Invalid index: " + beginIndex + ", " + endIndex;
 
         number = number % (POW10[length - beginIndex]);
         number = number / (POW10[length - endIndex]);
@@ -31,7 +32,7 @@ public class GaussHelper {
 
     // done
     public static int getLongLength(long number) {
-        if (number <= 0) throw new IllegalArgumentException("Non-positive argument.");
+        assert number > 0: "Negative number: " + number;
 
         int digitCount = 1;
 
@@ -45,8 +46,11 @@ public class GaussHelper {
         return digitCount;
     }
 
-    // doesn't have gauss check?
+    // doesn't seem to work for 1-2 pieces?
     public static int[] getPiecesArr(long number) {
+        int length = getLongLength(number);
+        assert (length >= 9 && length <= 15) : "Invalid number length: " + length;
+
         int[] arr = new int[Board.MAX_PIECE_COUNT + 2 + 2]; // + 2 kings + 2 numbers for turn and black/white delimiter
 
         int indexOne = (int) GaussHelper.getLongByIndex(number, 0, 1);
@@ -64,6 +68,8 @@ public class GaussHelper {
                 arr[3 + i / 3] = 9;
                 i++;
             }
+
+            if (i == piecesLength) break;
 
             arr[3 + i / 3 + (!addDelimiter ? 1 : 0)] = (int) GaussHelper.getLongByIndex(pieces, i, i + 3);
         }
