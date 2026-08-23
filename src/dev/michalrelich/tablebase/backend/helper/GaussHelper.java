@@ -46,7 +46,6 @@ public class GaussHelper {
         return digitCount;
     }
 
-    // doesn't seem to work for 1-2 pieces?
     public static int[] getPiecesArr(long number) {
         int length = getLongLength(number);
         assert (length >= 9 && length <= 15) : "Invalid number length: " + length;

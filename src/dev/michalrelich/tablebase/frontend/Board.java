@@ -1,6 +1,7 @@
 package dev.michalrelich.tablebase.frontend;
 
 import dev.michalrelich.tablebase.backend.helper.HasEnPassant;
+import dev.michalrelich.tablebase.backend.helper.PositionCheck;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
@@ -51,24 +52,9 @@ public class Board {
         return deepCopy;
     }
 
-    // NEED TO MOVE TO POSITIONCHECK
-    public void checkPieceConditions() { // only checks piece count, can still have kings next to each other, ...
-        int kingCount = 0;
-        int pieceCount = 0;
-
-        for (var entry : board.entrySet()) {
-            if (entry.getKey().getType() == Piece.PieceType.KING) {
-                if (entry.getValue().size() != 1) throw new InvalidBoardException("Invalid number of kings");
-                kingCount++;
-                continue;
-            }
-
-            pieceCount += entry.getValue().size();
-        }
-
-        if (kingCount != 2) throw new InvalidBoardException("Invalid number of kings: " + kingCount + ".");
-        if (pieceCount > MAX_PIECE_COUNT)
-            throw new InvalidBoardException("Piece count " + pieceCount + " larger than 3.");
+    public void checkPieceConditions() {
+        if (!PositionCheck.checkPosition(GaussFunction.gaussFunction(this, false)))
+            throw new InvalidBoardException("Invalid board!");
     }
 
     public void launchApp() {

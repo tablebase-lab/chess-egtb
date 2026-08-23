@@ -1,10 +1,12 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.backend.helper.PositionCheck;
+import dev.michalrelich.tablebase.backend.helper.DirectionCheck;
+import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
@@ -17,17 +19,20 @@ public class Main {
 //        addRandomKings(board);
 //        addRandomPieces(board);
 
+        int pieceOne = 16;
+        int pieceTwo = 7;
         board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 3);
-        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 4);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 1, 1);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 1,2);
-        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), 7);
+        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 5);
+        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 2, 1);
+        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), pieceOne);
+        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), pieceTwo);
 
         long gauss = GaussFunction.gaussFunction(board, true);
 
-        PositionCheck.checkPosition(gauss);
-//        System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
-//        board.launchApp();
+        System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
+        board.launchApp();
+
+        System.out.println("direction check: " + DirectionCheck.diagonalCheck(16, 7));
 //
 //
 //

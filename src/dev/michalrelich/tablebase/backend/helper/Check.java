@@ -102,11 +102,13 @@ public class Check {
     }
 
     private static boolean horizontalVerticalCheck(int king, int piece) {
-        int length = Board.BOARD_LENGTH;
-        return king / length == piece / length || king % length == piece % length;
+        return DirectionCheck.horizontalVerticalCheck(king, piece);
     }
 
+    // don't like this
     private static boolean diagonalCheck(int king, int piece) {
+
+
         return king - piece % Board.BOARD_LENGTH + 1 == 0 || king - piece % Board.BOARD_LENGTH - 1 == 0;
     }
 }

@@ -2,9 +2,11 @@ package dev.michalrelich.tablebase.backend.helper;
 
 import java.util.Arrays;
 
-// GaussGenerator will generate a number with the correct digits
+// GaussGenerator will generate a number with the correct digits (NON-REPEATING ONES)
 //
 public class PositionCheck {
+
+    // todo: write code that checks this
 
     public static boolean checkPosition(long gauss) {
 
@@ -42,7 +44,7 @@ public class PositionCheck {
             }
 
             for (int j = 4; j < pieces.length; j++) {
-                if (pieces[i] == pieces[j]) return false;
+                if (pieces[i] == pieces[j] && i != j) return false;
             }
         }
 

@@ -1,5 +1,6 @@
 package dev.michalrelich.tablebase.gaussfunction;
 
+import dev.michalrelich.tablebase.backend.helper.PositionCheck;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
@@ -14,7 +15,6 @@ public class GaussFunction {
     public static long gaussFunction(Board board, boolean printFormattedResult) {
         var pieceInfo = board.getBoard();
         System.out.println(pieceInfo);
-        board.checkPieceConditions();
 
         List<String> list = getStrings(pieceInfo);
 
@@ -36,6 +36,10 @@ public class GaussFunction {
         if (printFormattedResult) System.out.println(prefix + "_" + String.join("_", list));
 
         String s = prefix + String.join("", list);
+        long gauss = Long.parseLong(s);
+        if (!PositionCheck.checkPosition(gauss))
+            throw new InvalidBoardException("Invalid board!");
+
         return Long.parseLong(s);
     }
 
