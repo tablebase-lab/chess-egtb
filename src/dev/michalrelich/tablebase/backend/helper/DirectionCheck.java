@@ -14,32 +14,59 @@ public class DirectionCheck {
         int length = Board.BOARD_LENGTH;
 
         int i = 1;
-        boolean right = true;
-        boolean left = true;
-        // checks the diagonal from bottom left to top right
-        while (right || left) {
-            if (right) {
-                if (pieceOne + (length + 1) * i == pieceTwo || pieceOne + (length - 1) * i == pieceTwo) return true;
+        boolean ascendingDiagUp = pieceOne % length != length - 1 && pieceOne / length < length - 1;
+        boolean ascendingDiagDown = pieceOne % length != 0 && pieceOne / length != 0;
+        boolean descendingDiagUp = pieceOne % length != 0 && pieceOne / length < length - 1;
+        boolean descendingDiagDown = pieceOne % length != length - 1 && pieceOne / length != 0;
+
+        int plusDif = -1;
+        int minDif = -1;
+        while (ascendingDiagUp || ascendingDiagDown || descendingDiagUp || descendingDiagDown) {
+            System.out.println("iteration: " + i);
+
+            int difference = (length + 1) * i;
+
+            if (ascendingDiagUp) {
+                plusDif = pieceOne + difference;
+                System.out.println("Checking ascendingUp: " + plusDif);
+                if (plusDif == pieceTwo) return true;
+
+                if (!(plusDif % length != length - 1 && plusDif / length < length - 1)) ascendingDiagUp = false;
+
+
             }
 
-            if (left) {
-                if (pieceOne - (length + 1) * i == pieceTwo || pieceOne + (length - 1) * i == pieceTwo) return true;
+            if (ascendingDiagDown) {
+                minDif = pieceOne - difference;
+                System.out.println("Checking ascendingDown: " + minDif);
+                if (minDif == pieceTwo) return true;
+
+                if (!(minDif % length != 0 && minDif / length != 0)) ascendingDiagDown = false;
+
             }
 
-            if (i % 8 == 0) {
-                left = false;
+            difference = (length - 1) * i;
+
+            if (descendingDiagUp) {
+                plusDif = pieceOne + difference;
+                System.out.println("Checking descendingUp: " + plusDif);
+                if (plusDif == pieceTwo) return true;
+
+                if (!(plusDif % length != 0 && plusDif / length < length - 1)) descendingDiagUp = false;
+
             }
 
-            if (i % 8 == 7) {
-                right = false;
+            if (descendingDiagDown) {
+                minDif = pieceOne - difference;
+                System.out.println("Checking descendingDown: " + minDif);
+                if (minDif == pieceTwo) return true;
+
+                if (!(minDif % length != length - 1 && minDif / length != 0)) descendingDiagDown = false;
+
             }
 
             i++;
         }
-
         return false;
     }
-
-
-
 }

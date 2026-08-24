@@ -19,8 +19,8 @@ public class Main {
 //        addRandomKings(board);
 //        addRandomPieces(board);
 
-        int pieceOne = 16;
-        int pieceTwo = 7;
+        int pieceOne = 12;
+        int pieceTwo = 63;
         board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 3);
         board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 5);
         board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 2, 1);
@@ -32,7 +32,7 @@ public class Main {
         System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
         board.launchApp();
 
-        System.out.println("direction check: " + DirectionCheck.diagonalCheck(16, 7));
+        System.out.println("direction check: " + DirectionCheck.diagonalCheck(pieceOne, pieceTwo));
 //
 //
 //
