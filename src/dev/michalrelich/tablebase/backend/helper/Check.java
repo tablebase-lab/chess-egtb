@@ -1,7 +1,5 @@
 package dev.michalrelich.tablebase.backend.helper;
 
-import dev.michalrelich.tablebase.frontend.Board;
-
 public class Check {
     // returns a 0 if no one is in check, a 1 if white, a 2 if black, a 3 if both
 
@@ -29,37 +27,37 @@ public class Check {
             switch (piece / 100) {
                 case 1 -> {
                     if (isBlack) {
-                        whiteCheckPre = queenCheck(whiteKing, piece);
+                        whiteCheckPre = DirectionCheck.queen(piece, whiteKing);
                     } else {
-                        blackCheckPre = queenCheck(blackKing, piece);
+                        blackCheckPre = DirectionCheck.queen(piece, blackKing);
                     }
                 }
                 case 2 -> {
                     if (isBlack) {
-                        whiteCheckPre = rookCheck(whiteKing, piece);
+                        whiteCheckPre = DirectionCheck.rook(piece, whiteKing);
                     } else {
-                        blackCheckPre = rookCheck(blackKing, piece);
+                        blackCheckPre = DirectionCheck.rook(piece, blackKing);
                     }
                 }
                 case 3 -> {
                     if (isBlack) {
-                        whiteCheckPre = bishopCheck(whiteKing, piece);
+                        whiteCheckPre = DirectionCheck.bishop(piece, whiteKing);
                     } else {
-                        blackCheckPre = bishopCheck(blackKing, piece);
+                        blackCheckPre = DirectionCheck.bishop(piece, blackKing);
                     }
                 }
                 case 4 -> {
                     if (isBlack) {
-                        whiteCheckPre = knightCheck(whiteKing, piece);
+                        whiteCheckPre = DirectionCheck.knight(piece, whiteKing);
                     } else {
-                        blackCheckPre = knightCheck(blackKing, piece);
+                        blackCheckPre = DirectionCheck.knight(piece, blackKing);
                     }
                 }
                 case 5 -> {
                     if (isBlack) {
-                        whiteCheckPre = pawnCheck(whiteKing, piece);
+                        whiteCheckPre = DirectionCheck.pawn(piece, whiteKing);
                     } else {
-                        blackCheckPre = pawnCheck(blackKing, piece);
+                        blackCheckPre = DirectionCheck.pawn(piece, blackKing);
                     }
                 }
             }
@@ -71,44 +69,5 @@ public class Check {
         else if (whiteCheck) return 1;
         else if (blackCheck) return 2;
         else return 0;
-    }
-
-    public static boolean queenCheck(int king, int queen) {
-        return horizontalVerticalCheck(king, queen) || diagonalCheck(king, queen);
-    }
-
-    public static boolean rookCheck(int king, int rook) {
-        return horizontalVerticalCheck(king, rook);
-    }
-
-    public static boolean bishopCheck(int king, int bishop) {
-        return diagonalCheck(king, bishop);
-    }
-
-    public static boolean knightCheck(int king, int knight) {
-        int length = Board.BOARD_LENGTH;
-
-        if (knight + length * 2 + 1 == king || knight + length * 2 - 1 == king) return true;
-        if (knight - length * 2 + 1 == king || knight - length * 2 - 1 == king) return true;
-
-        if (knight + length + 2 == king || knight + length - 2 == king) return true;
-        if (knight - length + 2 == king || knight - length - 2 == king) return true;
-
-        return false;
-    }
-
-    public static boolean pawnCheck(int king, int pawn) {
-        return pawn + Board.BOARD_LENGTH + 1 == king || pawn + Board.BOARD_LENGTH - 1 == king;
-    }
-
-    private static boolean horizontalVerticalCheck(int king, int piece) {
-        return DirectionCheck.horizontalVerticalCheck(king, piece);
-    }
-
-    // don't like this
-    private static boolean diagonalCheck(int king, int piece) {
-
-
-        return king - piece % Board.BOARD_LENGTH + 1 == 0 || king - piece % Board.BOARD_LENGTH - 1 == 0;
     }
 }
