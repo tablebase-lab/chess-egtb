@@ -32,7 +32,9 @@ public class DirectionCheck {
     }
 
     public static boolean pawn(int pawn, int pieceTwo) {
-        return pawn + Board.BOARD_LENGTH + 1 == pieceTwo || pawn + Board.BOARD_LENGTH - 1 == pieceTwo;
+        int length = Board.BOARD_LENGTH;
+        return pawn + length + 1 == pieceTwo || pawn + length - 1 == pieceTwo || pawn + length == pieceTwo ||
+                (pawn + length * 2 == pieceTwo && pawn / length == 1);
     }
 
     public static boolean horizontalVerticalCheck(int pieceOne, int pieceTwo) {
