@@ -15,8 +15,11 @@ public class Move {
         if (!canMove(pieces, fullPieceInt, movePos)) return -1;
 
         int piecePos = fullPieceInt % 100;
-        if (fullPieceInt / 100 < 4) { // therefore not a pawn or a knight
-            for (int piece : pieces) {
+        if (fullPieceInt / 100 != 5) { // therefore not a pawn
+            for (int i = 0; i < pieces.length; i++) {
+                int piece = pieces[i];
+
+                // for knights all of these are ignored except the last if
                 boolean b = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
                 if (piecePos / length == movePos / length) { // the move is horizontal
                     if (b)
@@ -33,27 +36,30 @@ public class Move {
                         if (piece % (length - 1) == piecePos && b) return -1;
                     }
                 }
+
+                if ((fullPieceInt < 100 && fullPieceInt >= 10) && (piece < 100 && piece >= 10) &&
+                        DirectionCheck.king(movePos, piece)) return -1; // king moves near the other king
+
+                if (piece % 100 == movePos && piece >= 100) { // so it's not a king
+                    pieces[i] = 0;
+                }
             }
         }
 
-        if (fullPieceInt / 100 == 5) {
-
-        }
-
-        // there can't be white pieces on even the PATH of the move gotta code that in + the capture thing gotta code that too
-        return -1;
+        return GaussHelper.longFromArr(pieces);
     }
 
-    // focuses purely on if it's possible on an empty board and NOT on if there are any pieces in the way
+    // focuses purely on if it's possible on an empty board and  if the destination doesn't have the same color piece, NOT on if there are any pieces in the way
     public static boolean canMove(int[] pieces, int fullPieceInt, int movePos) {
 
         int piecePos = fullPieceInt % 100;
         boolean canMove = switch (fullPieceInt / 100) {
+            case 0 -> DirectionCheck.king(piecePos, movePos); // since king has two digits it will be 0
             case 1 -> DirectionCheck.queen(piecePos, movePos);
             case 2 -> DirectionCheck.rook(piecePos, movePos);
             case 3 -> DirectionCheck.bishop(piecePos, movePos);
             case 4 -> DirectionCheck.knight(piecePos, movePos);
-            case 5 -> DirectionCheck.pawn(piecePos, movePos);
+            case 5 -> DirectionCheck.pawn(piecePos, movePos, pieces[0] <= 2);
             default -> false;
         };
 

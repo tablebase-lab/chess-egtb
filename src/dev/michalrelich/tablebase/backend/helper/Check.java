@@ -55,9 +55,9 @@ public class Check {
                 }
                 case 5 -> {
                     if (isBlack) {
-                        whiteCheckPre = DirectionCheck.pawn(piece, whiteKing);
+                        whiteCheckPre = DirectionCheck.pawn(piece, whiteKing, false);
                     } else {
-                        blackCheckPre = DirectionCheck.pawn(piece, blackKing);
+                        blackCheckPre = DirectionCheck.pawn(piece, blackKing, true);
                     }
                 }
             }

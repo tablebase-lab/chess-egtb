@@ -76,6 +76,18 @@ public class GaussHelper {
         return arr;
      }
 
-    // shows an array of all pieces (so 3-digit ints) and the info about them
+    // shows an array of all pieces (so 1-3-digit ints)
 
+
+    public static long longFromArr(int[] pieces) {
+        int gauss = 0;
+
+        for (int piece : pieces) {
+            if (piece == 0) continue;
+            gauss += piece;
+            gauss *= 10;
+        }
+
+        return gauss;
+    }
 }
