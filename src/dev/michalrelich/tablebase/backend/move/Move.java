@@ -8,7 +8,14 @@ public class Move {
 
     // handles captures as well. enpassant logic is NOT here but in the move generator (if i pass enpassant movepos and it's in correct position the method will move it)
     // counts on the fullPieceInt being valid and in gauss
-    public static long move(int gauss, int fullPieceInt, int movePos) {
+    public static long move(int gauss, int fullPieceInt, int movePos, boolean enPassant) {
+
+        if (movePos > 63 || movePos < 0) return -1;
+
+        if (fullPieceInt / 100 == 1) {
+            return enPassant ? PawnMove.enPassantMove(gauss, fullPieceInt, movePos) : PawnMove.pawnMove(gauss, fullPieceInt, movePos);
+        }
+
         int length = Board.BOARD_LENGTH;
 
         int[] pieces = GaussHelper.getPiecesArr(gauss);
@@ -43,10 +50,18 @@ public class Move {
                 if (piece % 100 == movePos && piece >= 100) { // so it's not a king
                     pieces[i] = 0;
                 }
+
+                if (piece == piecePos) {
+                    pieces[i] = (fullPieceInt / 100 * 100) + movePos;
+                }
             }
         }
 
         return GaussHelper.longFromArr(pieces);
+    }
+
+    public static long move(int gauss, int fullPieceInt, int movePos) {
+        return move(gauss, fullPieceInt, movePos, false);
     }
 
     // focuses purely on if it's possible on an empty board and  if the destination doesn't have the same color piece, NOT on if there are any pieces in the way
