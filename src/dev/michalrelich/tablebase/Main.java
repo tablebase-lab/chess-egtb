@@ -1,45 +1,40 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.backend.helper.DirectionCheck;
-import dev.michalrelich.tablebase.backend.helper.GaussHelper;
+import dev.michalrelich.tablebase.backend.move.Move;
+import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
-import java.util.Arrays;
 import java.util.Random;
+
+import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.*;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
 
 public class Main {
 
     private static final Random random = new Random();
 
     static void main() {
-        Board board = new Board(Piece.PieceColor.BLACK);
+        Board board = new Board(Piece.PieceColor.WHITE);
 
 //        addRandomKings(board);
 //        addRandomPieces(board);
 
         int pieceOne = 12;
         int pieceTwo = 63;
-        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.WHITE), 3);
-        board.addToBoard(new Piece(Piece.PieceType.KING, Piece.PieceColor.BLACK), 5);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), 2, 1);
-        board.addToBoard(new Piece(Piece.PieceType.PAWN, Piece.PieceColor.WHITE), pieceOne);
-        board.addToBoard(new Piece(Piece.PieceType.QUEEN, Piece.PieceColor.WHITE), pieceTwo);
-
-        long gauss = GaussFunction.gaussFunction(board, true);
-
-        System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
+        board.addToBoard(new Piece(KING, WHITE), 3);
+        board.addToBoard(new Piece(KING, BLACK), 5);
+        board.addToBoard(new Piece(PAWN, WHITE), 2, 1);
+        board.addToBoard(new Piece(ROOK, WHITE), pieceOne);
+        board.addToBoard(new Piece(QUEEN, WHITE), pieceTwo);
         board.launchApp();
 
-        System.out.println("direction check: " + DirectionCheck.diagonalCheck(pieceOne, pieceTwo));
-//
-//
-//
-//        Board inverse = GaussFunction.inverse(gauss);
-//        inverse.launchApp();
-//
-//        inverse.setEnPassant();
+        long gauss = GaussFunction.gaussFunction(board, true);
+        long gaussTwo = Move.move(gauss, 200 + pieceOne, 15);
+        if (gaussTwo == -1) throw new InvalidBoardException("Oops");
+        Board boardTwo = GaussFunction.inverse(gaussTwo);
+        boardTwo.launchApp();
     }
 
     public static void addRandomPieces(Board board) {
@@ -57,10 +52,10 @@ public class Main {
 
     public static void addRandomKings(Board board) {
         for (int i = 0; i <= 1; i++) {
-            Piece.PieceColor color = i == 0 ? Piece.PieceColor.WHITE : Piece.PieceColor.BLACK;
+            Piece.PieceColor color = i == 0 ? WHITE : Piece.PieceColor.BLACK;
             int row = random.nextInt(8) + 1;
             int col = random.nextInt(8) + 1;
-            Piece piece = new Piece(Piece.PieceType.KING, color);
+            Piece piece = new Piece(KING, color);
 
             System.out.println(piece + ", row: " + row + ", col: " + col);
             board.addToBoard(piece, row, col);

@@ -7,7 +7,7 @@ import dev.michalrelich.tablebase.frontend.Board;
 
 public class PawnMove {
 
-    public static long pawnMove(int gauss, int pawnPos, int movePos) {
+    public static long pawnMove(long gauss, int pawnPos, int movePos) {
         int length = Board.BOARD_LENGTH;
 
         boolean whiteTurn = GaussHelper.getLongByIndex(0, 1) <= 2;
@@ -53,7 +53,7 @@ public class PawnMove {
         return GaussHelper.longFromArr(pieces);
     }
 
-    public static long enPassantMove(int gauss, int pawnPos, int movePos) {
+    public static long enPassantMove(long gauss, int pawnPos, int movePos) {
         if (DirectionCheck.pawn(pawnPos, movePos, GaussHelper.getLongByIndex(0, 1) <= 2))
             return -1;
 

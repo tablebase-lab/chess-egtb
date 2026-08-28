@@ -8,7 +8,8 @@ public class Move {
 
     // handles captures as well. enpassant logic is NOT here but in the move generator (if i pass enpassant movepos and it's in correct position the method will move it)
     // counts on the fullPieceInt being valid and in gauss
-    public static long move(int gauss, int fullPieceInt, int movePos, boolean enPassant) {
+    // the method itself mostly checks if there aren't any pieces in the way of the two positions
+    public static long move(long gauss, int fullPieceInt, int movePos, boolean enPassant) {
 
         if (movePos > 63 || movePos < 0) return -1;
 
@@ -24,7 +25,9 @@ public class Move {
         int piecePos = fullPieceInt % 100;
         if (fullPieceInt / 100 != 5) { // therefore not a pawn
             for (int i = 0; i < pieces.length; i++) {
-                int piece = pieces[i];
+                if (pieces[i] / 10 == 0) continue; // the delimiter and the turn info
+
+                int piece = pieces[i] % 100;
 
                 // for knights all of these are ignored except the last if
                 boolean b = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
@@ -43,11 +46,11 @@ public class Move {
                         if (piece % (length - 1) == piecePos && b) return -1;
                     }
                 }
-
-                if ((fullPieceInt < 100 && fullPieceInt >= 10) && (piece < 100 && piece >= 10) &&
+                // for kings
+                if ((fullPieceInt < 100 && fullPieceInt >= 10) && (pieces[i] < 100 && pieces[i] >= 10) &&
                         DirectionCheck.king(movePos, piece)) return -1; // king moves near the other king
 
-                if (piece % 100 == movePos && piece >= 100) { // so it's not a king
+                if (piece % 100 == movePos) { // we already know it's not a king from canMove
                     pieces[i] = 0;
                 }
 
@@ -60,7 +63,7 @@ public class Move {
         return GaussHelper.longFromArr(pieces);
     }
 
-    public static long move(int gauss, int fullPieceInt, int movePos) {
+    public static long move(long gauss, int fullPieceInt, int movePos) {
         return move(gauss, fullPieceInt, movePos, false);
     }
 
@@ -83,14 +86,21 @@ public class Move {
         boolean isPieceWhite = true;
         boolean isFoundWhite = true;
         boolean foundDelimiter = false;
+        boolean found = false;
         for (int i : pieces) {
             if (i == 9) foundDelimiter = true;
 
             if (i == piecePos) isPieceWhite = !foundDelimiter;
-            if (i == movePos) isFoundWhite = !foundDelimiter;
+            if (i == movePos) {
+                if (i / 100 == 0) return false; // a king is at the desired position
+                isFoundWhite = !foundDelimiter;
+                found = true;
+            }
         }
 
-        return isPieceWhite != isFoundWhite;
+        if (isFoundWhite != isPieceWhite) return found;
+        if (isPieceWhite && pieces[0] > 2 || !isPieceWhite && pieces[0] <= 2) return false; // so we don't move with non-turn color
+        return !found; // isFoundWhite == isPieceWhite
     }
 
 }

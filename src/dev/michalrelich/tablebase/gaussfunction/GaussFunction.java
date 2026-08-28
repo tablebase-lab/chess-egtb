@@ -78,8 +78,8 @@ public class GaussFunction {
         char prefix = s.charAt(0);
         s = s.substring(1);
 
-        if (((s.length() + 1) % 3 != 0) || s.length() < 5 || s.length() > 14)
-            throw new InvalidBoardException("Gauss number has an incorrect number of digits");
+        if (((s.length() + 1) % 3 != 0) || s.length() < 5 || s.length() > 15)
+            throw new InvalidBoardException("Gauss number has an incorrect number of digits: " + s.length());
 
         Board b = null;
 

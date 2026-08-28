@@ -69,7 +69,7 @@ public class Board {
 
     public boolean setEnPassant() {
 
-        this.isEnPassant = HasEnPassant.forLong(GaussFunction.gaussFunction(this, false));
+        this.isEnPassant = HasEnPassant.forLong(GaussFunction.gaussFunction(this, false)) != -1;
 
         System.out.println(this.isEnPassant);
         return this.isEnPassant;

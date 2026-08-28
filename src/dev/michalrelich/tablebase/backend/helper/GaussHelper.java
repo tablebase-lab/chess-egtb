@@ -80,12 +80,23 @@ public class GaussHelper {
 
 
     public static long longFromArr(int[] pieces) {
-        int gauss = 0;
+        long gauss = 0;
+        boolean first = true;
 
         for (int piece : pieces) {
+            if (first) {
+                first = false;
+                gauss += piece;
+                continue;
+            }
+            int length = GaussHelper.getLongLength(piece);
+            if (length == 0) return -1;
+            gauss *= POW10[length];
+
             if (piece == 0) continue;
             gauss += piece;
-            gauss *= 10;
+
+
         }
 
         return gauss;
