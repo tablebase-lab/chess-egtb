@@ -79,15 +79,18 @@ public class PositionCheck {
     private static boolean checkCheck(int[] pieces) {
         int check = Check.isInCheck(pieces);
 
-        if (check == 3) return false;
+        if (check == 3) {
+            System.out.println("Both kings are in check...");
+            return false;
+        }
 
         boolean whiteTurn = switch (pieces[0]) {
             case 1,2 -> true;
             default -> false;
         };
 
-        if (check == 2 && !whiteTurn) return false;
-        if (check == 1 && whiteTurn) return false;
+        if (check == 2 && whiteTurn) return false; // black is in check and it's white's move
+        if (check == 1 && !whiteTurn) return false;
 
         return true;
     }

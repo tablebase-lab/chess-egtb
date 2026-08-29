@@ -35,7 +35,7 @@ public class Move {
                     return -1;
 
             } else if (piecePos % length == movePos % length) { // the move is vertical
-                if ((piece / length > piecePos / length && piece / length < movePos / length) ||
+                if ((piece / length > piecePos / length && piece / length < movePos / length && piece % length == piecePos % length) ||
                         (piece / length > movePos / length && piece / length < piecePos / length)) return -1;
 
             } else { // the move is diagonal

@@ -6,15 +6,15 @@ public class Check {
     // too long of a method, needs shortening
     public static int isInCheck(int[] pieces) {
 
-        int whiteKing = pieces[1];
-        int blackKing = pieces[2];
+        int whiteKing = pieces[1] > 63 ? pieces[1] % 10 : pieces[1];
+        int blackKing = pieces[2] > 63 ? pieces[2] % 10 : pieces[1];
 
         boolean whiteCheck = false;
         boolean blackCheck = false;
 
         boolean isBlack = false;
         for (int i = 3; i < pieces.length; i++) {
-            int piece = pieces[i];
+            int piece = pieces[i] % 100;
 
             if (piece == 9) {
                 isBlack = true;
@@ -24,7 +24,7 @@ public class Check {
             boolean whiteCheckPre = false;
             boolean blackCheckPre = false;
 
-            switch (piece / 100) {
+            switch (pieces[i] / 100) {
                 case 1 -> {
                     if (isBlack) {
                         whiteCheckPre = DirectionCheck.queen(piece, whiteKing);
@@ -65,7 +65,9 @@ public class Check {
             if (blackCheckPre) blackCheck = true;
         }
 
-        if (whiteCheck && blackCheck) return 3;
+        if (whiteCheck && blackCheck) {
+            return 3;
+        }
         else if (whiteCheck) return 1;
         else if (blackCheck) return 2;
         else return 0;

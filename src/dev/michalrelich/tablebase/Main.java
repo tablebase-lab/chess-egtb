@@ -21,7 +21,7 @@ public class Main {
 //        addRandomKings(board);
 //        addRandomPieces(board);
 
-        int pieceOne = 12;
+        int pieceOne = 56;
         int pieceTwo = 63;
         board.addToBoard(new Piece(KING, WHITE), 20);
         board.addToBoard(new Piece(KING, BLACK), 8);
@@ -31,7 +31,7 @@ public class Main {
         board.launchApp();
 
         long gauss = GaussFunction.gaussFunction(board, true);
-//        long gaussTwo = Move.move(gauss, 200 + pieceOne, 20);
+//        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
 //        if (gaussTwo == -1) throw new RuntimeException("Oops");
 //        Board boardTwo = GaussFunction.inverse(gaussTwo);
 //        boardTwo.launchApp();
@@ -40,13 +40,13 @@ public class Main {
             long gaussTwo = Move.move(gauss, 200 + pieceOne, i);
             if (gaussTwo == -1) {
                 System.out.println("Cannot move " + pieceOne + " to " + i);
-                Thread.sleep(2000);
+                Thread.sleep(1000);
                 continue;
             }
             System.out.println("Moved from " + pieceOne + " to " + i);
             Board board2 = GaussFunction.inverse(gaussTwo);
             board2.launchApp();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         }
     }
 
