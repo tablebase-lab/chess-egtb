@@ -13,7 +13,7 @@ public class Move {
 
         if (movePos > 63 || movePos < 0) return -1;
 
-        if (fullPieceInt / 100 == 1) {
+        if (fullPieceInt / 100 == 5) {
             return enPassant ? PawnMove.enPassantMove(gauss, fullPieceInt, movePos) : PawnMove.pawnMove(gauss, fullPieceInt, movePos);
         }
 
@@ -23,42 +23,41 @@ public class Move {
         if (!canMove(pieces, fullPieceInt, movePos)) return -1;
 
         int piecePos = fullPieceInt % 100;
-        if (fullPieceInt / 100 != 5) { // therefore not a pawn
-            for (int i = 0; i < pieces.length; i++) {
-                if (pieces[i] / 10 == 0) continue; // the delimiter and the turn info
+        for (int i = 0; i < pieces.length; i++) {
+            if (pieces[i] / 10 == 0) continue; // the delimiter and the turn info
 
-                int piece = pieces[i] % 100;
+            int piece = pieces[i] % 100;
 
-                // for knights all of these are ignored except the last if
-                boolean b = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
-                if (piecePos / length == movePos / length) { // the move is horizontal
-                    if (b)
-                        return -1;
+            // for knights all of these are ignored except the last if
+            boolean b = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
+            if (piecePos / length == movePos / length) { // the move is horizontal
+                if (b)
+                    return -1;
 
-                } else if (piecePos % length == movePos % length) { // the move is vertical
-                    if ((piece / length > piecePos / length && piece / length < movePos / length) ||
-                            (piece / length > movePos / length && piece / length < piecePos / length)) return -1;
+            } else if (piecePos % length == movePos % length) { // the move is vertical
+                if ((piece / length > piecePos / length && piece / length < movePos / length) ||
+                        (piece / length > movePos / length && piece / length < piecePos / length)) return -1;
 
-                } else { // the move is diagonal
-                    if (piecePos % (length + 1) == movePos % (length + 1)) { // diagonal from left to right
-                        if (piece % (length + 1) == piecePos && b) return -1;
-                    } else { // diagonal from right to left
-                        if (piece % (length - 1) == piecePos && b) return -1;
-                    }
-                }
-                // for kings
-                if ((fullPieceInt < 100 && fullPieceInt >= 10) && (pieces[i] < 100 && pieces[i] >= 10) &&
-                        DirectionCheck.king(movePos, piece)) return -1; // king moves near the other king
-
-                if (piece % 100 == movePos) { // we already know it's not a king from canMove
-                    pieces[i] = 0;
-                }
-
-                if (piece == piecePos) {
-                    pieces[i] = (fullPieceInt / 100 * 100) + movePos;
+            } else { // the move is diagonal
+                if (piecePos % (length + 1) == movePos % (length + 1)) { // diagonal from left to right
+                    if (piece % (length + 1) == piecePos && b) return -1;
+                } else { // diagonal from right to left
+                    if (piece % (length - 1) == piecePos && b) return -1;
                 }
             }
+            // for kings
+            if ((fullPieceInt < 100 && fullPieceInt >= 10) && (pieces[i] < 100 && pieces[i] >= 10) &&
+                    DirectionCheck.king(movePos, piece)) return -1; // king moves near the other king
+
+            if (piece % 100 == movePos) { // we already know it's not a king from canMove
+                pieces[i] = 0;
+            }
+
+            if (piece == piecePos) {
+                pieces[i] = (fullPieceInt / 100 * 100) + movePos;
+            }
         }
+
 
         return GaussHelper.longFromArr(pieces);
     }
@@ -88,19 +87,32 @@ public class Move {
         boolean foundDelimiter = false;
         boolean found = false;
         for (int i : pieces) {
-            if (i == 9) foundDelimiter = true;
+            if (i < 10) {
+                if (i != 9) continue;
+                foundDelimiter = true;
+                continue;
+            }
 
-            if (i == piecePos) isPieceWhite = !foundDelimiter;
-            if (i == movePos) {
-                if (i / 100 == 0) return false; // a king is at the desired position
+            int iPos = i >= 100 ? i % 100 : i;
+
+            if (iPos >= 64) iPos = iPos % 10; // for single digit king positions like 98
+            if (iPos == piecePos) isPieceWhite = !foundDelimiter;
+            if (iPos == movePos) {
+                if (i / 100 == 0) {
+                    System.out.println("Attempted to capture a king at " + iPos);
+                    return false; // a king is at the desired position
+                }
                 isFoundWhite = !foundDelimiter;
                 found = true;
             }
         }
 
-        if (isFoundWhite != isPieceWhite) return found;
-        if (isPieceWhite && pieces[0] > 2 || !isPieceWhite && pieces[0] <= 2) return false; // so we don't move with non-turn color
-        return !found; // isFoundWhite == isPieceWhite
+        boolean b = !isPieceWhite && pieces[0] > 2 || isPieceWhite && pieces[0] <= 2; // so we don't move with non-turn color
+        if (found) {
+            return b && isPieceWhite != isFoundWhite;
+        }
+
+        return b;
     }
 
 }

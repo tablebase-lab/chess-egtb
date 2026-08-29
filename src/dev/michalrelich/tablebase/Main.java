@@ -1,21 +1,21 @@
 package dev.michalrelich.tablebase;
 
 import dev.michalrelich.tablebase.backend.move.Move;
-import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
-import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.*;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
 import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
 
 public class Main {
 
     private static final Random random = new Random();
 
-    static void main() {
+    static void main() throws InterruptedException {
         Board board = new Board(Piece.PieceColor.WHITE);
 
 //        addRandomKings(board);
@@ -23,18 +23,31 @@ public class Main {
 
         int pieceOne = 12;
         int pieceTwo = 63;
-        board.addToBoard(new Piece(KING, WHITE), 3);
-        board.addToBoard(new Piece(KING, BLACK), 5);
-        board.addToBoard(new Piece(PAWN, WHITE), 2, 1);
+        board.addToBoard(new Piece(KING, WHITE), 20);
+        board.addToBoard(new Piece(KING, BLACK), 8);
+        board.addToBoard(new Piece(PAWN, WHITE), 3, 3);
         board.addToBoard(new Piece(ROOK, WHITE), pieceOne);
         board.addToBoard(new Piece(QUEEN, WHITE), pieceTwo);
         board.launchApp();
 
         long gauss = GaussFunction.gaussFunction(board, true);
-        long gaussTwo = Move.move(gauss, 200 + pieceOne, 15);
-        if (gaussTwo == -1) throw new InvalidBoardException("Oops");
-        Board boardTwo = GaussFunction.inverse(gaussTwo);
-        boardTwo.launchApp();
+//        long gaussTwo = Move.move(gauss, 200 + pieceOne, 20);
+//        if (gaussTwo == -1) throw new RuntimeException("Oops");
+//        Board boardTwo = GaussFunction.inverse(gaussTwo);
+//        boardTwo.launchApp();
+
+        for (int i = 0; i <= 63; i++) {
+            long gaussTwo = Move.move(gauss, 200 + pieceOne, i);
+            if (gaussTwo == -1) {
+                System.out.println("Cannot move " + pieceOne + " to " + i);
+                Thread.sleep(2000);
+                continue;
+            }
+            System.out.println("Moved from " + pieceOne + " to " + i);
+            Board board2 = GaussFunction.inverse(gaussTwo);
+            board2.launchApp();
+            Thread.sleep(2000);
+        }
     }
 
     public static void addRandomPieces(Board board) {

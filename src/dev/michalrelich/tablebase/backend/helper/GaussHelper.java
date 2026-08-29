@@ -84,6 +84,8 @@ public class GaussHelper {
         boolean first = true;
 
         for (int piece : pieces) {
+            if (piece == 0) continue;
+
             if (first) {
                 first = false;
                 gauss += piece;
@@ -91,12 +93,9 @@ public class GaussHelper {
             }
             int length = GaussHelper.getLongLength(piece);
             if (length == 0) return -1;
+
             gauss *= POW10[length];
-
-            if (piece == 0) continue;
             gauss += piece;
-
-
         }
 
         return gauss;
