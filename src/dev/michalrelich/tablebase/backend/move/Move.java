@@ -24,7 +24,6 @@ public class Move {
         int[] pieces = GaussHelper.getPiecesArr(gauss);
         if (!canMove(pieces, fullPieceInt, movePos) || !canCapture(pieces, fullPieceInt, movePos)) return -1;
 
-
         for (int i = 0; i < pieces.length; i++) {
             if (pieces[i] / 10 == 0) continue; // the delimiter and the turn info
 

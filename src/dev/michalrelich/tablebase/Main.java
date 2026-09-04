@@ -15,7 +15,10 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        DirectionCheck.bishop(28, 34);
+        for (int i = 0; i <= 63; i++) {
+                System.out.println("DirectionCheck for knight on " + 28 + " to " + i + ": " +
+                        DirectionCheck.knight(28, i));
+        }
 
 //        Board board = new Board(Piece.PieceColor.WHITE);
 //
