@@ -10,6 +10,8 @@ public class Move {
     // counts on the fullPieceInt being valid and in gauss
     // the method itself mostly checks if there aren't any pieces in the way of the two positions
     public static long move(long gauss, int fullPieceInt, int movePos, boolean enPassant) {
+        int piecePos = fullPieceInt % 100;
+        if (piecePos == movePos) return -1;
 
         if (movePos > 63 || movePos < 0) return -1;
 
@@ -20,9 +22,9 @@ public class Move {
         int length = Board.BOARD_LENGTH;
 
         int[] pieces = GaussHelper.getPiecesArr(gauss);
-        if (!canMove(pieces, fullPieceInt, movePos)) return -1;
+        if (!canMove(pieces, fullPieceInt, movePos) || !canCapture(pieces, fullPieceInt, movePos)) return -1;
 
-        int piecePos = fullPieceInt % 100;
+
         for (int i = 0; i < pieces.length; i++) {
             if (pieces[i] / 10 == 0) continue; // the delimiter and the turn info
 
@@ -66,11 +68,12 @@ public class Move {
         return move(gauss, fullPieceInt, movePos, false);
     }
 
-    // focuses purely on if it's possible on an empty board and  if the destination doesn't have the same color piece, NOT on if there are any pieces in the way
+    // focuses purely on if it's possible on an empty board
     public static boolean canMove(int[] pieces, int fullPieceInt, int movePos) {
 
         int piecePos = fullPieceInt % 100;
-        boolean canMove = switch (fullPieceInt / 100) {
+
+        return switch (fullPieceInt / 100) {
             case 0 -> DirectionCheck.king(piecePos, movePos); // since king has two digits it will be 0
             case 1 -> DirectionCheck.queen(piecePos, movePos);
             case 2 -> DirectionCheck.rook(piecePos, movePos);
@@ -79,8 +82,11 @@ public class Move {
             case 5 -> DirectionCheck.pawn(piecePos, movePos, pieces[0] <= 2);
             default -> false;
         };
+    }
 
-        if (!canMove) return false;
+    // focuses on if the movePos has a piece of a different color
+    public static boolean canCapture(int[] pieces, int fullPieceInt, int movePos) {
+        int piecePos = fullPieceInt % 100;
 
         boolean isPieceWhite = true;
         boolean isFoundWhite = true;
@@ -114,5 +120,4 @@ public class Move {
 
         return b;
     }
-
 }

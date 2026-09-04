@@ -32,7 +32,7 @@ public class GaussHelper {
 
     // done
     public static int getLongLength(long number) {
-        assert number > 0: "Negative number: " + number;
+        assert number > 0: "Non-positive number: " + number;
 
         int digitCount = 1;
 

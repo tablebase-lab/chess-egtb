@@ -1,53 +1,55 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.backend.move.Move;
+import dev.michalrelich.tablebase.backend.helper.DirectionCheck;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
-import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
-import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.KING;
 
 public class Main {
 
     private static final Random random = new Random();
 
     static void main() throws InterruptedException {
-        Board board = new Board(Piece.PieceColor.WHITE);
 
-//        addRandomKings(board);
-//        addRandomPieces(board);
+        DirectionCheck.bishop(28, 34);
 
-        int pieceOne = 56;
-        int pieceTwo = 63;
-        board.addToBoard(new Piece(KING, WHITE), 20);
-        board.addToBoard(new Piece(KING, BLACK), 8);
-        board.addToBoard(new Piece(PAWN, WHITE), 3, 3);
-        board.addToBoard(new Piece(ROOK, WHITE), pieceOne);
-        board.addToBoard(new Piece(QUEEN, WHITE), pieceTwo);
-        board.launchApp();
-
-        long gauss = GaussFunction.gaussFunction(board, true);
-//        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
-//        if (gaussTwo == -1) throw new RuntimeException("Oops");
-//        Board boardTwo = GaussFunction.inverse(gaussTwo);
-//        boardTwo.launchApp();
-
-        for (int i = 0; i <= 63; i++) {
-            long gaussTwo = Move.move(gauss, 200 + pieceOne, i);
-            if (gaussTwo == -1) {
-                System.out.println("Cannot move " + pieceOne + " to " + i);
-                Thread.sleep(1000);
-                continue;
-            }
-            System.out.println("Moved from " + pieceOne + " to " + i);
-            Board board2 = GaussFunction.inverse(gaussTwo);
-            board2.launchApp();
-            Thread.sleep(1000);
-        }
+//        Board board = new Board(Piece.PieceColor.WHITE);
+//
+////        addRandomKings(board);
+////        addRandomPieces(board);
+//
+//        int pieceOne = 56;
+//        int pieceTwo = 63;
+//        board.addToBoard(new Piece(KING, WHITE), 24);
+//        board.addToBoard(new Piece(KING, BLACK), 8);
+//        board.addToBoard(new Piece(PAWN, WHITE), 32);
+//        board.addToBoard(new Piece(ROOK, WHITE), pieceOne);
+//        board.addToBoard(new Piece(QUEEN, WHITE), pieceTwo);
+//        board.launchApp();
+//
+//        long gauss = GaussFunction.gaussFunction(board, true);
+////        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
+////        if (gaussTwo == -1) throw new RuntimeException("Oops");
+////        Board boardTwo = GaussFunction.inverse(gaussTwo);
+////        boardTwo.launchApp();
+//
+//        // HORSE LOGIC BROKEN?
+//        for (int i = 0; i <= 63; i++) {
+//            long gaussTwo = Move.move(gauss, 200 + pieceOne, i);
+//            if (gaussTwo == -1) {
+//                System.out.println("Cannot move " + pieceOne + " to " + i);
+//                Thread.sleep(1000);
+//                continue;
+//            }
+//            System.out.println("Moved from " + pieceOne + " to " + i);
+//            Board board2 = GaussFunction.inverse(gaussTwo);
+//            board2.launchApp();
+//            Thread.sleep(1000);
+//        }
     }
 
     public static void addRandomPieces(Board board) {

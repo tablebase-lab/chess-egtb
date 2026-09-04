@@ -1,10 +1,14 @@
 package dev.michalrelich.tablebase.backend.helper;
 
+import dev.michalrelich.tablebase.backend.move.Move;
+
 public class Check {
     // returns a 0 if no one is in check, a 1 if white, a 2 if black, a 3 if both
 
     // too long of a method, needs shortening
-    public static int isInCheck(int[] pieces) {
+    public static int isInCheck(long gauss) {
+
+        int[] pieces = GaussHelper.getPiecesArr(gauss);
 
         int whiteKing = pieces[1] > 63 ? pieces[1] % 10 : pieces[1];
         int blackKing = pieces[2] > 63 ? pieces[2] % 10 : pieces[1];
@@ -27,7 +31,7 @@ public class Check {
             switch (pieces[i] / 100) {
                 case 1 -> {
                     if (isBlack) {
-                        whiteCheckPre = DirectionCheck.queen(piece, whiteKing);
+                        whiteCheckPre = Move.move(gauss, pieces[i], whiteKing, false) != 1; // IDK WHAT TO DO WITH ENPASSANT HERE!
                     } else {
                         blackCheckPre = DirectionCheck.queen(piece, blackKing);
                     }

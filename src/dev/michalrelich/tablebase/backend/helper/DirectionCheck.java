@@ -2,28 +2,35 @@ package dev.michalrelich.tablebase.backend.helper;
 
 import dev.michalrelich.tablebase.frontend.Board;
 
-// checks if two positions are on the same diagonal / horizontal / vertical line
-// counts on the fact that the piece position passed are VALID!
+// checks whether a move for the piece is technically possible (like on an otherwise empty board)
+// asserts both the parameters are 0-63
 
 public class DirectionCheck {
 
+    // we assert position is 0 - 63 and king is 0-63 aswell
     public static boolean king(int king, int position) {
         int length = Board.BOARD_LENGTH;
-        return king == position + 1 || king == position - 1 || king == position - length || king == position + length
-                || king == position - length - 1 || king == position - length + 1 || king == position + length - 1
-                || king == position + length + 1;
+
+        int colDiff = Math.abs(king % length - position % length);
+        int rowDiff = Math.abs(king / length - position / length);
+        return colDiff <= 1 && rowDiff <= 1;
+        // so they are either 0 or 1, the case they are both 0 (king == position) is handled in Move.move
+
     }
 
     public static boolean knight(int knight, int position) {
         int length = Board.BOARD_LENGTH;
 
-        if (knight + length * 2 + 1 == position || knight + length * 2 - 1 == position) return true;
-        if (knight - length * 2 + 1 == position || knight - length * 2 - 1 == position) return true;
+        boolean canMove = false;
+        if (knight + length * 2 + 1 == position || knight + length * 2 - 1 == position) canMove = true;
+        if (knight - length * 2 + 1 == position || knight - length * 2 - 1 == position) canMove = true;
 
-        if (knight + length + 2 == position || knight + length - 2 == position) return true;
-        if (knight - length + 2 == position || knight - length - 2 == position) return true;
+        if (knight + length + 2 == position || knight + length - 2 == position) canMove = true;
+        if (knight - length + 2 == position || knight - length - 2 == position) canMove = true;
 
-        return false;
+        int colDiff = Math.abs(knight % length - position % length); // so they don't jump to opposite columns
+
+        return colDiff <= 2 && canMove;
     }
 
     public static boolean queen(int queen, int position) {
@@ -38,6 +45,7 @@ public class DirectionCheck {
         return DirectionCheck.diagonalCheck(bishop, position);
     }
 
+    // not done
     public static boolean pawn(int pawn, int pieceTwo, boolean whiteTurn) {
         int length = Board.BOARD_LENGTH;
         return pawn + length + 1 == pieceTwo || pawn + length - 1 == pieceTwo || pawn + length == pieceTwo ||
@@ -50,6 +58,7 @@ public class DirectionCheck {
         return pieceOne / length == pieceTwo / length || pieceOne % length == pieceTwo % length;
     }
 
+    // not done
     public static boolean diagonalCheck(int pieceOne, int position) {
         int length = Board.BOARD_LENGTH;
 

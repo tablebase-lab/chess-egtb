@@ -18,7 +18,7 @@ public class PositionCheck {
             }
         }
 
-        return checkPiecePosition(pieces) && kingsCheck(pieces) && pawnsCheck(pieces) && checkCheck(pieces);
+        return checkPiecePosition(pieces) && kingsCheck(pieces) && pawnsCheck(pieces) && checkCheck(gauss);
     }
 
     private static boolean checkPiecePosition(int[] pieces) {
@@ -76,15 +76,15 @@ public class PositionCheck {
     }
 
     // needs is in check method, will check if the side that didn't move had check
-    private static boolean checkCheck(int[] pieces) {
-        int check = Check.isInCheck(pieces);
+    private static boolean checkCheck(long gauss) {
+        int check = Check.isInCheck(gauss);
 
         if (check == 3) {
             System.out.println("Both kings are in check...");
             return false;
         }
 
-        boolean whiteTurn = switch (pieces[0]) {
+        boolean whiteTurn = switch ((int) GaussHelper.getLongByIndex(0, 1)) {
             case 1,2 -> true;
             default -> false;
         };
