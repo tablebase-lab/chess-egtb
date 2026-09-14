@@ -6,12 +6,10 @@ import dev.michalrelich.tablebase.frontend.Board;
 
 public class Move {
 
-    // handles captures as well. enpassant logic is NOT here but in the move generator (if i pass enpassant movepos and it's in correct position the method will move it)
-    // counts on the fullPieceInt being valid and in gauss
-    // the method itself mostly checks if there aren't any pieces in the way of the two positions
+    // counts on gauss being valid, fullPieceInt being valid, and movePos being 0-63
+    // returns -1 if move can't be performed, else returns modified gauss number
 
-    // todo: check PawnMove and enPassantMove, make sure if you are in Check you have to block it or go away! Include checkMove??
-    public static long move(long gauss, int fullPieceInt, int movePos, boolean invalidCheck) {
+    public static long move(long gauss, int fullPieceInt, int movePos) {
         int piecePos = fullPieceInt % 100;
         int length = Board.BOARD_LENGTH;
         int[] pieces = GaussHelper.getPiecesArr(gauss);
@@ -19,7 +17,7 @@ public class Move {
         if (piecePos == movePos) return -1;
         if (!canMove(pieces, fullPieceInt, movePos)) return -1;
 
-        if (invalidCheck) return invalidCheck(); // for calls from PositionGenerator to PositionCheck to Check to here
+//        if (invalidCheck) return invalidCheck(); // for calls from PositionGenerator to PositionCheck to Check to here
 
         if (!canMoveToPos(pieces, fullPieceInt, movePos)) return -1;
 
@@ -28,6 +26,7 @@ public class Move {
                     PawnMove.enPassantMove(gauss, fullPieceInt, movePos) : PawnMove.pawnMove(gauss, fullPieceInt, movePos);
         }
 
+        if (!checkInBetweenPieces(pieces, length, movePos, movePos)) return -1;
 
         for (int i = 0; i < pieces.length; i++) {
             if (pieces[i] / 10 == 0) continue; // the delimiter and the turn info
@@ -97,21 +96,12 @@ public class Move {
             }
         }
 
-        boolean b = isPiecesMove(pieces[0], isPieceWhite); // so we don't move with non-turn color
+        boolean isPiecesMove = !isPieceWhite && pieces[0] > 2 || isPieceWhite && pieces[0] <= 2;; // so we don't move with non-turn color
         if (found) {
-            return b && isPieceWhite != isFoundWhite;
+            return isPiecesMove && isPieceWhite != isFoundWhite;
         }
 
-        return b;
-    }
-
-    public static long move(long gauss, int fullPieceInt, int movePos) {
-        return move(gauss, fullPieceInt, movePos, false);
-    }
-
-    // helper for canMoveToPos
-    public static boolean isPiecesMove(int firstDigit, boolean isPieceWhite) {
-        return !isPieceWhite && firstDigit > 2 || isPieceWhite && firstDigit <= 2;
+        return isPiecesMove;
     }
 
     public static boolean checkInBetweenPieces(int[] pieces, int length, int fullPieceInt, int movePos) {
@@ -125,7 +115,8 @@ public class Move {
             return validDiagonalMove(pieces, length, piecePos, movePos);
         }
 
-        return true; //?
+        System.out.println("Unexpected result in checkInBetweenPieces");
+        return false;
     }
 
 
@@ -172,8 +163,5 @@ public class Move {
         return true;
     }
 
-    public static long invalidCheck() {
-        return -1;
-    }
 
 }
