@@ -31,7 +31,7 @@ public class Check {
             switch (pieces[i] / 100) {
                 case 1 -> {
                     if (isBlack) {
-                        whiteCheckPre = Move.move(gauss, pieces[i], whiteKing, false) != 1; // IDK WHAT TO DO WITH ENPASSANT HERE!
+                        whiteCheckPre = Move.move(gauss, pieces[i], whiteKing) != 1; // IDK WHAT TO DO WITH ENPASSANT HERE!
                     } else {
                         blackCheckPre = DirectionCheck.queen(piece, blackKing);
                     }

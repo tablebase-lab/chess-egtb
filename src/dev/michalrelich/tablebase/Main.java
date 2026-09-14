@@ -1,13 +1,14 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.backend.helper.DirectionCheck;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
+import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.KING;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
 
 public class Main {
 
@@ -15,30 +16,30 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        for (int i = 0; i <= 63; i++) {
-                System.out.println("DirectionCheck for knight on " + 28 + " to " + i + ": " +
-                        DirectionCheck.knight(28, i));
-        }
+//        for (int i = 0; i <= 63; i++) {
+//                System.out.println("DirectionCheck for knight on " + 28 + " to " + i + ": " +
+//                        DirectionCheck.knight(28, i));
+//        }
 
-//        Board board = new Board(Piece.PieceColor.WHITE);
-//
-////        addRandomKings(board);
-////        addRandomPieces(board);
-//
-//        int pieceOne = 56;
-//        int pieceTwo = 63;
-//        board.addToBoard(new Piece(KING, WHITE), 24);
-//        board.addToBoard(new Piece(KING, BLACK), 8);
-//        board.addToBoard(new Piece(PAWN, WHITE), 32);
-//        board.addToBoard(new Piece(ROOK, WHITE), pieceOne);
-//        board.addToBoard(new Piece(QUEEN, WHITE), pieceTwo);
-//        board.launchApp();
-//
-//        long gauss = GaussFunction.gaussFunction(board, true);
-////        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
-////        if (gaussTwo == -1) throw new RuntimeException("Oops");
-////        Board boardTwo = GaussFunction.inverse(gaussTwo);
-////        boardTwo.launchApp();
+        Board board = new Board(Piece.PieceColor.WHITE);
+
+//        addRandomKings(board);
+//        addRandomPieces(board);
+
+        int pieceOne = 56;
+        int pieceTwo = 63;
+        board.addToBoard(new Piece(KING, WHITE), 24);
+        board.addToBoard(new Piece(KING, BLACK), 8);
+        board.addToBoard(new Piece(PAWN, WHITE), 3);
+        board.addToBoard(new Piece(ROOK, WHITE), pieceOne);
+        board.addToBoard(new Piece(QUEEN, WHITE), pieceTwo);
+        board.launchApp();
+
+        long gauss = GaussFunction.gaussFunction(board, true);
+//        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
+//        if (gaussTwo == -1) throw new RuntimeException("Oops");
+//        Board boardTwo = GaussFunction.inverse(gaussTwo);
+//        boardTwo.launchApp();
 //
 //        // HORSE LOGIC BROKEN?
 //        for (int i = 0; i <= 63; i++) {

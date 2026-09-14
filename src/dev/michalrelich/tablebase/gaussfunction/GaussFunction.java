@@ -57,7 +57,7 @@ public class GaussFunction {
             }
 
             if (type == Piece.PieceType.KING) {
-                String s = locations.getFirst() < 10 ? "9" + locations.getFirst() : locations.getFirst() + "";
+                String s = locations.getFirst() < 10 ? "0" + locations.getFirst() : locations.getFirst() + "";
                 switch (color) {
                     case WHITE -> list.addFirst(s);
                     case BLACK -> list.add(1, s);

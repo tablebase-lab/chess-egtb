@@ -1,24 +1,26 @@
 package dev.michalrelich.tablebase.backend.helper;
 
-import java.util.Arrays;
+// GaussGenerator will generate a number with the correct digits (INCLUDING REPEATING ONES)
+// CLASS VALIDATES EN PASSANTS
 
-// GaussGenerator will generate a number with the correct digits (NON-REPEATING ONES)
-//
+
 public class PositionCheck {
 
-    // todo: write code that checks this
+    // todo: BROKEN
 
     public static boolean checkPosition(long gauss) {
 
-        int[] pieces = GaussHelper.getPiecesArr(gauss);
-        for (int i = 4; i < pieces.length; i++) {
-            if (pieces[i] == 0) {
-                pieces = Arrays.copyOf(pieces, i);
-                break;
-            }
-        }
+//        int[] pieces = GaussHelper.getPiecesArr(gauss);
+//        for (int i = 4; i < pieces.length; i++) {
+//            if (pieces[i] == 0) {
+//                pieces = Arrays.copyOf(pieces, i);
+//                break;
+//            }
+//        }
+//
+//        return checkPiecePosition(pieces) && kingsCheck(pieces) && pawnsCheck(pieces) && checkCheck(gauss);
 
-        return checkPiecePosition(pieces) && kingsCheck(pieces) && pawnsCheck(pieces) && checkCheck(gauss);
+        return true;
     }
 
     private static boolean checkPiecePosition(int[] pieces) {

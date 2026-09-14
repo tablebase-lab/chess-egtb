@@ -1,6 +1,8 @@
 package dev.michalrelich.tablebase.backend.helper;
 
 import dev.michalrelich.tablebase.frontend.Board;
+// DONE
+
 
 // checks whether a move for the piece is technically possible
 // asserts both the parameters are 0-63, and that the parameters aren't the same (check is performed in Move)
