@@ -30,7 +30,7 @@ public class Main {
         int pieceTwo = 63;
         board.addToBoard(new Piece(KING, WHITE), 24);
         board.addToBoard(new Piece(KING, BLACK), 8);
-        board.addToBoard(new Piece(PAWN, WHITE), 3);
+        board.addToBoard(new Piece(PAWN, BLACK), 3);
         board.addToBoard(new Piece(ROOK, WHITE), pieceOne);
         board.addToBoard(new Piece(QUEEN, WHITE), pieceTwo);
         board.launchApp();

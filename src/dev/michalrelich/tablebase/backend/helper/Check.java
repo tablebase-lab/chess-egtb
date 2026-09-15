@@ -4,9 +4,8 @@ import dev.michalrelich.tablebase.backend.move.Move;
 import dev.michalrelich.tablebase.frontend.Board;
 
 public class Check {
-    // returns a 0 if no one is in check, a 1 if white, a 2 if black, a 3 if both
+    // returns a 0 if no one is in check, a 1 if white, a 2 if black, a -1 if the check is impossible (both or wrong side)
 
-    // too long of a method, needs shortening
     public static int isInCheck(long gauss) {
 
         int[] pieces = GaussHelper.getPiecesArr(gauss);
@@ -40,8 +39,10 @@ public class Check {
         }
 
         if (whiteCheck && blackCheck) {
-            return 3;
+            return -1;
         }
+
+        if ((whiteCheck && pieces[0] > 2) || (blackCheck && pieces[0] <= 2)) return -1;
 
         else if (whiteCheck) return 1;
         else if (blackCheck) return 2;

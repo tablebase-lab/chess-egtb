@@ -46,14 +46,17 @@ public class GaussFunction {
     private static List<String> getStrings(NavigableMap<Piece, NavigableSet<Integer>> pieceInfo) {
         List<String> list = new ArrayList<>(pieceInfo.size() + 2);
         boolean addDelimiter = true;
+        int delimiterPosition = 0;
+        int i = 0;
+
         for (var entry : pieceInfo.entrySet()) {
             Piece.PieceType type = entry.getKey().getType();
             Piece.PieceColor color = entry.getKey().getColor();
             NavigableSet<Integer> locations = entry.getValue();
 
-            if (color == Piece.PieceColor.BLACK && addDelimiter) {
+            if (color == Piece.PieceColor.BLACK && addDelimiter && type != Piece.PieceType.KING) {
                 addDelimiter = false;
-                list.add("9");
+                delimiterPosition = i;
             }
 
             if (type == Piece.PieceType.KING) {
@@ -68,6 +71,8 @@ public class GaussFunction {
             for (var loc : locations) {
                 list.add(type.ordinal() + (loc < 10 ? "0" : "") + loc);
             }
+
+            i++;
         }
         return list;
     }
