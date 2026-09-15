@@ -30,10 +30,15 @@ public class Main {
         int pieceTwo = 63;
         board.addToBoard(new Piece(KING, WHITE), 24);
         board.addToBoard(new Piece(KING, BLACK), 8);
-        board.addToBoard(new Piece(PAWN, WHITE), 3);
+        board.addToBoard(new Piece(QUEEN, BLACK), 3);
+
         board.launchApp();
 
         long gauss = GaussFunction.gaussFunction(board, true);
+        Board board2 = GaussFunction.inverse(gauss);
+        board2.launchApp();
+
+
 //        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
 //        if (gaussTwo == -1) throw new RuntimeException("Oops");
 //        Board boardTwo = GaussFunction.inverse(gaussTwo);

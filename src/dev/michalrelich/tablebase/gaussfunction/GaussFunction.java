@@ -59,7 +59,7 @@ public class GaussFunction {
                 delimiterPosition = whiteExtraPieces;
             }
 
-            whiteExtraPieces++;
+            whiteExtraPieces += locations.size();
 
             if (type == Piece.PieceType.KING) {
                 String s = locations.getFirst() < 10 ? "0" + locations.getFirst() : locations.getFirst() + "";
@@ -95,7 +95,9 @@ public class GaussFunction {
         Board b = null;
 
         switch (prefix) {
-            case '1', '2' -> b = new Board(Piece.PieceColor.WHITE);
+            case '1', '2' -> {
+                b = new Board(Piece.PieceColor.WHITE);
+            }
             case '3', '4' -> b = new Board(Piece.PieceColor.BLACK);
         }
 
@@ -108,23 +110,13 @@ public class GaussFunction {
                     i == 0 ? Piece.PieceColor.WHITE : Piece.PieceColor.BLACK), kingPos);
         }
 
-        String pieces = s.substring(4);
-
-        int delimiter = -1;
-        for (int i = 0; i < pieces.length(); i += 3) {
-            if (pieces.charAt(i) == '9') {
-                delimiter = i;
-                break;
-            }
-        }
+        int delimiter = Integer.parseInt(s.charAt(4) + "");
+        String pieces = s.substring(5);
 
         boolean white = true;
         for (int i = 0; i + 3 <= pieces.length(); i += 3) {
-            if (i + 1 > delimiter) {
-                if (white) {
-                    i++;
-                    white = false;
-                }
+            if (i / 3 >= delimiter && white) {
+                white = false;
             }
 
             String piece = pieces.substring(i, i + 3);

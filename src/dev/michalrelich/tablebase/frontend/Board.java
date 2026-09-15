@@ -1,6 +1,5 @@
 package dev.michalrelich.tablebase.frontend;
 
-import dev.michalrelich.tablebase.backend.helper.HasEnPassant;
 import dev.michalrelich.tablebase.backend.helper.PositionCheck;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
@@ -67,12 +66,8 @@ public class Board {
         return isEnPassant;
     }
 
-    public boolean setEnPassant() {
-
-        this.isEnPassant = HasEnPassant.forLong(GaussFunction.gaussFunction(this, false)) != -1;
-
-        System.out.println(this.isEnPassant);
-        return this.isEnPassant;
+    public void setEnPassant(boolean isEnPassant) {
+        this.isEnPassant = isEnPassant;
     }
 
     public Piece.PieceColor getTurn() {
