@@ -51,26 +51,18 @@ public class GaussHelper {
         assert (length >= 9 && length <= 15) : "Invalid number length: " + length;
 
         int[] arr = new int[Board.MAX_PIECE_COUNT + 2 + 2]; // + 2 kings + 2 numbers for turn and black/white delimiter
+        // for fewer pieces is an array with empty values
 
         int indexOne = (int) GaussHelper.getLongByIndex(number, 0, 1);
         arr[0] = indexOne;
         arr[1] = (int) GaussHelper.getLongByIndex(number, 1, 3);
         arr[2] = (int) GaussHelper.getLongByIndex(number, 3, 5);
+        arr[3] = (int) GaussHelper.getLongByIndex(number, 5, 6);
 
-        boolean addDelimiter = true;
-        long pieces = GaussHelper.getLongByIndex(number, 5);
-        int piecesLength = GaussHelper.getLongLength(pieces);
-
-        for (int i = 0; i < piecesLength; i += 3) {
-            if (GaussHelper.getLongByIndex(pieces, i, i + 1) == 9 && addDelimiter) {
-                addDelimiter = false;
-                arr[3 + i / 3] = 9;
-                i++;
-            }
-
-            if (i == piecesLength) break;
-
-            arr[3 + i / 3 + (!addDelimiter ? 1 : 0)] = (int) GaussHelper.getLongByIndex(pieces, i, i + 3);
+        int j = 4;
+        for (int i = 6; i < length; i += 3) {
+            arr[j] = (int) GaussHelper.getLongByIndex(number, i, i + 3);
+            j++;
         }
 
         return arr;

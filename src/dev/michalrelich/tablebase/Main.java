@@ -1,9 +1,11 @@
 package dev.michalrelich.tablebase;
 
+import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
@@ -31,12 +33,16 @@ public class Main {
         board.addToBoard(new Piece(KING, WHITE), 24);
         board.addToBoard(new Piece(KING, BLACK), 8);
         board.addToBoard(new Piece(QUEEN, BLACK), 3);
+        board.addToBoard(new Piece(QUEEN, BLACK), 10);
+        board.addToBoard(new Piece(QUEEN, BLACK), 15);
 
         board.launchApp();
 
         long gauss = GaussFunction.gaussFunction(board, true);
         Board board2 = GaussFunction.inverse(gauss);
         board2.launchApp();
+
+        System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
 
 
 //        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
