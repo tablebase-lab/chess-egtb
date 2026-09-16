@@ -1,7 +1,5 @@
 package dev.michalrelich.tablebase.backend.helper;
 
-import dev.michalrelich.tablebase.frontend.Board;
-
 public class GaussHelper {
 
     private static final long[] POW10 = {
@@ -48,10 +46,9 @@ public class GaussHelper {
 
     public static int[] getPiecesArr(long number) {
         int length = getLongLength(number);
-        assert (length >= 9 && length <= 15) : "Invalid number length: " + length;
 
-        int[] arr = new int[Board.MAX_PIECE_COUNT + 2 + 2]; // + 2 kings + 2 numbers for turn and black/white delimiter
-        // for fewer pieces is an array with empty values
+        int[] arr = new int[2 + 2 + 1 + (length - 9) / 3]; // + 2 kings + 2 numbers for turn and black/white delimiter
+        // for fewer pieces is a smaller array because a larger array won't ever occur from the position anyway (can't spawn pieces)
 
         int indexOne = (int) GaussHelper.getLongByIndex(number, 0, 1);
         arr[0] = indexOne;

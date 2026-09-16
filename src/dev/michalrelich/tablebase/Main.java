@@ -1,12 +1,10 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.backend.helper.Check;
-import dev.michalrelich.tablebase.backend.helper.GaussHelper;
+import dev.michalrelich.tablebase.backend.helper.PositionCheck;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
@@ -30,14 +28,14 @@ public class Main {
 //        addRandomKings(board);
 //        addRandomPieces(board);
 
-        int pieceOne = 33;
+        int pieceOne = 10;
         int pieceTwo = 34;
         int pieceThree = 37;
 
         board.addToBoard(new Piece(KING, WHITE), 24);
         board.addToBoard(new Piece(KING, BLACK), 41);
         board.addToBoard(new Piece(QUEEN, BLACK), pieceThree);
-        board.addToBoard(new Piece(PAWN, BLACK), pieceOne);
+        board.addToBoard(new Piece(PAWN, WHITE), pieceOne);
 //        board.addToBoard(new Piece(PAWN, WHITE), pieceTwo);
 
         board.launchApp();
@@ -46,9 +44,8 @@ public class Main {
         Board board2 = GaussFunction.inverse(gauss);
         board2.launchApp();
 
-        System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
-        System.out.println(Check.isInCheck(gauss));
-
+        long wrongGauss = 1_24_41_1_538_138L;
+        System.out.println(PositionCheck.checkPosition(wrongGauss));
 
 //        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
 //        if (gaussTwo == -1) throw new RuntimeException("Oops");
