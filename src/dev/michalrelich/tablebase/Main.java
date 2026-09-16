@@ -1,5 +1,6 @@
 package dev.michalrelich.tablebase;
 
+import dev.michalrelich.tablebase.backend.helper.Check;
 import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
@@ -14,6 +15,7 @@ import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
 
 public class Main {
 
+    // todo: finish Check!
     private static final Random random = new Random();
 
     static void main() throws InterruptedException {
@@ -28,13 +30,15 @@ public class Main {
 //        addRandomKings(board);
 //        addRandomPieces(board);
 
-        int pieceOne = 56;
-        int pieceTwo = 63;
+        int pieceOne = 33;
+        int pieceTwo = 34;
+        int pieceThree = 37;
+
         board.addToBoard(new Piece(KING, WHITE), 24);
-        board.addToBoard(new Piece(KING, BLACK), 8);
-        board.addToBoard(new Piece(QUEEN, BLACK), 3);
-        board.addToBoard(new Piece(QUEEN, BLACK), 10);
-        board.addToBoard(new Piece(QUEEN, BLACK), 15);
+        board.addToBoard(new Piece(KING, BLACK), 41);
+        board.addToBoard(new Piece(QUEEN, BLACK), pieceThree);
+        board.addToBoard(new Piece(PAWN, BLACK), pieceOne);
+//        board.addToBoard(new Piece(PAWN, WHITE), pieceTwo);
 
         board.launchApp();
 
@@ -43,6 +47,7 @@ public class Main {
         board2.launchApp();
 
         System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
+        System.out.println(Check.isInCheck(gauss));
 
 
 //        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
