@@ -1,6 +1,6 @@
 package dev.michalrelich.tablebase.gaussfunction;
 
-import dev.michalrelich.tablebase.backend.helper.PositionCheck;
+import dev.michalrelich.tablebase.backend.positioncheck.PositionCheck;
 import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;

@@ -1,4 +1,4 @@
-package dev.michalrelich.tablebase.backend.helper;
+package dev.michalrelich.tablebase.backend.positioncheck;
 
 import dev.michalrelich.tablebase.frontend.Board;
 // DONE

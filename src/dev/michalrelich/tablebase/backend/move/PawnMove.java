@@ -1,8 +1,7 @@
 package dev.michalrelich.tablebase.backend.move;
 
-import dev.michalrelich.tablebase.backend.helper.DirectionCheck;
 import dev.michalrelich.tablebase.backend.helper.GaussHelper;
-import dev.michalrelich.tablebase.backend.helper.HasEnPassant;
+import dev.michalrelich.tablebase.backend.positioncheck.DirectionCheck;
 import dev.michalrelich.tablebase.frontend.Board;
 
 public class PawnMove {
@@ -57,7 +56,8 @@ public class PawnMove {
         if (DirectionCheck.pawn(pawnPos, movePos, GaussHelper.getLongByIndex(0, 1) <= 2))
             return -1;
 
-        int delete = HasEnPassant.forLong(gauss);
+//        int delete = HasEnPassant.forLong(gauss);
+        int delete = -1;
         if (delete == -1) return -1;
 
         int[] pieces = GaussHelper.getPiecesArr(gauss);

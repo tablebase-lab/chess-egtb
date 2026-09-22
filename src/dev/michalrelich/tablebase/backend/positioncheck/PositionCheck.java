@@ -1,9 +1,11 @@
-package dev.michalrelich.tablebase.backend.helper;
+package dev.michalrelich.tablebase.backend.positioncheck;
 
 // GaussGenerator will generate a number with the correct digits (INCLUDING REPEATING ONES)
 // CLASS VALIDATES EN PASSANTS
 
 
+import dev.michalrelich.tablebase.backend.helper.Check;
+import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 import dev.michalrelich.tablebase.frontend.Board;
 
 public class PositionCheck {

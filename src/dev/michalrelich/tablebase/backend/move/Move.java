@@ -1,7 +1,7 @@
 package dev.michalrelich.tablebase.backend.move;
 
 import dev.michalrelich.tablebase.backend.helper.Check;
-import dev.michalrelich.tablebase.backend.helper.DirectionCheck;
+import dev.michalrelich.tablebase.backend.positioncheck.DirectionCheck;
 import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 import dev.michalrelich.tablebase.frontend.Board;
 
