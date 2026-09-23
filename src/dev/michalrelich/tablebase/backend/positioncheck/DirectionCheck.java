@@ -1,6 +1,6 @@
 package dev.michalrelich.tablebase.backend.positioncheck;
 
-import dev.michalrelich.tablebase.frontend.Board;
+import dev.michalrelich.tablebase.backend.Constants;
 // DONE
 
 
@@ -10,7 +10,7 @@ import dev.michalrelich.tablebase.frontend.Board;
 public class DirectionCheck {
 
     public static boolean king(int king, int position) {
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
 
         int colDiff = Math.abs(king % length - position % length);
         int rowDiff = Math.abs(king / length - position / length);
@@ -18,7 +18,7 @@ public class DirectionCheck {
     }
 
     public static boolean knight(int knight, int position) {
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
         boolean canMove = false;
 
         // since the condition is knight +- length * 2 +- 1 == pos, we just put pos to the left and 1 to right
@@ -42,7 +42,7 @@ public class DirectionCheck {
     }
 
     public static boolean pawn(int pawn, int position, boolean whiteTurn) {
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
         int colDiff = Math.abs(pawn % length - position % length); // so they don't jump to opposite columns
 
         boolean verticalMove = pawn + length == position ||
@@ -55,12 +55,12 @@ public class DirectionCheck {
     }
 
     public static boolean horizontalVerticalCheck(int pieceOne, int pieceTwo) {
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
         return pieceOne / length == pieceTwo / length || pieceOne % length == pieceTwo % length;
     }
 
     public static boolean diagonalCheck(int pieceOne, int position) {
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
 
         int i = 1;
         boolean ascendingDiagUp = pieceOne % length != length - 1 && pieceOne / length < length - 1;

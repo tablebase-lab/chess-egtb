@@ -4,9 +4,9 @@ package dev.michalrelich.tablebase.backend.positioncheck;
 // CLASS VALIDATES EN PASSANTS
 
 
+import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.helper.Check;
 import dev.michalrelich.tablebase.backend.helper.GaussHelper;
-import dev.michalrelich.tablebase.frontend.Board;
 
 public class PositionCheck {
 
@@ -24,7 +24,7 @@ public class PositionCheck {
 
         if (pieces[1] < 10 || pieces[1] >= 100 || pieces[2] < 10 || pieces[2] >= 100) return false;
         if ((pieces[1] >= 64 && pieces[1] < 90) || (pieces[2] >= 64 && pieces[2] < 90)) return false;
-        if (pieces[3] < 0 || pieces[3] > Board.MAX_PIECE_COUNT) return false;
+        if (pieces[3] < 0 || pieces[3] > Constants.MAX_NON_KING_PIECES) return false;
 
         for (int i = 4; i < pieces.length; i++) {
 

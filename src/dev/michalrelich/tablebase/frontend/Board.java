@@ -4,10 +4,10 @@ import dev.michalrelich.tablebase.frontend.swing.App;
 
 import java.util.*;
 
+import static dev.michalrelich.tablebase.backend.Constants.BOARD_LENGTH;
+
 public class Board {
 
-    public static final int BOARD_LENGTH = 8;
-    public static final int MAX_PIECE_COUNT = 3;
     private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
     private int enPassantCol = 0;
     private Piece.PieceColor turn;
