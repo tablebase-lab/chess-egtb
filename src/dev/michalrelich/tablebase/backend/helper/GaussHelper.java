@@ -10,7 +10,7 @@ public class GaussHelper {
             10000000000000L, 100000000000000L, 1000000000000000L, 10000000000000000L,
             100000000000000000L, 1000000000000000000L
     };
-    // helpers designed for the chess tablebase. used for positive longs only.
+    // helpers designed for the chess tablebase. used for POSITIVE + ZERO longs only.
 
     // done
     public static long getLongByIndex(long number, int beginIndex, int endIndex) { // end is non-inclusive
@@ -32,7 +32,7 @@ public class GaussHelper {
 
     // done
     public static int getLongLength(long number) {
-        assert number > 0: "Non-positive number: " + number;
+        assert number >= 0: "Negative number: " + number;
 
         int digitCount = 1;
 
@@ -46,6 +46,9 @@ public class GaussHelper {
         return digitCount;
     }
 
+    // methods below work for backend created longs and int[] from those - NO validation
+
+    // done
     public static int[] getPiecesArr(long number) {
         int length = getLongLength(number);
 
@@ -68,24 +71,28 @@ public class GaussHelper {
         return arr;
     }
 
-    // shows an array of all pieces (so 1-3-digit ints)
-
-
-    // bug for 0 positions of kings etc.!
     public static long longFromArr(int[] pieces) {
         long gauss = 0;
-        boolean first = true;
+        gauss += pieces[TURN_INDEX];
 
-        for (int piece : pieces) {
+        gauss *= POW10[EN_PASSANT_END - EN_PASSANT_BEGIN];
+        gauss += pieces[EN_PASSANT_INDEX];
+
+        gauss *= POW10[WHITE_KING_END - WHITE_KING_BEGIN]; // * 10^2, so two zeroes are added for the white king
+        gauss += pieces[WHITE_KING_INDEX];
+
+        gauss *= POW10[BLACK_KING_END - BLACK_KING_BEGIN];
+        gauss += pieces[BLACK_KING_INDEX];
+
+        gauss *= POW10[DELIMITER_END - DELIMITER_BEGIN];
+        gauss += pieces[DELIMITER_INDEX];
+
+        for (int i = DELIMITER_INDEX + 1; i < pieces.length; i++) {
+
+            int piece = pieces[i];
             if (piece == 0) continue;
 
-            if (first) {
-                first = false;
-                gauss += piece;
-                continue;
-            }
             int length = GaussHelper.getLongLength(piece);
-            if (length == 0) return -1;
 
             gauss *= POW10[length];
             gauss += piece;

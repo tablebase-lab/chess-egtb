@@ -6,12 +6,12 @@ import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.KING;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.QUEEN;
 
 public class Main {
 
@@ -20,42 +20,17 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-//        for (int i = 0; i <= 63; i++) {
-//                System.out.println("DirectionCheck for knight on " + 28 + " to " + i + ": " +
-//                        DirectionCheck.knight(28, i));
-//        }
-
-        Board board = new Board(Piece.PieceColor.WHITE);
-
-//        addRandomKings(board);
-//        addRandomPieces(board);
-
-        int pieceOne = 10;
-        int pieceTwo = 34;
-        int pieceThree = 37;
-
-        board.addToBoard(new Piece(KING, WHITE), 24);
-        board.addToBoard(new Piece(KING, BLACK), 42);
-//        board.addToBoard(new Piece(QUEEN, BLACK), pieceThree);
-//        board.addToBoard(new Piece(PAWN, WHITE), pieceOne);
-//        board.addToBoard(new Piece(PAWN, WHITE), pieceTwo);
-
+        Board board = new Board(WHITE);
+        board.addToBoard(new Piece(KING, WHITE), 39);
+        board.addToBoard(new Piece(KING, BLACK), 23);
+        board.addToBoard(new Piece(QUEEN, WHITE), 0);
         board.launchApp();
 
         long gauss = GaussFunction.gaussFunction(board, true);
-        System.out.println(Arrays.toString(GaussHelper.getPiecesArr(gauss)));
-        Board board2 = GaussFunction.inverse(gauss);
-        board2.launchApp();
-        System.out.println(GaussFunction.gaussFunction(board2, true));
 
+        int[] arr = {1, 8, 39, 23, 0, 1};
+        System.out.println(GaussHelper.longFromArr(arr));
 
-//        long wrongGauss = 1_24_41_1_538_138L;
-//        System.out.println(PositionCheck.checkPosition(wrongGauss));
-
-//        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
-//        if (gaussTwo == -1) throw new RuntimeException("Oops");
-//        Board boardTwo = GaussFunction.inverse(gaussTwo);
-//        boardTwo.launchApp();
 //
 //        // HORSE LOGIC BROKEN?
 //        for (int i = 0; i <= 63; i++) {
