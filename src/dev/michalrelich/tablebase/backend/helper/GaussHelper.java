@@ -52,7 +52,7 @@ public class GaussHelper {
     public static int[] getPiecesArr(long number) {
         int length = getLongLength(number);
 
-        int[] arr = new int[LEAST_POSSIBLE_ARRAY_SIZE + (length - LEAST_POSSIBLE_ARRAY_SIZE) / 3];
+        int[] arr = new int[LEAST_POSSIBLE_ARRAY_SIZE + (length - LEAST_POSSIBLE_ARRAY_SIZE) / ADDITIONAL_PIECE_LENGTH];
         // 2 kings + turn + en passant col + delimiter + the optional pieces
         // for fewer pieces is a smaller array because a larger array won't ever occur from the position anyway (can't spawn pieces)
 
@@ -63,14 +63,16 @@ public class GaussHelper {
         arr[DELIMITER_INDEX] = (int) GaussHelper.getLongByIndex(number, DELIMITER_BEGIN, DELIMITER_END);
 
         int j = DELIMITER_INDEX + 1;
-        for (int i = DELIMITER_END; i < length; i += 3) {
-            arr[j] = (int) GaussHelper.getLongByIndex(number, i, i + 3);
+        for (int i = DELIMITER_END; i < length; i += ADDITIONAL_PIECE_LENGTH) {
+            arr[j] = (int) GaussHelper.getLongByIndex(number, i, i + ADDITIONAL_PIECE_LENGTH);
             j++;
         }
 
         return arr;
     }
 
+
+    // done
     public static long longFromArr(int[] pieces) {
         long gauss = 0;
         gauss += pieces[TURN_INDEX];

@@ -26,4 +26,10 @@ public class Constants {
     public static final int DELIMITER_BEGIN = 6;
     public static final int DELIMITER_END = 7;
 
+    // additional piece constants
+    public static final int ADDITIONAL_PIECE_LENGTH = 3; // piece type + position
+
+    // turn constants
+    public static final int WHITE_TURN = 1;
+    public static final int BLACK_TURN = 2;
 }

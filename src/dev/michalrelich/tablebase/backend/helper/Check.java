@@ -1,7 +1,8 @@
 package dev.michalrelich.tablebase.backend.helper;
 
-import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.move.Move;
+
+import static dev.michalrelich.tablebase.backend.Constants.*;
 
 public class Check {
     // returns a 0 if no one is in check, a 1 if white, a 2 if black, a -1 if the check is impossible (both or wrong side)
@@ -11,19 +12,19 @@ public class Check {
     public static int isInCheck(long gauss) {
 
         int[] pieces = GaussHelper.getPiecesArr(gauss);
-        int length = Constants.BOARD_LENGTH;
+        int length = BOARD_LENGTH;
 
-        int whiteKing = pieces[1];
-        int blackKing = pieces[2];
+        int whiteKing = pieces[WHITE_KING_INDEX];
+        int blackKing = pieces[BLACK_KING_INDEX];
 
         boolean whiteCheck = false;
         boolean blackCheck = false;
 
-        int delimiter = pieces[3];
-        for (int i = 4; i < pieces.length; i++) {
+        int delimiter = pieces[DELIMITER_INDEX];
+        for (int i = DELIMITER_INDEX + 1; i < pieces.length; i++) {
             int iPiece = pieces[i];
 
-            boolean isPieceWhite = i - 4 < delimiter;
+            boolean isPieceWhite = i - (DELIMITER_INDEX + 1) < delimiter;
 
             boolean whiteCheckPre = false;
             boolean blackCheckPre = false;
@@ -33,8 +34,8 @@ public class Check {
                 else whiteCheckPre = Move.canMove(pieces, iPiece, whiteKing) &&
                         Move.checkInBetweenPieces(pieces, length, iPiece, whiteKing);
             } else {
-                if (isPieceWhite) blackCheckPre = pawnCheck(iPiece, pieces[2], length, true);
-                else whiteCheckPre = pawnCheck(iPiece, pieces[1], length, false);
+                if (isPieceWhite) blackCheckPre = pawnCheck(iPiece, blackKing, length, true);
+                else whiteCheckPre = pawnCheck(iPiece, whiteKing, length, false);
             }
 
             if (whiteCheckPre) whiteCheck = true;
@@ -45,7 +46,7 @@ public class Check {
             return -1;
         }
 
-        if ((whiteCheck && pieces[0] > 2) || (blackCheck && pieces[0] <= 2)) return -1;
+        if ((whiteCheck && pieces[TURN_INDEX] != WHITE_TURN) || (blackCheck && pieces[TURN_INDEX] != BLACK_TURN)) return -1;
 
         else if (whiteCheck) return 1;
         else if (blackCheck) return 2;
