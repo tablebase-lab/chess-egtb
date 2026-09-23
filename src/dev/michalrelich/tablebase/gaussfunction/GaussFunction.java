@@ -1,7 +1,5 @@
 package dev.michalrelich.tablebase.gaussfunction;
 
-import dev.michalrelich.tablebase.backend.positioncheck.PositionCheck;
-import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 
@@ -25,8 +23,8 @@ public class GaussFunction {
 
         String s = prefix + prefix2 + String.join("", list);
         long gauss = Long.parseLong(s);
-        if (!PositionCheck.checkPosition(gauss))
-            throw new InvalidBoardException("Invalid board!");
+//        if (!PositionCheck.checkPosition(gauss))
+//            throw new InvalidBoardException("Invalid board!");
 
         return Long.parseLong(s);
     }
@@ -75,25 +73,19 @@ public class GaussFunction {
 
         String s = gauss + "";
         char prefix = s.charAt(0);
-        s = s.substring(1);
+        char prefix2 = s.charAt(1);
+        s = s.substring(2);
 
-        if (((s.length() + 1) % 3 != 0) || s.length() < 5 || s.length() > 15)
-            throw new InvalidBoardException("Gauss number has an incorrect number of digits: " + s.length());
-
-        Board b = null;
-
-        switch (prefix) {
-            case '1', '2' -> {
-                b = new Board(Piece.PieceColor.WHITE);
-            }
-            case '3', '4' -> b = new Board(Piece.PieceColor.BLACK);
+        Board b = prefix == '1' ? new Board(Piece.PieceColor.WHITE) : new Board(Piece.PieceColor.BLACK);
+        if (prefix2 != '8') {
+            int col = Integer.parseInt(prefix2 + "") + 1;
+            b.setEnPassantCol(col);
         }
 
         for (int i = 0; i <= 2; i += 2) {
             int kingPos = Integer.parseInt(s.substring(i, i + 2));
             kingPos = kingPos > 64 ? kingPos % 10 : kingPos;
 
-            assert b != null;
             b.addToBoard(new Piece(Piece.PieceType.KING,
                     i == 0 ? Piece.PieceColor.WHITE : Piece.PieceColor.BLACK), kingPos);
         }

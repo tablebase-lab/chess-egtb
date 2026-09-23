@@ -42,6 +42,8 @@ public class Main {
         long gauss = GaussFunction.gaussFunction(board, true);
         Board board2 = GaussFunction.inverse(gauss);
         board2.launchApp();
+        System.out.println(GaussFunction.gaussFunction(board2, true));
+
 
 //        long wrongGauss = 1_24_41_1_538_138L;
 //        System.out.println(PositionCheck.checkPosition(wrongGauss));
