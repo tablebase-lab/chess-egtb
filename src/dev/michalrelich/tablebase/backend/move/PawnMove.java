@@ -1,13 +1,13 @@
 package dev.michalrelich.tablebase.backend.move;
 
+import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 import dev.michalrelich.tablebase.backend.positioncheck.DirectionCheck;
-import dev.michalrelich.tablebase.frontend.Board;
 
 public class PawnMove {
 
     public static long pawnMove(long gauss, int pawnPos, int movePos) {
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
 
         boolean whiteTurn = GaussHelper.getLongByIndex(0, 1) <= 2;
         if (DirectionCheck.pawn(pawnPos, movePos, whiteTurn))

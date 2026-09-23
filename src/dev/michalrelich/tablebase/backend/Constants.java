@@ -12,5 +12,18 @@ public class Constants {
     public static final int WHITE_KING_INDEX= 2;
     public static final int BLACK_KING_INDEX = 3;
     public static final int DELIMITER_INDEX = 4;
+    public static final int LEAST_POSSIBLE_ARRAY_SIZE = 5;
+
+    // gauss number location constants, counts the end as not included! (exclusive)
+    public static final int TURN_BEGIN = 0;
+    public static final int TURN_END = 1;
+    public static final int EN_PASSANT_BEGIN = 1;
+    public static final int EN_PASSANT_END = 2;
+    public static final int WHITE_KING_BEGIN = 2;
+    public static final int WHITE_KING_END = 4;
+    public static final int BLACK_KING_BEGIN = 4;
+    public static final int BLACK_KING_END = 6;
+    public static final int DELIMITER_BEGIN = 6;
+    public static final int DELIMITER_END = 7;
 
 }

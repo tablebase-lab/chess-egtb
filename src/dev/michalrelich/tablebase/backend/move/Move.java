@@ -1,9 +1,9 @@
 package dev.michalrelich.tablebase.backend.move;
 
+import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.helper.Check;
-import dev.michalrelich.tablebase.backend.positioncheck.DirectionCheck;
 import dev.michalrelich.tablebase.backend.helper.GaussHelper;
-import dev.michalrelich.tablebase.frontend.Board;
+import dev.michalrelich.tablebase.backend.positioncheck.DirectionCheck;
 
 public class Move {
 
@@ -14,7 +14,7 @@ public class Move {
     // this method counts that the king isn't in check
     public static long move(long gauss, int fullPieceInt, int movePos) {
         int piecePos = fullPieceInt % 100;
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
         int[] pieces = GaussHelper.getPiecesArr(gauss);
 
         if (piecePos == movePos) return -1;

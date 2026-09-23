@@ -1,5 +1,7 @@
 package dev.michalrelich.tablebase.backend.helper;
 
+import static dev.michalrelich.tablebase.backend.Constants.*;
+
 public class GaussHelper {
 
     private static final long[] POW10 = {
@@ -47,27 +49,29 @@ public class GaussHelper {
     public static int[] getPiecesArr(long number) {
         int length = getLongLength(number);
 
-        int[] arr = new int[2 + 2 + 1 + (length - 9) / 3]; // + 2 kings + 2 numbers for turn and black/white delimiter
+        int[] arr = new int[LEAST_POSSIBLE_ARRAY_SIZE + (length - LEAST_POSSIBLE_ARRAY_SIZE) / 3];
+        // 2 kings + turn + en passant col + delimiter + the optional pieces
         // for fewer pieces is a smaller array because a larger array won't ever occur from the position anyway (can't spawn pieces)
 
-        int indexOne = (int) GaussHelper.getLongByIndex(number, 0, 1);
-        arr[0] = indexOne;
-        arr[1] = (int) GaussHelper.getLongByIndex(number, 1, 3);
-        arr[2] = (int) GaussHelper.getLongByIndex(number, 3, 5);
-        arr[3] = (int) GaussHelper.getLongByIndex(number, 5, 6);
+        arr[TURN_INDEX] = (int) GaussHelper.getLongByIndex(number, TURN_BEGIN, TURN_END);
+        arr[EN_PASSANT_INDEX] = (int) GaussHelper.getLongByIndex(number, EN_PASSANT_BEGIN, EN_PASSANT_END);
+        arr[WHITE_KING_INDEX] = (int) GaussHelper.getLongByIndex(number, WHITE_KING_BEGIN, WHITE_KING_END);
+        arr[BLACK_KING_INDEX] = (int) GaussHelper.getLongByIndex(number, BLACK_KING_BEGIN, BLACK_KING_END);
+        arr[DELIMITER_INDEX] = (int) GaussHelper.getLongByIndex(number, DELIMITER_BEGIN, DELIMITER_END);
 
-        int j = 4;
-        for (int i = 6; i < length; i += 3) {
+        int j = DELIMITER_INDEX + 1;
+        for (int i = DELIMITER_END; i < length; i += 3) {
             arr[j] = (int) GaussHelper.getLongByIndex(number, i, i + 3);
             j++;
         }
 
         return arr;
-     }
+    }
 
     // shows an array of all pieces (so 1-3-digit ints)
 
 
+    // bug for 0 positions of kings etc.!
     public static long longFromArr(int[] pieces) {
         long gauss = 0;
         boolean first = true;

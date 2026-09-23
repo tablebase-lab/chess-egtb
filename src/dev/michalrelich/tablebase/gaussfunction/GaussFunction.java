@@ -59,8 +59,6 @@ public class GaussFunction {
             for (var loc : locations) {
                 list.add(type.ordinal() + (loc < 10 ? "0" : "") + loc);
             }
-
-
         }
 
         int delimiterIndex = addDelimiter ? list.size() - 2 : delimiterPosition - 2;

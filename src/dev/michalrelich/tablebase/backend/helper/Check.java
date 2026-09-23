@@ -1,7 +1,7 @@
 package dev.michalrelich.tablebase.backend.helper;
 
+import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.move.Move;
-import dev.michalrelich.tablebase.frontend.Board;
 
 public class Check {
     // returns a 0 if no one is in check, a 1 if white, a 2 if black, a -1 if the check is impossible (both or wrong side)
@@ -11,7 +11,7 @@ public class Check {
     public static int isInCheck(long gauss) {
 
         int[] pieces = GaussHelper.getPiecesArr(gauss);
-        int length = Board.BOARD_LENGTH;
+        int length = Constants.BOARD_LENGTH;
 
         int whiteKing = pieces[1];
         int blackKing = pieces[2];
