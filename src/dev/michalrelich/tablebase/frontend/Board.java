@@ -1,9 +1,6 @@
 package dev.michalrelich.tablebase.frontend;
 
-import dev.michalrelich.tablebase.backend.positioncheck.PositionCheck;
-import dev.michalrelich.tablebase.exceptions.InvalidBoardException;
 import dev.michalrelich.tablebase.frontend.swing.App;
-import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.*;
 
@@ -12,7 +9,7 @@ public class Board {
     public static final int BOARD_LENGTH = 8;
     public static final int MAX_PIECE_COUNT = 3;
     private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
-    private int enPassantCol;
+    private int enPassantCol = 0;
     private Piece.PieceColor turn;
 
     public Board(Piece.PieceColor turn) {
@@ -51,23 +48,10 @@ public class Board {
         return deepCopy;
     }
 
-    public void checkPieceConditions() {
-        if (!PositionCheck.checkPosition(GaussFunction.gaussFunction(this, false)))
-            throw new InvalidBoardException("Invalid board!");
-    }
-
     public void launchApp() {
         App app = new App();
         app.loadBoard(this);
         app.launch();
-    }
-
-    public int getEnPassantCol() {
-        return enPassantCol;
-    }
-
-    public void setEnPassantCol(int enPassantCol) {
-        this.enPassantCol = enPassantCol;
     }
 
     public Piece.PieceColor getTurn() {
@@ -76,5 +60,20 @@ public class Board {
 
     public void setTurn(Piece.PieceColor turn) {
         this.turn = turn;
+    }
+
+    // dummy methods without validation
+
+    public void checkPieceConditions() {
+//        if (!PositionCheck.checkPosition(GaussFunction.gaussFunction(this, false)))
+//            throw new InvalidBoardException("Invalid board!");
+    }
+
+    public int getEnPassantCol() {
+        return enPassantCol;
+    }
+
+    public void setEnPassantCol(int enPassantCol) {
+        this.enPassantCol = enPassantCol;
     }
 }

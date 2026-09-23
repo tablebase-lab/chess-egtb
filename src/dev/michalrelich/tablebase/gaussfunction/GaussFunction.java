@@ -18,24 +18,12 @@ public class GaussFunction {
 
         List<String> list = getStrings(pieceInfo);
 
-        String prefix;
-        if (board.getTurn() == Piece.PieceColor.WHITE) {
-            if (board.isEnPassant()) {
-                prefix = "2";
-            } else {
-                prefix = "1";
-            }
-        } else {
-            if (board.isEnPassant()) {
-                prefix = "4";
-            } else {
-                prefix = "3";
-            }
-        }
+        String prefix = board.getTurn() == Piece.PieceColor.WHITE ? "1" : "2";
+        String prefix2 = board.getEnPassantCol() == 0 ? "8" : board.getEnPassantCol() - 1 + ""; // enPassantCol inside Board is 1-8, 0 default
 
-        if (printFormattedResult) System.out.println(prefix + "_" + String.join("_", list));
+        if (printFormattedResult) System.out.printf("%s_%s_%s%n", prefix, prefix2, String.join("_", list));
 
-        String s = prefix + String.join("", list);
+        String s = prefix + prefix2 + String.join("", list);
         long gauss = Long.parseLong(s);
         if (!PositionCheck.checkPosition(gauss))
             throw new InvalidBoardException("Invalid board!");

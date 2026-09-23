@@ -1,6 +1,5 @@
 package dev.michalrelich.tablebase;
 
-import dev.michalrelich.tablebase.backend.positioncheck.PositionCheck;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
@@ -33,10 +32,10 @@ public class Main {
         int pieceThree = 37;
 
         board.addToBoard(new Piece(KING, WHITE), 24);
-        board.addToBoard(new Piece(KING, BLACK), 41);
+        board.addToBoard(new Piece(KING, BLACK), 42);
         board.addToBoard(new Piece(QUEEN, BLACK), pieceThree);
         board.addToBoard(new Piece(PAWN, WHITE), pieceOne);
-//        board.addToBoard(new Piece(PAWN, WHITE), pieceTwo);
+        board.addToBoard(new Piece(PAWN, WHITE), pieceTwo);
 
         board.launchApp();
 
@@ -44,8 +43,8 @@ public class Main {
         Board board2 = GaussFunction.inverse(gauss);
         board2.launchApp();
 
-        long wrongGauss = 1_24_41_1_538_138L;
-        System.out.println(PositionCheck.checkPosition(wrongGauss));
+//        long wrongGauss = 1_24_41_1_538_138L;
+//        System.out.println(PositionCheck.checkPosition(wrongGauss));
 
 //        long gaussTwo = Move.move(gauss, 200 + pieceOne, 33);
 //        if (gaussTwo == -1) throw new RuntimeException("Oops");
