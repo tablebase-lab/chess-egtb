@@ -9,16 +9,16 @@ public class Move {
 
     // counts on gauss being valid, fullPieceInt being valid, and movePos being 0-63
     // returns -1 if move can't be performed, else returns modified gauss number
-    // todo: moveWhileInCheck
 
-    // this method counts that the king isn't in check
+    // method works for inCheck positions aswell because the checks at the end.
     public static long move(long gauss, int fullPieceInt, int movePos) {
         int piecePos = fullPieceInt % 100;
         int length = Constants.BOARD_LENGTH;
         int[] pieces = GaussHelper.getPiecesArr(gauss);
 
         if (piecePos == movePos) return -1;
-        if (!canMove(pieces, fullPieceInt, movePos) || movePosCheck(pieces, fullPieceInt, movePos)) return -1;
+        if (!canMove(pieces[Constants.TURN_INDEX] == 1, fullPieceInt, movePos) ||
+                movePosCheck(pieces, fullPieceInt, movePos)) return -1;
 
         // by here all that's left is to check between pieces
         // for the King and Pawn helpers it just returns the long itself i guess
@@ -32,7 +32,7 @@ public class Move {
             case 5 -> finalLong = GaussHelper.getLongByIndex(gauss, 1) % 2 == 0 ?
                         PawnMove.enPassantMove(gauss, fullPieceInt, movePos) : PawnMove.pawnMove(gauss, fullPieceInt, movePos);
             // not done yet
-            case 0 -> finalLong = validKingMove(pieces, fullPieceInt, movePos);
+            case 0 -> finalLong = 0; // gotta figure this out
 
             // done
             default -> {
@@ -48,23 +48,6 @@ public class Move {
 
         // not done yet
         return Check.isInCheck(finalLong) != -1 ? finalLong : -1;
-    }
-
-    // DONE
-    // focuses purely on if it's possible
-    public static boolean canMove(int[] pieces, int fullPieceInt, int movePos) {
-
-        int piecePos = fullPieceInt % 100;
-
-        return switch (fullPieceInt / 100) {
-            case 0 -> DirectionCheck.king(piecePos, movePos); // since king has two digits it will be 0
-            case 1 -> DirectionCheck.queen(piecePos, movePos);
-            case 2 -> DirectionCheck.rook(piecePos, movePos);
-            case 3 -> DirectionCheck.bishop(piecePos, movePos);
-            case 4 -> DirectionCheck.knight(piecePos, movePos);
-            case 5 -> DirectionCheck.pawn(piecePos, movePos, pieces[0] <= 2);
-            default -> false;
-        };
     }
 
     // DONE
@@ -103,6 +86,25 @@ public class Move {
         return true;
     }
 
+    // all these DONE
+
+
+    // DONE
+    // focuses purely on if it's possible
+    public static boolean canMove(boolean whiteTurn, int fullPieceInt, int movePos) {
+
+        int piecePos = fullPieceInt % 100;
+
+        return switch (fullPieceInt / 100) {
+            case 0 -> DirectionCheck.king(piecePos, movePos); // since king has two digits it will be 0
+            case 1 -> DirectionCheck.queen(piecePos, movePos);
+            case 2 -> DirectionCheck.rook(piecePos, movePos);
+            case 3 -> DirectionCheck.bishop(piecePos, movePos);
+            case 4 -> DirectionCheck.knight(piecePos, movePos);
+            case 5 -> DirectionCheck.pawn(piecePos, movePos, whiteTurn);
+            default -> false;
+        };
+    }
 
     public static boolean checkInBetweenPieces(int[] pieces, int length, int fullPieceInt, int movePos) {
         if (fullPieceInt / 100 == 4) return true; // horse
@@ -113,17 +115,14 @@ public class Move {
             return validHorizontalMove(pieces, piecePos, movePos);
         } else if (piecePos % length == movePos % length) { // the move is vertical
             return validVerticalMove(pieces, length, piecePos, movePos);
-        } else if (fullPieceInt / 100 != 4) { // the move is diagonal
+        } else { // the move is diagonal
             return validDiagonalMove(pieces, length, piecePos, movePos);
         }
-
-        System.err.println("Unexpected result in checkInBetweenPieces");
-        return false;
     }
 
     public static boolean validHorizontalMove(int[] pieces, int piecePos, int movePos) {
         for (int piece : pieces) {
-            if (piece / 10 == 0) continue; // the delimiter and the turn info
+            if (piece / 10 == 0) continue; // the delimiter and the turn info and enp col
             int randomPiece = piece % 100;
 
             boolean isBetween = (randomPiece > piecePos && randomPiece < movePos) || (randomPiece > movePos && randomPiece < piecePos);
@@ -135,7 +134,7 @@ public class Move {
 
     public static boolean validVerticalMove(int[] pieces, int length, int piecePos, int movePos) {
         for (int piece : pieces) {
-            if (piece / 10 == 0) continue; // the delimiter and the turn info
+            if (piece / 10 == 0) continue; // the delimiter and the turn info and enp col
             int randomPiece = piece % 100;
 
             if (randomPiece % length != piecePos % length) continue;
@@ -151,7 +150,7 @@ public class Move {
 
     public static boolean validDiagonalMove(int[] pieces, int length, int piecePos, int movePos) {
         for (int piece : pieces) {
-            if (piece / 10 == 0) continue; // the delimiter and the turn info
+            if (piece / 10 == 0) continue; // the delimiter and the turn info and enp col
 
             boolean isBetween = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
             int randomPiece = piece % 100;
@@ -166,25 +165,4 @@ public class Move {
         return true;
     }
 
-    public static long validKingMove(int[] pieces, int kingPos, int movePos) {
-        for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i] / 10 == 0) continue; // the delimiter and the turn info
-
-            int randomPiece = pieces[i] % 100;
-
-            // for kings
-            if ( (pieces[i] < 100 && pieces[i] >= 0) &&
-                    DirectionCheck.king(movePos, randomPiece)) return -1; // king moves near the other king
-
-            if (randomPiece % 100 == movePos) { // we already know it's not a king from canMove
-                pieces[i] = 0;
-            }
-
-            if (randomPiece == kingPos) {
-                pieces[i] = kingPos + movePos; // ???
-            }
-        }
-
-        return GaussHelper.longFromArr(pieces);
-    }
 }

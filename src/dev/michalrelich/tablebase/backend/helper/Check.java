@@ -1,5 +1,6 @@
 package dev.michalrelich.tablebase.backend.helper;
 
+import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.move.Move;
 
 import static dev.michalrelich.tablebase.backend.Constants.*;
@@ -29,9 +30,11 @@ public class Check {
             boolean whiteCheckPre = false;
             boolean blackCheckPre = false;
             if (iPiece / 100 != 5) {
-                if (isPieceWhite) blackCheckPre = Move.canMove(pieces, iPiece, blackKing) &&
+                if (isPieceWhite) blackCheckPre = Move.canMove(pieces[Constants.TURN_INDEX] == 1,
+                        iPiece, blackKing) &&
                         Move.checkInBetweenPieces(pieces, length, iPiece, blackKing);
-                else whiteCheckPre = Move.canMove(pieces, iPiece, whiteKing) &&
+                else whiteCheckPre = Move.canMove(pieces[Constants.TURN_INDEX] == 1, iPiece,
+                        whiteKing) &&
                         Move.checkInBetweenPieces(pieces, length, iPiece, whiteKing);
             } else {
                 if (isPieceWhite) blackCheckPre = pawnCheck(iPiece, blackKing, length, true);
