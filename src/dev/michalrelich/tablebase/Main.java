@@ -1,10 +1,10 @@
 package dev.michalrelich.tablebase;
 
 import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.positioncheck.HasEnPassant;
+import dev.michalrelich.tablebase.backend.helper.GaussHelper;
+import dev.michalrelich.tablebase.backend.move.Move;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
-import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
@@ -18,10 +18,14 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        long gauss = 1_8_03_63_1_524_525_527L;
-        Board b = GaussFunction.inverse(gauss);
-        b.launchApp();
-        System.out.println(HasEnPassant.forMovedPawnByTwoSquares(gauss, 24));
+        long gauss = 1_8_03_63_0_524_525_527L;
+        int[] pieces = GaussHelper.getPiecesArr(gauss);
+
+        for (int i = 0; i <= 63; i++) {
+            System.out.println("Checking for " + i + ": " + Move.movePosCheck(pieces, i));
+        }
+
+
 
     }
 
