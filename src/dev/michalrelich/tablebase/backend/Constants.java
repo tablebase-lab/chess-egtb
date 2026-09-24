@@ -32,4 +32,7 @@ public class Constants {
     // turn constants
     public static final int WHITE_TURN = 1;
     public static final int BLACK_TURN = 2;
+
+    // en passant default (for where there is no en passant)
+    public static final int ENP_DEF = 8;
 }

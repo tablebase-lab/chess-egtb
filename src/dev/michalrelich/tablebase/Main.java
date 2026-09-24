@@ -1,17 +1,15 @@
 package dev.michalrelich.tablebase;
 
 import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.helper.GaussHelper;
+import dev.michalrelich.tablebase.backend.positioncheck.HasEnPassant;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
-import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
+import java.util.Arrays;
 import java.util.Random;
 
-import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
 import static dev.michalrelich.tablebase.frontend.Piece.PieceType.KING;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.QUEEN;
 
 public class Main {
 
@@ -20,31 +18,10 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        Board board = new Board(WHITE);
-        board.addToBoard(new Piece(KING, WHITE), 39);
-        board.addToBoard(new Piece(KING, BLACK), 23);
-        board.addToBoard(new Piece(QUEEN, WHITE), 0);
-        board.launchApp();
+        long gauss = 2_8_03_63_1_534_533_535L;
+        int[] arr = HasEnPassant.forPosition(gauss);
+        System.out.println(Arrays.toString(arr));
 
-        long gauss = GaussFunction.gaussFunction(board, true);
-
-        int[] arr = {1, 8, 39, 23, 0, 1};
-        System.out.println(GaussHelper.longFromArr(arr));
-
-//
-//        // HORSE LOGIC BROKEN?
-//        for (int i = 0; i <= 63; i++) {
-//            long gaussTwo = Move.move(gauss, 200 + pieceOne, i);
-//            if (gaussTwo == -1) {
-//                System.out.println("Cannot move " + pieceOne + " to " + i);
-//                Thread.sleep(1000);
-//                continue;
-//            }
-//            System.out.println("Moved from " + pieceOne + " to " + i);
-//            Board board2 = GaussFunction.inverse(gaussTwo);
-//            board2.launchApp();
-//            Thread.sleep(1000);
-//        }
     }
 
     public static void addRandomPieces(Board board) {
