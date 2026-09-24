@@ -60,6 +60,9 @@ public class Check {
     public static boolean pawnCheck(int fullPawnInt, int king, int length, boolean isPawnWhite) {
         int pawn = fullPawnInt % 100;
 
+        boolean correctRowDifference = isPawnWhite ? king / length == (pawn / length) + 1 : king / length == (pawn / length) - 1;
+        if (!correctRowDifference) return false; // else would result in problems
+
         if (isPawnWhite) {
             return Math.abs(king - pawn - length) == 1; // king == pawn + length + 1 || king == pawn + length - 1;
         } else {

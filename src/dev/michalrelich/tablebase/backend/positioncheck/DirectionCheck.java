@@ -71,13 +71,13 @@ public class DirectionCheck {
         int plusDif;
         int minDif;
         while (ascendingDiagUp || ascendingDiagDown || descendingDiagUp || descendingDiagDown) {
-            System.out.println("iteration: " + i);
+//            System.out.println("iteration: " + i);
 
             int difference = (length + 1) * i;
 
             if (ascendingDiagUp) {
                 plusDif = pieceOne + difference;
-                System.out.println("Check pieceTwo ascendingUp: " + plusDif);
+//                System.out.println("Check pieceTwo ascendingUp: " + plusDif);
                 if (plusDif == position) return true;
 
                 if (!(plusDif % length != length - 1 && plusDif / length < length - 1)) ascendingDiagUp = false;
@@ -87,7 +87,7 @@ public class DirectionCheck {
 
             if (ascendingDiagDown) {
                 minDif = pieceOne - difference;
-                System.out.println("Check pieceTwo ascendingDown: " + minDif);
+//                System.out.println("Check pieceTwo ascendingDown: " + minDif);
                 if (minDif == position) return true;
 
                 if (!(minDif % length != 0 && minDif / length != 0)) ascendingDiagDown = false;
@@ -98,7 +98,7 @@ public class DirectionCheck {
 
             if (descendingDiagUp) {
                 plusDif = pieceOne + difference;
-                System.out.println("Check pieceTwo descendingUp: " + plusDif);
+//                System.out.println("Check pieceTwo descendingUp: " + plusDif);
                 if (plusDif == position) return true;
 
                 if (!(plusDif % length != 0 && plusDif / length < length - 1)) descendingDiagUp = false;
@@ -107,7 +107,7 @@ public class DirectionCheck {
 
             if (descendingDiagDown) {
                 minDif = pieceOne - difference;
-                System.out.println("Check pieceTwo descendingDown: " + minDif);
+//                System.out.println("Check pieceTwo descendingDown: " + minDif);
                 if (minDif == position) return true;
 
                 if (!(minDif % length != length - 1 && minDif / length != 0)) descendingDiagDown = false;

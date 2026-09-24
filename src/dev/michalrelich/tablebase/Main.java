@@ -1,31 +1,30 @@
 package dev.michalrelich.tablebase;
 
 import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.helper.GaussHelper;
-import dev.michalrelich.tablebase.backend.move.Move;
+import dev.michalrelich.tablebase.backend.helper.Check;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
-import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.KING;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.*;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
 
+// todo: check Check
 public class Main {
 
-    // todo: finish Check!
     private static final Random random = new Random();
 
-    static void main() throws InterruptedException {
+    static void main() {
 
-        long gauss = 1_8_03_63_0_524_525_527L;
-        int[] pieces = GaussHelper.getPiecesArr(gauss);
-
-        for (int i = 0; i <= 63; i++) {
-            System.out.println("Checking for " + i + ": " + Move.movePosCheck(pieces, i));
-        }
-
-
+        Board b5 = new Board(WHITE);
+        b5.addToBoard(new Piece(KING, WHITE), 32);  // A4
+        b5.addToBoard(new Piece(PAWN, BLACK), 39);  // H5
+        b5.addToBoard(new Piece(KING, BLACK), 60);  // E8
+        long gauss5 = GaussFunction.gaussFunction(b5, true);
+        System.out.println(Check.isInCheck(gauss5));
+        b5.launchApp();
 
     }
 

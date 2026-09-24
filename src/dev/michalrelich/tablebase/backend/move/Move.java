@@ -27,28 +27,94 @@ public class Move {
 
         long finalLong;
 
-        switch (fullPieceInt / 100) {
-            // not done yet
-            case 5 -> finalLong = GaussHelper.getLongByIndex(gauss, 1) % 2 == 0 ?
-                        PawnMove.enPassantMove(gauss, fullPieceInt, movePos) : PawnMove.pawnMove(gauss, fullPieceInt, movePos);
-            // not done yet
-            case 0 -> finalLong = 0; // gotta figure this out
+        if (fullPieceInt / 100 == 5) {
+            finalLong = 0;
+            return finalLong;
+            // NOT DONE
+        }
 
-            // done
-            default -> {
-                if (!checkInBetweenPieces(pieces, length, movePos, movePos)) return -1; // horse is handled within the method
-                for (int i = 0; i < pieces.length; i++) {
-                    if (pieces[i] == fullPieceInt) pieces[i] = fullPieceInt / 100 + movePos;
-                    if (pieces[i] == movePos) pieces[i] = 0;
-                }
 
-                finalLong = GaussHelper.longFromArr(pieces);
+        if (!checkInBetweenPieces(pieces, length, movePos, movePos)) return -1; // horse is handled within the method
+        for (int i = 0; i < pieces.length; i++) {
+            if (pieces[i] == fullPieceInt) pieces[i] = fullPieceInt / 100 + movePos;
+            if (pieces[i] == movePos) pieces[i] = 0;
+        }
+
+        finalLong = GaussHelper.longFromArr(pieces);
+
+        boolean checkCheck = Check.isInCheck(finalLong) != -1;
+        boolean kingCheck = DirectionCheck.king(pieces[Constants.WHITE_KING_INDEX], pieces[Constants.BLACK_KING_INDEX]);
+
+        return checkCheck && kingCheck ? finalLong : -1;
+    }
+
+    // all these DONE
+
+    public static boolean checkInBetweenPieces(int[] pieces, int length, int fullPieceInt, int movePos) {
+        if (fullPieceInt / 100 == 4) return true; // horse
+
+        int piecePos = fullPieceInt % 100;
+
+        if (piecePos / length == movePos / length) { // the move is horizontal
+            return validHorizontalMove(pieces, piecePos, movePos);
+        } else if (piecePos % length == movePos % length) { // the move is vertical
+            return validVerticalMove(pieces, length, piecePos, movePos);
+        } else { // the move is diagonal
+            return validDiagonalMove(pieces, length, piecePos, movePos);
+        }
+    }
+
+    public static boolean validHorizontalMove(int[] pieces, int piecePos, int movePos) {
+        for (int i = 0; i < pieces.length; i++) {
+            int piece = pieces[i];
+
+            if (piece / 10 == 0 && i != Constants.WHITE_KING_INDEX && i != Constants.BLACK_KING_INDEX) continue; // the delimiter and the turn info and enp col
+            int randomPiece = piece % 100;
+
+            boolean isBetween = (randomPiece > piecePos && randomPiece < movePos) || (randomPiece > movePos && randomPiece < piecePos);
+            if (isBetween) return false;
+        }
+
+        return true;
+    }
+
+    public static boolean validVerticalMove(int[] pieces, int length, int piecePos, int movePos) {
+        for (int i = 0; i < pieces.length; i++) {
+            int piece = pieces[i];
+
+            if (piece / 10 == 0 && i != Constants.WHITE_KING_INDEX && i != Constants.BLACK_KING_INDEX) continue; // the delimiter and the turn info and enp col
+
+            int randomPiece = piece % 100;
+            if (randomPiece % length != piecePos % length) continue;
+
+            boolean isBetweenOne = randomPiece / length > piecePos / length && randomPiece / length < movePos / length;
+            boolean isBetweenTwo = randomPiece / length > movePos / length && randomPiece / length < piecePos / length;
+
+            if (isBetweenOne || isBetweenTwo) return false;
+        }
+
+        return true;
+    }
+
+    public static boolean validDiagonalMove(int[] pieces, int length, int piecePos, int movePos) {
+        for (int i = 0; i < pieces.length; i++) {
+            int piece = pieces[i];
+
+            if (piece / 10 == 0 && i != Constants.WHITE_KING_INDEX && i != Constants.BLACK_KING_INDEX) continue; // the delimiter and the turn info and enp col
+
+            boolean isBetween = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
+            int randomPiece = piece % 100;
+
+            if (piecePos % (length + 1) == movePos % (length + 1)) { // diagonal from left to right
+                if (randomPiece % (length + 1) == piecePos % (length + 1) && isBetween) return false;
+            } else { // diagonal from right to left
+                if (randomPiece % (length - 1) == piecePos % (length - 1) && isBetween) return false;
             }
         }
 
-        // not done yet
-        return Check.isInCheck(finalLong) != -1 ? finalLong : -1;
+        return true;
     }
+
 
 
     // checks the movePos for a piece of same color / king
@@ -67,71 +133,6 @@ public class Move {
         }
 
         return true;
-    }
-
-    public static boolean validHorizontalMove(int[] pieces, int piecePos, int movePos) {
-        for (int piece : pieces) {
-            if (piece / 10 == 0) continue; // the delimiter and the turn info and enp col
-            int randomPiece = piece % 100;
-
-            boolean isBetween = (randomPiece > piecePos && randomPiece < movePos) || (randomPiece > movePos && randomPiece < piecePos);
-            if (isBetween) return false;
-        }
-
-        return true;
-    }
-
-    public static boolean validVerticalMove(int[] pieces, int length, int piecePos, int movePos) {
-        for (int piece : pieces) {
-            if (piece / 10 == 0) continue; // the delimiter and the turn info and enp col
-            int randomPiece = piece % 100;
-
-            if (randomPiece % length != piecePos % length) continue;
-
-            boolean isBetweenOne = randomPiece / length > piecePos / length && randomPiece / length < movePos / length;
-            boolean isBetweenTwo = randomPiece / length > movePos / length && randomPiece / length < piecePos / length;
-
-            if (isBetweenOne || isBetweenTwo) return false;
-        }
-
-        return true;
-    }
-
-    public static boolean validDiagonalMove(int[] pieces, int length, int piecePos, int movePos) {
-        for (int piece : pieces) {
-            if (piece / 10 == 0) continue; // the delimiter and the turn info and enp col
-
-            boolean isBetween = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
-            int randomPiece = piece % 100;
-
-            if (piecePos % (length + 1) == movePos % (length + 1)) { // diagonal from left to right
-                if (randomPiece % (length + 1) == piecePos % (length + 1) && isBetween) return false;
-            } else { // diagonal from right to left
-                if (randomPiece % (length - 1) == piecePos % (length - 1) && isBetween) return false;
-            }
-        }
-
-        return true;
-    }
-
-
-
-
-
-    // all these DONE
-
-    public static boolean checkInBetweenPieces(int[] pieces, int length, int fullPieceInt, int movePos) {
-        if (fullPieceInt / 100 == 4) return true; // horse
-
-        int piecePos = fullPieceInt % 100;
-
-        if (piecePos / length == movePos / length) { // the move is horizontal
-            return validHorizontalMove(pieces, piecePos, movePos);
-        } else if (piecePos % length == movePos % length) { // the move is vertical
-            return validVerticalMove(pieces, length, piecePos, movePos);
-        } else { // the move is diagonal
-            return validDiagonalMove(pieces, length, piecePos, movePos);
-        }
     }
 
     // DONE
