@@ -3,17 +3,33 @@ package dev.michalrelich.tablebase.backend.positioncheck;
 import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.helper.GaussHelper;
 
-import static dev.michalrelich.tablebase.backend.Constants.ENP_DEF;
+import static dev.michalrelich.tablebase.backend.Constants.ENP_DEFAULT;
 
 public class HasEnPassant {
 
     // checks for en passant in a position it assumes is valid. Doesn't take checks etc. into consideration
     // gauss will be called with an 8 for both methods, not that it matters
 
-    // will be called in a position with a new move - a pawn moved by two squares.
-    // there can be up to two pawns that can do the capture but the boolean doesn't care about that it just focuses on the
-    // possible column
+    // done
+    // when a pawn moves by 2, this method gets called. just check if there's a pawn of another color on the same row next to the moved pawn
     public static boolean forMovedPawnByTwoSquares(long gauss, int movedPawnPos) {
+        int[] pieces = GaussHelper.getPiecesArr(gauss);
+        boolean isMovedWhite = movedPawnPos / Constants.BOARD_LENGTH == 3; // moved from row 1 to 3
+
+        int starterIndex = Constants.DELIMITER_INDEX + 1;
+        for (int i = starterIndex; i < pieces.length; i++) {
+            if (pieces[i] / 100 != 5) continue;
+
+            int piece = pieces[i] % 100;
+            boolean isPieceWhite = i - starterIndex < pieces[Constants.DELIMITER_INDEX];
+
+            boolean difColor = isPieceWhite != isMovedWhite;
+            boolean sameRow = piece / Constants.BOARD_LENGTH == movedPawnPos / Constants.BOARD_LENGTH;
+            boolean nextToEachOther = Math.abs(piece - movedPawnPos) == 1; // still needs row check, could jump by one row even with 1 difference
+
+            if (difColor && sameRow && nextToEachOther) return true;
+        }
+
         return false;
     }
 
@@ -21,7 +37,7 @@ public class HasEnPassant {
     // returns all columns that can possibly do en passant, since we don't know, used in PositionGenerator
     public static int[] forPosition(long gauss) {
         int[] pieces = GaussHelper.getPiecesArr(gauss);
-        int[] enPassantCols = {ENP_DEF, ENP_DEF, ENP_DEF, ENP_DEF, ENP_DEF}; // since theoretically no more than 5 en passants can be in one position
+        int[] enPassantCols = {ENP_DEFAULT, ENP_DEFAULT, ENP_DEFAULT, ENP_DEFAULT, ENP_DEFAULT}; // since theoretically no more than 5 en passants can be in one position
 
         // two loops, one for white pieces, second for black, so each pair is evaluated exactly once
         int starterIndex = Constants.DELIMITER_INDEX + 1;
@@ -48,9 +64,9 @@ public class HasEnPassant {
                     int enPassantCol = turn ? pieceTwo % Constants.BOARD_LENGTH : pieceOne % Constants.BOARD_LENGTH;
 
                     for (int k = 0; k < enPassantCols.length; k++) {
-                        if (enPassantCols[k] != ENP_DEF && enPassantCols[k] == enPassantCol) break;
+                        if (enPassantCols[k] != ENP_DEFAULT && enPassantCols[k] == enPassantCol) break;
 
-                        if (enPassantCols[k] == ENP_DEF) {
+                        if (enPassantCols[k] == ENP_DEFAULT) {
                             enPassantCols[k] = enPassantCol;
                             break;
                         }

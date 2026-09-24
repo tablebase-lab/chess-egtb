@@ -4,8 +4,8 @@ import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.backend.positioncheck.HasEnPassant;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
@@ -18,9 +18,10 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        long gauss = 2_8_03_63_1_534_533_535L;
-        int[] arr = HasEnPassant.forPosition(gauss);
-        System.out.println(Arrays.toString(arr));
+        long gauss = 1_8_03_63_1_524_525_527L;
+        Board b = GaussFunction.inverse(gauss);
+        b.launchApp();
+        System.out.println(HasEnPassant.forMovedPawnByTwoSquares(gauss, 24));
 
     }
 

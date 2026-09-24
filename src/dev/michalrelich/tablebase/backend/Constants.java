@@ -34,5 +34,5 @@ public class Constants {
     public static final int BLACK_TURN = 2;
 
     // en passant default (for where there is no en passant)
-    public static final int ENP_DEF = 8;
+    public static final int ENP_DEFAULT = 8;
 }
