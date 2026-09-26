@@ -24,7 +24,7 @@ public class PawnMove {
         if ((whiteTurn && firstRowMove) || (!whiteTurn && lastRowMove)) {
             return -1;
         } else if ((!whiteTurn && firstRowMove) || (whiteTurn && lastRowMove)) {
-            // promotion
+            return promotion();
         }
 
         if (Math.abs(pawnPos - movePos) == length) { // vertical move by one
@@ -44,15 +44,29 @@ public class PawnMove {
             return GaussHelper.longFromArr(moved);
         }
 
-        if (pieces[Constants.EN_PASSANT_INDEX] != Constants.ENP_DEFAULT) {
-            long result = enPassantProbe(pieces, pawnPos, movePos);
-            if (result != -1) return result;
+        // diagonal capture or en passant
 
+        for (int i = Constants.DELIMITER_INDEX + 1; i < pieces.length; i++) {
+            boolean condition = whiteTurn ? Math.abs(pieces[i] - pawnPos - length) == 1 : // pieces[i] = pawnPos + length +- 1
+                    Math.abs(pieces[i] - pawnPos + length) == 1; // pieces[i] == pawnPos - length +- 1
+
+            if (condition) {
+                int[] moved = Move.changeValues(pieces, 500 + pawnPos, movePos, Constants.ENP_DEFAULT);
+                return GaussHelper.longFromArr(moved);
+            }
         }
-        // result is a diagonal capture
 
+        // only en passant left
+
+        if (pieces[Constants.EN_PASSANT_INDEX] != Constants.ENP_DEFAULT) {
+            return enPassantProbe(pieces, pawnPos, movePos);
+        }
 
         return -1;
+    }
+
+    public static long promotion(int[] pieces, int pawnPos, int movePos) {
+        return -1; // dummy
     }
 
     public static long enPassantProbe(int[] pieces, int pawnPos, int movePos) {
