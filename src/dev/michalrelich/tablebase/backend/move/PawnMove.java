@@ -12,22 +12,28 @@ public class PawnMove {
     --the move is either 1 or 2 squares up or 1 square vertically (and the 2 squares is checked for the right row)
     */
 
-    public static long pawnMove(long gauss, int pawnPos, int movePos, int promotionPieceInt) {
+    // careful of side effects!
+
+    // I can work in promotion into the main loop. easy. just using promotionChangeValues instead of the normal
+
+    public static long pawnMove(long gauss, int pawnPos, int movePos, int promotionPieceDigit) {
         int[] pieces = GaussHelper.getPiecesArr(gauss);
         int length = Constants.BOARD_LENGTH;
         boolean whiteTurn = pieces[Constants.TURN_INDEX] == 1;
 
-
         boolean firstRowMove = movePos / length == 0;
         boolean lastRowMove = movePos / length == 8;
 
+        boolean promotion = false;
         if ((whiteTurn && firstRowMove) || (!whiteTurn && lastRowMove)) {
             return -1;
         } else if ((!whiteTurn && firstRowMove) || (whiteTurn && lastRowMove)) {
-            return promotion();
+            promotion = true;
         }
 
         if (Math.abs(pawnPos - movePos) == length) { // vertical move by one
+            if (promotion) return promotionChangeValues(pieces, pawnPos, movePos, promotionPieceDigit);
+
             Move.changeValues(pieces, 500 + pawnPos, movePos, Constants.ENP_DEFAULT); // side effect, therefore dont have to assign
             return GaussHelper.longFromArr(pieces);
         }
@@ -51,6 +57,7 @@ public class PawnMove {
                     Math.abs(pieces[i] - pawnPos + length) == 1; // pieces[i] == pawnPos - length +- 1
 
             if (condition) {
+                if (promotion) return promotionChangeValues(pieces, pawnPos, movePos, promotionPieceDigit);
                 int[] moved = Move.changeValues(pieces, 500 + pawnPos, movePos, Constants.ENP_DEFAULT);
                 return GaussHelper.longFromArr(moved);
             }
@@ -65,8 +72,18 @@ public class PawnMove {
         return -1;
     }
 
-    public static long promotion(int[] pieces, int pawnPos, int movePos) {
-        return -1; // dummy
+    public static long promotionChangeValues(int[] pieces, int pawnPos, int movePos, int promotionPieceDigit) {
+        for (int i = Constants.DELIMITER_INDEX + 1; i < pieces.length; i++) {
+            if (pieces[i] % 100 == movePos) {
+                pieces[i] = 0;
+                boolean isCapturedWhite = !(pieces[Constants.TURN_INDEX] == 1);
+                if (isCapturedWhite) pieces[Constants.DELIMITER_INDEX]--;
+            }
+
+            if (pieces[i] == pawnPos) pieces[i] = 100 * promotionPieceDigit + movePos;
+        }
+
+        return GaussHelper.longFromArr(pieces);
     }
 
     public static long enPassantProbe(int[] pieces, int pawnPos, int movePos) {
