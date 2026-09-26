@@ -11,47 +11,70 @@ public class Move {
     // returns -1 if move can't be performed, else returns modified gauss number
 
     // method works for inCheck positions aswell because the checks at the end.
-    public static long move(long gauss, int fullPieceInt, int movePos) {
+    public static long move(long gauss, int fullPieceInt, int movePos, int promotionPiece) {
         int piecePos = fullPieceInt % 100;
         int length = Constants.BOARD_LENGTH;
         int[] pieces = GaussHelper.getPiecesArr(gauss);
 
         if (piecePos == movePos) return -1;
         if (!canMove(pieces[Constants.TURN_INDEX] == 1, fullPieceInt, movePos) ||
-                movePosCheck(pieces, movePos)) return -1;
-
-        // by here all that's left is to check between pieces
-        // for the King and Pawn helpers it just returns the long itself i guess
-        // for the final position i gotta check if the king is in check
-        // maybe i refactor the methods by getting pieceIndex from one loop so i dont have to run it every time
+                !movePosCheck(pieces, movePos)) return -1;
 
         long finalLong;
 
         if (fullPieceInt / 100 == 5) {
-            finalLong = 0;
-            return finalLong;
-            // NOT DONE
+            finalLong = PawnMove.pawnMove(gauss, piecePos, movePos, promotionPiece);
+        } else {
+            // code for all other pieces except pawns
+            if (!checkInBetweenPieces(pieces, length, fullPieceInt, movePos))
+                return -1; // horse and king is handled within the method
+            pieces = changeValues(pieces, fullPieceInt, movePos, Constants.ENP_DEFAULT);
+            finalLong = GaussHelper.longFromArr(pieces);
         }
 
-
-        if (!checkInBetweenPieces(pieces, length, movePos, movePos)) return -1; // horse is handled within the method
-        for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i] == fullPieceInt) pieces[i] = fullPieceInt / 100 + movePos;
-            if (pieces[i] == movePos) pieces[i] = 0;
-        }
-
-        finalLong = GaussHelper.longFromArr(pieces);
+        // code for all pieces
 
         boolean checkCheck = Check.isInCheck(finalLong) != -1;
-        boolean kingCheck = DirectionCheck.king(pieces[Constants.WHITE_KING_INDEX], pieces[Constants.BLACK_KING_INDEX]);
+        boolean kingCheck;
+        if (fullPieceInt / 100 != 0) {
+            kingCheck = true;
+        } else {
+            kingCheck = !DirectionCheck.king(pieces[Constants.WHITE_KING_INDEX], pieces[Constants.BLACK_KING_INDEX]);
+        }
+
+        if (!checkCheck) System.out.println("Somethings wrong with the checks!");
+        if (!kingCheck) System.out.println("Kings are near each other!");
 
         return checkCheck && kingCheck ? finalLong : -1;
+    }
+
+    // returns an array due to en passant (even after the move is made the en passant index might be changed)
+    public static int[] changeValues(int[] pieces, int fullPieceInt, int movePos, int enPassantCol) {
+        for (int i = 0; i < pieces.length; i++) {
+            if (Constants.skipNonPositionIndex(i)) continue;
+
+            if (pieces[i] == fullPieceInt) {
+                pieces[i] = fullPieceInt / 100 * 100 + movePos;
+                continue;
+            }
+            if (pieces[i] % 100 == movePos) {
+                boolean isWhite = i - (Constants.DELIMITER_INDEX + 1) < pieces[Constants.DELIMITER_INDEX];
+                if (isWhite) pieces[Constants.DELIMITER_INDEX]--;
+                pieces[i] = 0;
+            }
+        }
+
+        pieces[Constants.TURN_INDEX] = pieces[Constants.TURN_INDEX] == 1 ? 2 : 1;
+        pieces[Constants.EN_PASSANT_INDEX] = enPassantCol; // for any non-pawn move logically there won't be en passant anymore if there was
+        // the long is handled wholly in the pawn class
+
+        return pieces;
     }
 
     // all these DONE
 
     public static boolean checkInBetweenPieces(int[] pieces, int length, int fullPieceInt, int movePos) {
-        if (fullPieceInt / 100 == 4) return true; // horse
+        if (fullPieceInt / 100 == 4 || fullPieceInt / 100 == 0) return true; // horse or king
 
         int piecePos = fullPieceInt % 100;
 
@@ -62,13 +85,15 @@ public class Move {
         } else { // the move is diagonal
             return validDiagonalMove(pieces, length, piecePos, movePos);
         }
+
+
     }
 
     public static boolean validHorizontalMove(int[] pieces, int piecePos, int movePos) {
         for (int i = 0; i < pieces.length; i++) {
             int piece = pieces[i];
+            if (Constants.skipNonPositionIndex(i)) continue;
 
-            if (piece / 10 == 0 && i != Constants.WHITE_KING_INDEX && i != Constants.BLACK_KING_INDEX) continue; // the delimiter and the turn info and enp col
             int randomPiece = piece % 100;
 
             boolean isBetween = (randomPiece > piecePos && randomPiece < movePos) || (randomPiece > movePos && randomPiece < piecePos);
@@ -82,7 +107,7 @@ public class Move {
         for (int i = 0; i < pieces.length; i++) {
             int piece = pieces[i];
 
-            if (piece / 10 == 0 && i != Constants.WHITE_KING_INDEX && i != Constants.BLACK_KING_INDEX) continue; // the delimiter and the turn info and enp col
+            if (Constants.skipNonPositionIndex(i)) continue;
 
             int randomPiece = piece % 100;
             if (randomPiece % length != piecePos % length) continue;
@@ -100,7 +125,7 @@ public class Move {
         for (int i = 0; i < pieces.length; i++) {
             int piece = pieces[i];
 
-            if (piece / 10 == 0 && i != Constants.WHITE_KING_INDEX && i != Constants.BLACK_KING_INDEX) continue; // the delimiter and the turn info and enp col
+            if (Constants.skipNonPositionIndex(i)) continue;
 
             boolean isBetween = (piece > piecePos && piece < movePos) || (piece > movePos && piece < piecePos);
             int randomPiece = piece % 100;
@@ -122,6 +147,8 @@ public class Move {
         boolean isPieceWhite = pieces[0] == 1;
 
         for (int i = 0; i < pieces.length; i++) {
+
+            if (Constants.skipNonPositionIndex(i)) continue;
 
             if (pieces[i] % 100 != movePos || i <= Constants.EN_PASSANT_INDEX || i == Constants.DELIMITER_INDEX) continue;
             // from here there's a piece at the movePos

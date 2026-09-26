@@ -15,6 +15,7 @@ public class App {
         frame.add(panel);
         frame.pack();
         frame.setResizable(true);
+        frame.setLocation(700, 0);
         frame.setVisible(true);
     }
 

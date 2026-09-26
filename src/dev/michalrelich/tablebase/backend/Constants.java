@@ -35,4 +35,8 @@ public class Constants {
 
     // en passant default (for where there is no en passant)
     public static final int ENP_DEFAULT = 8;
+
+    public static boolean skipNonPositionIndex(int index) {
+        return index <= EN_PASSANT_INDEX || index == DELIMITER_INDEX;
+    }
 }

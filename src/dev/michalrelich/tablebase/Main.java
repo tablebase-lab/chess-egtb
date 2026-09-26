@@ -1,31 +1,39 @@
 package dev.michalrelich.tablebase;
 
 import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.helper.Check;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
-import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
-import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.*;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.WHITE;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.KING;
+import static dev.michalrelich.tablebase.frontend.Piece.PieceType.PAWN;
 
-// todo: check Check
 public class Main {
 
     private static final Random random = new Random();
 
+    // todo: limit conversion from int[] to long
+
     static void main() {
+        Board b = new Board(WHITE);
 
-        Board b5 = new Board(WHITE);
-        b5.addToBoard(new Piece(KING, WHITE), 32);  // A4
-        b5.addToBoard(new Piece(PAWN, BLACK), 39);  // H5
-        b5.addToBoard(new Piece(KING, BLACK), 60);  // E8
-        long gauss5 = GaussFunction.gaussFunction(b5, true);
-        System.out.println(Check.isInCheck(gauss5));
-        b5.launchApp();
+        b.addToBoard(new Piece(KING, WHITE), 1);
+        b.addToBoard(new Piece(KING, BLACK), 3);
+        b.addToBoard(new Piece(PAWN, WHITE), 12);
+        b.addToBoard(new Piece(PAWN, WHITE), 13);
+        b.addToBoard(new Piece(PAWN, BLACK), 14);
 
+
+//
+//        if (gaussMove != -1) {
+//            Board bMove = GaussFunction.inverse(gaussMove);
+//            bMove.launchApp();
+//        }
+
+        b.launchApp();
     }
 
     public static void addRandomPieces(Board board) {

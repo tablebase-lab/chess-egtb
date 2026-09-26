@@ -12,8 +12,7 @@ public class HasEnPassant {
 
     // done
     // when a pawn moves by 2, this method gets called. just check if there's a pawn of another color on the same row next to the moved pawn
-    public static boolean forMovedPawnByTwoSquares(long gauss, int movedPawnPos) {
-        int[] pieces = GaussHelper.getPiecesArr(gauss);
+    public static boolean forMovedPawnByTwoSquares(int[] pieces, int movedPawnPos) {
         boolean isMovedWhite = movedPawnPos / Constants.BOARD_LENGTH == 3; // moved from row 1 to 3
 
         int starterIndex = Constants.DELIMITER_INDEX + 1;
