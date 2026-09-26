@@ -3,6 +3,7 @@ package dev.michalrelich.tablebase;
 import dev.michalrelich.tablebase.backend.Constants;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
 
 import java.util.Random;
 
@@ -15,7 +16,7 @@ public class Main {
 
     private static final Random random = new Random();
 
-    // todo: limit conversion from int[] to long
+    // todo: limit conversions from int[] to long OR (ideally) use bit-packing
 
     static void main() {
         Board b = new Board(WHITE);
@@ -26,7 +27,7 @@ public class Main {
         b.addToBoard(new Piece(PAWN, WHITE), 13);
         b.addToBoard(new Piece(PAWN, BLACK), 14);
 
-
+        long gauss = GaussFunction.gaussFunction(b, true);
 //
 //        if (gaussMove != -1) {
 //            Board bMove = GaussFunction.inverse(gaussMove);

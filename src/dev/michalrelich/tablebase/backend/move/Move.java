@@ -28,7 +28,7 @@ public class Move {
             // code for all other pieces except pawns
             if (!checkInBetweenPieces(pieces, length, fullPieceInt, movePos))
                 return -1; // horse and king is handled within the method
-            pieces = changeValues(pieces, fullPieceInt, movePos, Constants.ENP_DEFAULT);
+            changeValues(pieces, fullPieceInt, movePos, Constants.ENP_DEFAULT); // side effect, therefor dont have to assign
             finalLong = GaussHelper.longFromArr(pieces);
         }
 
@@ -57,9 +57,9 @@ public class Move {
                 pieces[i] = fullPieceInt / 100 * 100 + movePos;
                 continue;
             }
-            if (pieces[i] % 100 == movePos) {
-                boolean isWhite = i - (Constants.DELIMITER_INDEX + 1) < pieces[Constants.DELIMITER_INDEX];
-                if (isWhite) pieces[Constants.DELIMITER_INDEX]--;
+            if (pieces[i] % 100 == movePos) { // if it is it must be the opposite color of our turn else it would have been flagged
+                boolean isCapturedWhite = pieces[Constants.TURN_INDEX] == Constants.BLACK_TURN;
+                if (isCapturedWhite) pieces[Constants.DELIMITER_INDEX]--;
                 pieces[i] = 0;
             }
         }
