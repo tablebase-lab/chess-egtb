@@ -45,12 +45,17 @@ public class DirectionCheck {
         int length = Constants.BOARD_LENGTH;
         int colDiff = Math.abs(pawn % length - position % length); // so they don't jump to opposite columns
 
-        boolean verticalMove = pawn + length == position ||
-                (pawn + length * 2 == position && ((pawn / length == 1 && whiteTurn) ||
-                        (pawn / length == length - 1 && !whiteTurn)));
-
-        boolean diagonalMove = pawn + length + 1 == position || pawn + length - 1 == position;
-
+        boolean verticalMove;
+        boolean diagonalMove;
+        if (whiteTurn) {
+            verticalMove = pawn + length == position ||
+                    (pawn + length * 2 == position && pawn / length == 1);
+            diagonalMove = pawn + length + 1 == position || pawn + length - 1 == position;
+        } else {
+            verticalMove = pawn - length == position ||
+                    (pawn - length * 2 == position && pawn / length == length - 2);
+            diagonalMove = pawn - length + 1 == position || pawn - length - 1 == position;
+        }
         return colDiff <= 1 && (verticalMove || diagonalMove);
     }
 

@@ -20,16 +20,20 @@ public class Main {
     // todo: limit conversions from int[] to long OR (ideally) use bit-packing
 
     static void main() {
-        Board b = new Board(WHITE);
+        Board b = new Board(BLACK);
 
         b.addToBoard(new Piece(KING, WHITE), 1);
         b.addToBoard(new Piece(KING, BLACK), 3);
-        b.addToBoard(new Piece(PAWN, WHITE), 12);
-        b.addToBoard(new Piece(PAWN, WHITE), 48);
-        b.addToBoard(new Piece(PAWN, BLACK), 14);
+        b.addToBoard(new Piece(PAWN, WHITE), 28);
+        b.addToBoard(new Piece(PAWN, WHITE), 29);
+        b.addToBoard(new Piece(PAWN, BLACK), 30);
+
+        b.launchApp();
+
+        b.setEnPassantCol(6); // is 1-8!
 
         long gauss = GaussFunction.gaussFunction(b, true);
-        gauss = Move.move(gauss, 548, 56, 1);
+        gauss = Move.move(gauss, 530, 21, 1);
 
         Board b2 = GaussFunction.inverse(gauss);
         b2.launchApp();
