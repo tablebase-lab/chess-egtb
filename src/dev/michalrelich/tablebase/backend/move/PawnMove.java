@@ -10,6 +10,7 @@ public class PawnMove {
     --pawnPos != movePos
     --there isn't a piece of same color / king on movePos
     --the move is either 1 or 2 squares up or 1 square vertically (and the 2 squares is checked for the right row)
+     and it's in the correct direction (DirectionCheck.pawn())
     */
 
 
@@ -17,8 +18,6 @@ public class PawnMove {
         int[] pieces = GaussHelper.getPiecesArr(gauss);
         int length = Constants.BOARD_LENGTH;
         boolean whiteTurn = pieces[Constants.TURN_INDEX] == 1;
-
-        if (!checkCorrectDirection(whiteTurn, pawnPos, movePos)) return -1;
 
         boolean firstRowMove = movePos / length == 0;
         boolean lastRowMove = movePos / length == Constants.BOARD_LENGTH - 1;
@@ -97,7 +96,7 @@ public class PawnMove {
         int movePosRow = whiteTurn ? enRow + 1 : enRow - 1;
         int movePosCol = pieces[Constants.EN_PASSANT_INDEX];
         boolean correctMoveRow = movePos / length == movePosRow;
-        boolean correctMoveCol = movePos / length == movePosCol;
+        boolean correctMoveCol = movePos % length == movePosCol;
 
         if (correctRow && correctCol && correctMoveRow && correctMoveCol) {
             return enPassant(pieces, pawnPos, movePos);
@@ -121,9 +120,5 @@ public class PawnMove {
         }
 
         return GaussHelper.longFromArr(pieces);
-    }
-
-    public static boolean checkCorrectDirection(boolean whiteMove, int pawnPos, int movePos) {
-        return whiteMove ? pawnPos < movePos : pawnPos > movePos;
     }
 }

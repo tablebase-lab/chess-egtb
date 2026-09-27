@@ -18,6 +18,7 @@ public class Main {
     private static final Random random = new Random();
 
     // todo: limit conversions from int[] to long OR (ideally) use bit-packing
+    // todo: check pawns going backwards
 
     static void main() {
         Board b = new Board(BLACK);
