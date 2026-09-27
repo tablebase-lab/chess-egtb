@@ -34,6 +34,8 @@ public class Move {
 
         // code for all pieces
 
+        finalLong = pieces[Constants.TURN_INDEX] == 1 ? finalLong + GaussHelper.POW10[12] : finalLong - GaussHelper.POW10[12];
+
         boolean checkCheck = Check.isInCheck(finalLong) != -1;
         boolean kingCheck;
         if (fullPieceInt / 100 != 0) {
@@ -46,6 +48,10 @@ public class Move {
         if (!kingCheck) System.out.println("Kings are near each other!");
 
         return checkCheck && kingCheck ? finalLong : -1;
+    }
+
+    public static long move(long gauss, int fullPieceInt, int movePos) {
+        return move(gauss, fullPieceInt, movePos, -1);
     }
 
     // returns an array due to en passant (even after the move is made the en passant index might be changed)
@@ -64,14 +70,11 @@ public class Move {
             }
         }
 
-        pieces[Constants.TURN_INDEX] = pieces[Constants.TURN_INDEX] == 1 ? 2 : 1;
         pieces[Constants.EN_PASSANT_INDEX] = enPassantCol; // for any non-pawn move logically there won't be en passant anymore if there was
         // the long is handled wholly in the pawn class
 
         return pieces;
     }
-
-    // all these DONE
 
     public static boolean checkInBetweenPieces(int[] pieces, int length, int fullPieceInt, int movePos) {
         if (fullPieceInt / 100 == 4 || fullPieceInt / 100 == 0) return true; // horse or king
@@ -139,8 +142,6 @@ public class Move {
 
         return true;
     }
-
-
 
     // checks the movePos for a piece of same color / king
     public static boolean movePosCheck(int[] pieces, int movePos) {

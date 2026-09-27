@@ -17,7 +17,7 @@ public class GaussFunction {
         List<String> list = getStrings(pieceInfo);
 
         String prefix = board.getTurn() == Piece.PieceColor.WHITE ? "1" : "2";
-        String prefix2 = board.getEnPassantCol() == 0 ? "8" : board.getEnPassantCol() - 1 + ""; // enPassantCol inside Board is 1-8, 0 default
+        String prefix2 = board.getEnPassantCol() + "";
 
         if (printFormattedResult) System.out.printf("%s_%s_%s%n", prefix, prefix2, String.join("_", list));
 

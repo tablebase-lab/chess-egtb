@@ -9,7 +9,7 @@ import static dev.michalrelich.tablebase.backend.Constants.BOARD_LENGTH;
 public class Board {
 
     private final Map<Piece, NavigableSet<Integer>> board = new TreeMap<>();
-    private int enPassantCol = 0;
+    private int enPassantCol = 8;
     private Piece.PieceColor turn;
 
     public Board(Piece.PieceColor turn) {

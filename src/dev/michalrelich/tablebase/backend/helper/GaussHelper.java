@@ -4,7 +4,7 @@ import static dev.michalrelich.tablebase.backend.Constants.*;
 
 public class GaussHelper {
 
-    private static final long[] POW10 = {
+    public static final long[] POW10 = {
             1L, 10L, 100L, 1000L, 10000L, 100000L, 1000000L, 10000000L,
             100000000L, 1000000000L, 10000000000L, 100000000000L, 1000000000000L,
             10000000000000L, 100000000000000L, 1000000000000000L, 10000000000000000L,

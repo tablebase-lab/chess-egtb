@@ -116,8 +116,10 @@ public class PawnMove {
                 if (isCapturedWhite) pieces[Constants.DELIMITER_INDEX]--;
             }
 
-            if (pieces[i] == pawnPos) pieces[i] = 500 + movePos;
+            if (pieces[i] % 100 == pawnPos) pieces[i] = 500 + movePos;
         }
+
+        pieces[Constants.EN_PASSANT_INDEX] = Constants.ENP_DEFAULT;
 
         return GaussHelper.longFromArr(pieces);
     }
