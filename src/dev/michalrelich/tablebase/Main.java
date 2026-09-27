@@ -1,6 +1,7 @@
 package dev.michalrelich.tablebase;
 
 import dev.michalrelich.tablebase.backend.Constants;
+import dev.michalrelich.tablebase.backend.move.Move;
 import dev.michalrelich.tablebase.frontend.Board;
 import dev.michalrelich.tablebase.frontend.Piece;
 import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
@@ -24,10 +25,14 @@ public class Main {
         b.addToBoard(new Piece(KING, WHITE), 1);
         b.addToBoard(new Piece(KING, BLACK), 3);
         b.addToBoard(new Piece(PAWN, WHITE), 12);
-        b.addToBoard(new Piece(PAWN, WHITE), 13);
+        b.addToBoard(new Piece(PAWN, WHITE), 48);
         b.addToBoard(new Piece(PAWN, BLACK), 14);
 
         long gauss = GaussFunction.gaussFunction(b, true);
+        gauss = Move.move(gauss, 548, 56, 1);
+
+        Board b2 = GaussFunction.inverse(gauss);
+        b2.launchApp();
 //
 //        if (gaussMove != -1) {
 //            Board bMove = GaussFunction.inverse(gaussMove);

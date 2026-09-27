@@ -12,17 +12,16 @@ public class PawnMove {
     --the move is either 1 or 2 squares up or 1 square vertically (and the 2 squares is checked for the right row)
     */
 
-    // careful of side effects!
-
-    // I can work in promotion into the main loop. easy. just using promotionChangeValues instead of the normal
 
     public static long pawnMove(long gauss, int pawnPos, int movePos, int promotionPieceDigit) {
         int[] pieces = GaussHelper.getPiecesArr(gauss);
         int length = Constants.BOARD_LENGTH;
         boolean whiteTurn = pieces[Constants.TURN_INDEX] == 1;
 
+        if (!checkCorrectDirection(whiteTurn, pawnPos, movePos)) return -1;
+
         boolean firstRowMove = movePos / length == 0;
-        boolean lastRowMove = movePos / length == 8;
+        boolean lastRowMove = movePos / length == Constants.BOARD_LENGTH - 1;
 
         boolean promotion = false;
         if ((whiteTurn && firstRowMove) || (!whiteTurn && lastRowMove)) {
@@ -80,7 +79,7 @@ public class PawnMove {
                 if (isCapturedWhite) pieces[Constants.DELIMITER_INDEX]--;
             }
 
-            if (pieces[i] == pawnPos) pieces[i] = 100 * promotionPieceDigit + movePos;
+            if (pieces[i] % 100 == pawnPos) pieces[i] = 100 * promotionPieceDigit + movePos;
         }
 
         return GaussHelper.longFromArr(pieces);
@@ -124,4 +123,7 @@ public class PawnMove {
         return GaussHelper.longFromArr(pieces);
     }
 
+    public static boolean checkCorrectDirection(boolean whiteMove, int pawnPos, int movePos) {
+        return whiteMove ? pawnPos < movePos : pawnPos > movePos;
+    }
 }
