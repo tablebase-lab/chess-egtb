@@ -3,6 +3,7 @@ package dev.michalrelich;
 import dev.michalrelich.engine.backend.Constants;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
+import dev.michalrelich.tablebase.code.EGTBConstants;
 
 import java.util.Random;
 
@@ -16,8 +17,9 @@ public class Main {
     // todo: limit conversions from int[] to long OR (ideally) use bit-packing
 
     static void main() {
-
-
+        System.out.println(EGTBConstants.KXKPositions(1));
+        System.out.println(EGTBConstants.KXKPositions(2));
+        System.out.println(EGTBConstants.KXKPositions(5));
 
 //        LocalTime currentTime = LocalTime.now();
 //        System.out.println("Begin Time: " + currentTime);
