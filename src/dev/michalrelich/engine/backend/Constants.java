@@ -1,4 +1,4 @@
-package dev.michalrelich.tablebase.backend;
+package dev.michalrelich.engine.backend;
 
 public class Constants {
 

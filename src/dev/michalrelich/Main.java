@@ -1,17 +1,13 @@
-package dev.michalrelich.tablebase;
+package dev.michalrelich;
 
-import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.move.Move;
-import dev.michalrelich.tablebase.frontend.Board;
-import dev.michalrelich.tablebase.frontend.Piece;
-import dev.michalrelich.tablebase.gaussfunction.GaussFunction;
+import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.frontend.Board;
+import dev.michalrelich.engine.frontend.Piece;
 
 import java.util.Random;
 
-import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.BLACK;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceColor.*;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.*;
-import static dev.michalrelich.tablebase.frontend.Piece.PieceType.PAWN;
+import static dev.michalrelich.engine.frontend.Piece.PieceColor.WHITE;
+import static dev.michalrelich.engine.frontend.Piece.PieceType.KING;
 
 public class Main {
 
@@ -20,24 +16,27 @@ public class Main {
     // todo: limit conversions from int[] to long OR (ideally) use bit-packing
 
     static void main() {
-        Board b = new Board(BLACK);
 
-        b.addToBoard(new Piece(KING, WHITE), 1);
-        b.addToBoard(new Piece(KING, BLACK), 4, 1);
-        b.addToBoard(new Piece(ROOK, WHITE), 4, 8);
-        b.addToBoard(new Piece(PAWN, WHITE), 4, 4);
-        b.addToBoard(new Piece(PAWN, BLACK), 4, 3);
 
-        b.launchApp();
 
-        b.setEnPassantCol(3); // is 0-7!
+//        LocalTime currentTime = LocalTime.now();
+//        System.out.println("Begin Time: " + currentTime);
+//
+//
+//            for (int j = 0; j <= 9; j++) {
+//                for (int k = 0; k <= 63; k++) {
+//                    for (int l = 0; l <= 63; l++) {
+//                            int[] arr = {1, 8, j, k, 1, 200 + l};
+//                            PositionCheck.checkPosition(GaussHelper.longFromArr(arr));
+//                    }
+//                }
+//            }
+//
+//        currentTime = LocalTime.now();
+//        System.out.println("Current Time: " + currentTime);
 
-        long gauss = GaussFunction.gaussFunction(b, true);
-        gauss = Move.move(gauss, 526, 19, -1);
-
-        Board b2 = GaussFunction.inverse(gauss);
-        b2.launchApp();
-
+//        Path path = Path.of("data", "three_piece", "KRK");
+//        KingFoldersGenerator.generateNumberDirectories(0, 63, path);
     }
 
     public static void addRandomPieces(Board board) {

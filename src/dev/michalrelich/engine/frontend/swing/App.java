@@ -1,7 +1,7 @@
-package dev.michalrelich.tablebase.frontend.swing;
+package dev.michalrelich.engine.frontend.swing;
 
-import dev.michalrelich.tablebase.frontend.Board;
-import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.engine.frontend.Board;
+import dev.michalrelich.engine.frontend.Piece;
 
 import javax.swing.*;
 

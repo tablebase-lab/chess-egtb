@@ -1,4 +1,4 @@
-package dev.michalrelich.tablebase.frontend;
+package dev.michalrelich.engine.frontend;
 
 import java.util.Comparator;
 

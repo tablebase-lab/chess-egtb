@@ -1,4 +1,4 @@
-package dev.michalrelich.tablebase.exceptions;
+package dev.michalrelich.engine.exceptions;
 
 public class InvalidBoardException extends RuntimeException {
     public InvalidBoardException(String message) {

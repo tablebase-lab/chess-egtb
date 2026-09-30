@@ -1,10 +1,10 @@
-package dev.michalrelich.tablebase.frontend;
+package dev.michalrelich.engine.frontend;
 
-import dev.michalrelich.tablebase.frontend.swing.App;
+import dev.michalrelich.engine.frontend.swing.App;
 
 import java.util.*;
 
-import static dev.michalrelich.tablebase.backend.Constants.BOARD_LENGTH;
+import static dev.michalrelich.engine.backend.Constants.BOARD_LENGTH;
 
 public class Board {
 

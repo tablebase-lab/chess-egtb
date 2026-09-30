@@ -1,8 +1,8 @@
-package dev.michalrelich.tablebase.backend.move;
+package dev.michalrelich.engine.backend.move;
 
-import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.helper.GaussHelper;
-import dev.michalrelich.tablebase.backend.positioncheck.HasEnPassant;
+import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.helper.GaussHelper;
+import dev.michalrelich.engine.backend.positioncheck.HasEnPassant;
 
 public class PawnMove {
 
@@ -51,8 +51,8 @@ public class PawnMove {
         // diagonal capture or en passant
 
         for (int i = Constants.DELIMITER_INDEX + 1; i < pieces.length; i++) {
-            boolean condition = whiteTurn ? Math.abs(pieces[i] - pawnPos - length) == 1 : // pieces[i] = pawnPos + length +- 1
-                    Math.abs(pieces[i] - pawnPos + length) == 1; // pieces[i] == pawnPos - length +- 1
+            boolean condition = whiteTurn ? Math.abs(pieces[i] % 100 - pawnPos - length) == 1 : // pieces[i] = pawnPos + length +- 1
+                    Math.abs(pieces[i] % 100 - pawnPos + length) == 1; // pieces[i] == pawnPos - length +- 1
 
             if (condition) {
                 if (promotion) return promotionChangeValues(pieces, pawnPos, movePos, promotionPieceDigit);

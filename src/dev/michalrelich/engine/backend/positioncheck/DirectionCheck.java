@@ -1,6 +1,6 @@
-package dev.michalrelich.tablebase.backend.positioncheck;
+package dev.michalrelich.engine.backend.positioncheck;
 
-import dev.michalrelich.tablebase.backend.Constants;
+import dev.michalrelich.engine.backend.Constants;
 // DONE
 
 

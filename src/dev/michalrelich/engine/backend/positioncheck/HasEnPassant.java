@@ -1,9 +1,9 @@
-package dev.michalrelich.tablebase.backend.positioncheck;
+package dev.michalrelich.engine.backend.positioncheck;
 
-import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.helper.GaussHelper;
+import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.helper.GaussHelper;
 
-import static dev.michalrelich.tablebase.backend.Constants.ENP_DEFAULT;
+import static dev.michalrelich.engine.backend.Constants.ENP_DEFAULT;
 
 public class HasEnPassant {
 

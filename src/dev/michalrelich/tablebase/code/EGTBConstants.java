@@ -1,0 +1,27 @@
+package dev.michalrelich.tablebase.code;
+
+import dev.michalrelich.engine.backend.helper.GaussHelper;
+import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
+
+public class EGTBConstants {
+
+
+
+    public static int KRKPositions() {
+        int count = 0;
+        for (int turn = 1; turn <= 2; turn++) {
+            for (int kingOne = 0; kingOne <= 27; kingOne++) {
+                kingOne = Helpers.returnEightKingPosition(kingOne);
+
+                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                    for (int rook = 0; rook <= 63; rook++) {
+                        int[] arr = {turn, 8, kingOne, kingTwo, 1, 200 + rook};
+                        if (PositionCheck.checkPosition(GaussHelper.longFromArr(arr))) count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+}

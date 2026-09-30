@@ -1,9 +1,9 @@
-package dev.michalrelich.tablebase.backend.helper;
+package dev.michalrelich.engine.backend.helper;
 
-import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.move.Move;
+import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.move.Move;
 
-import static dev.michalrelich.tablebase.backend.Constants.*;
+import static dev.michalrelich.engine.backend.Constants.*;
 
 public class Check {
     // returns a 0 if no one is in check, a 1 if white, a 2 if black, a -1 if the check is impossible (both or wrong side)

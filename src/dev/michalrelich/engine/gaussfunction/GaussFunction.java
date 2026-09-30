@@ -1,7 +1,7 @@
-package dev.michalrelich.tablebase.gaussfunction;
+package dev.michalrelich.engine.gaussfunction;
 
-import dev.michalrelich.tablebase.frontend.Board;
-import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.engine.frontend.Board;
+import dev.michalrelich.engine.frontend.Piece;
 
 import java.util.ArrayList;
 import java.util.List;

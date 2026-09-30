@@ -1,6 +1,6 @@
-package dev.michalrelich.tablebase.backend.helper;
+package dev.michalrelich.engine.backend.helper;
 
-import static dev.michalrelich.tablebase.backend.Constants.*;
+import static dev.michalrelich.engine.backend.Constants.*;
 
 public class GaussHelper {
 

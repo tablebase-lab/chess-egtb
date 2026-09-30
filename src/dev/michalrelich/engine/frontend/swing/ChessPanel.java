@@ -1,6 +1,6 @@
-package dev.michalrelich.tablebase.frontend.swing;
+package dev.michalrelich.engine.frontend.swing;
 
-import dev.michalrelich.tablebase.frontend.Piece;
+import dev.michalrelich.engine.frontend.Piece;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,9 +34,9 @@ public class ChessPanel extends JPanel {
 
         try {
         boardImage = ImageIO.read(Objects.requireNonNull(
-                this.getClass().getResource("/dev/michalrelich/tablebase/frontend/resources/board.png")));
+                this.getClass().getResource("/dev/michalrelich/engine/frontend/resources/board.png")));
         piecesImage = ImageIO.read(Objects.requireNonNull(
-                this.getClass().getResource("/dev/michalrelich/tablebase/frontend/resources/pieces.png")));
+                this.getClass().getResource("/dev/michalrelich/engine/frontend/resources/pieces.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

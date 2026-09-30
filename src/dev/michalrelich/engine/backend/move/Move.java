@@ -1,9 +1,9 @@
-package dev.michalrelich.tablebase.backend.move;
+package dev.michalrelich.engine.backend.move;
 
-import dev.michalrelich.tablebase.backend.Constants;
-import dev.michalrelich.tablebase.backend.helper.Check;
-import dev.michalrelich.tablebase.backend.helper.GaussHelper;
-import dev.michalrelich.tablebase.backend.positioncheck.DirectionCheck;
+import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.helper.Check;
+import dev.michalrelich.engine.backend.helper.GaussHelper;
+import dev.michalrelich.engine.backend.positioncheck.DirectionCheck;
 
 public class Move {
 
@@ -24,6 +24,7 @@ public class Move {
 
         if (fullPieceInt / 100 == 5) {
             finalLong = PawnMove.pawnMove(gauss, piecePos, movePos, promotionPiece);
+            if (finalLong == -1) return -1;
         } else {
             // code for all other pieces except pawns
             if (!checkInBetweenPieces(pieces, length, fullPieceInt, movePos))
@@ -34,7 +35,9 @@ public class Move {
 
         // code for all pieces
 
-        finalLong = pieces[Constants.TURN_INDEX] == 1 ? finalLong + GaussHelper.POW10[12] : finalLong - GaussHelper.POW10[12];
+        int longLengthMinusOne = GaussHelper.getLongLength(finalLong) - 1;
+        finalLong = pieces[Constants.TURN_INDEX] == 1 ? finalLong + GaussHelper.POW10[longLengthMinusOne]
+                : finalLong - GaussHelper.POW10[longLengthMinusOne];
 
         boolean checkCheck = Check.isInCheck(finalLong) != -1;
         boolean kingCheck;
