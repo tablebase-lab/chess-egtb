@@ -1,7 +1,6 @@
 package dev.michalrelich.engine.backend.move;
 
 import dev.michalrelich.engine.backend.Constants;
-import dev.michalrelich.engine.backend.helper.GaussHelper;
 import dev.michalrelich.engine.backend.positioncheck.HasEnPassant;
 
 public class PawnMove {
@@ -14,8 +13,7 @@ public class PawnMove {
     */
 
 
-    public static long pawnMove(long gauss, int pawnPos, int movePos, int promotionPieceDigit) {
-        int[] pieces = GaussHelper.getPiecesArr(gauss);
+    public static int[] pawnMove(int[] pieces, int pawnPos, int movePos, int promotionPieceDigit) {
         int length = Constants.BOARD_LENGTH;
         boolean whiteTurn = pieces[Constants.TURN_INDEX] == 1;
 
@@ -24,7 +22,7 @@ public class PawnMove {
 
         boolean promotion = false;
         if ((whiteTurn && firstRowMove) || (!whiteTurn && lastRowMove)) {
-            return -1;
+            return null;
         } else if ((!whiteTurn && firstRowMove) || (whiteTurn && lastRowMove)) {
             promotion = true;
         }
@@ -33,19 +31,19 @@ public class PawnMove {
             if (promotion) return promotionChangeValues(pieces, pawnPos, movePos, promotionPieceDigit);
 
             Move.changeValues(pieces, 500 + pawnPos, movePos, Constants.ENP_DEFAULT); // side effect, therefore dont have to assign
-            return GaussHelper.longFromArr(pieces);
+            return pieces;
         }
 
         if (Math.abs(pawnPos - movePos) == length * 2) { // vertical move by two
             boolean validInBetween = Move.validVerticalMove(pieces, length, pawnPos, movePos);
-            if (!validInBetween) return -1;
+            if (!validInBetween) return null;
 
             int[] moved = Move.changeValues(pieces, 500 + pawnPos, movePos, Constants.ENP_DEFAULT);
             if (HasEnPassant.forMovedPawnByTwoSquares(moved, movePos)) {
                 moved[Constants.EN_PASSANT_INDEX] = movePos % length;
             }
 
-            return GaussHelper.longFromArr(moved);
+            return moved;
         }
 
         // diagonal capture or en passant
@@ -56,8 +54,7 @@ public class PawnMove {
 
             if (condition) {
                 if (promotion) return promotionChangeValues(pieces, pawnPos, movePos, promotionPieceDigit);
-                int[] moved = Move.changeValues(pieces, 500 + pawnPos, movePos, Constants.ENP_DEFAULT);
-                return GaussHelper.longFromArr(moved);
+                return Move.changeValues(pieces, 500 + pawnPos, movePos, Constants.ENP_DEFAULT);
             }
         }
 
@@ -67,10 +64,10 @@ public class PawnMove {
             return enPassantProbe(pieces, pawnPos, movePos);
         }
 
-        return -1;
+        return null;
     }
 
-    public static long promotionChangeValues(int[] pieces, int pawnPos, int movePos, int promotionPieceDigit) {
+    public static int[] promotionChangeValues(int[] pieces, int pawnPos, int movePos, int promotionPieceDigit) {
         for (int i = Constants.DELIMITER_INDEX + 1; i < pieces.length; i++) {
             if (pieces[i] % 100 == movePos) {
                 pieces[i] = 0;
@@ -81,10 +78,10 @@ public class PawnMove {
             if (pieces[i] % 100 == pawnPos) pieces[i] = 100 * promotionPieceDigit + movePos;
         }
 
-        return GaussHelper.longFromArr(pieces);
+        return pieces;
     }
 
-    public static long enPassantProbe(int[] pieces, int pawnPos, int movePos) {
+    public static int[] enPassantProbe(int[] pieces, int pawnPos, int movePos) {
         int length = Constants.BOARD_LENGTH;
         boolean whiteTurn = pieces[Constants.TURN_INDEX] == 1;
 
@@ -102,10 +99,10 @@ public class PawnMove {
             return enPassant(pieces, pawnPos, movePos);
         }
 
-        return -1;
+        return null;
     }
 
-    public static long enPassant(int[] pieces, int pawnPos, int movePos) {
+    public static int[] enPassant(int[] pieces, int pawnPos, int movePos) {
         for (int i = Constants.DELIMITER_INDEX + 1; i < pieces.length; i++) {
             boolean whiteTurn = pieces[Constants.TURN_INDEX] == 1;
 
@@ -121,6 +118,6 @@ public class PawnMove {
 
         pieces[Constants.EN_PASSANT_INDEX] = Constants.ENP_DEFAULT;
 
-        return GaussHelper.longFromArr(pieces);
+        return pieces;
     }
 }

@@ -1,7 +1,5 @@
 package dev.michalrelich.tablebase.code.three_piece;
 
-import dev.michalrelich.tablebase.code.EGTBConstants;
-
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,7 +15,7 @@ public class FilePopulator {
             default -> null;
         };
 
-        int totalBytes = EGTBConstants.KXKPositions(pieceInt);
+        int totalBytes = ThreePieceConstants.KXKPositions(pieceInt);
         int bufferSize = 8*1024*1024;
         int iterations = totalBytes / bufferSize;
 
@@ -25,7 +23,7 @@ public class FilePopulator {
         byte[] byteArr = new byte[bufferSize];
 
         try (FileOutputStream fileOut = new FileOutputStream(String.format("%1$s/%2$s/%2$s.bin",
-                EGTBConstants.THREE_PIECE_PATH, fileName))) {
+                ThreePieceConstants.THREE_PIECE_PATH, fileName))) {
 
             BufferedOutputStream bufferedOut = new BufferedOutputStream(fileOut);
 

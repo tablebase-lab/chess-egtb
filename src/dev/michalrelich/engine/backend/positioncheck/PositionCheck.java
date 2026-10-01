@@ -6,13 +6,11 @@ package dev.michalrelich.engine.backend.positioncheck;
 
 import dev.michalrelich.engine.backend.Constants;
 import dev.michalrelich.engine.backend.helper.Check;
-import dev.michalrelich.engine.backend.helper.GaussHelper;
 
 public class PositionCheck {
 
-    public static boolean checkPosition(long gauss) {
-        int[] pieces = GaussHelper.getPiecesArr(gauss);
-        return piecesOnSameSquareCheck(pieces) && kingsCheck(pieces) && pawnsCheck(pieces) && checkCheck(gauss);
+    public static boolean checkPosition(int[] pieces) {
+        return piecesOnSameSquareCheck(pieces) && kingsCheck(pieces) && pawnsCheck(pieces) && checkCheck(pieces);
     }
 
     // checks for pieces on same square
@@ -45,7 +43,7 @@ public class PositionCheck {
         return true;
     }
 
-    private static boolean checkCheck(long gauss) {
-        return Check.isInCheck(gauss) != -1;
+    private static boolean checkCheck(int[] pieces) {
+        return Check.isInCheck(pieces) != -1;
     }
 }

@@ -1,15 +1,19 @@
 package dev.michalrelich;
 
 import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.helper.GaussHelper;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
-import dev.michalrelich.tablebase.code.EGTBConstants;
+import dev.michalrelich.engine.gaussfunction.GaussFunction;
+import dev.michalrelich.tablebase.code.MoveGenerator;
 import dev.michalrelich.tablebase.code.three_piece.FilePopulator;
 
 import java.util.Random;
 
+import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.WHITE;
 import static dev.michalrelich.engine.frontend.Piece.PieceType.KING;
+import static dev.michalrelich.engine.frontend.Piece.PieceType.*;
 
 public class Main {
 
@@ -17,10 +21,26 @@ public class Main {
 
     // todo: limit conversions from int[] to long OR (ideally) use bit-packing
 
-    static void main() {
-        System.out.println(EGTBConstants.KXKPositions(1));
-        System.out.println(EGTBConstants.KXKPositions(2));
-        System.out.println(EGTBConstants.KXKPositions(5));
+    static void main() throws InterruptedException {
+        Board b = new Board(WHITE);
+
+        b.addToBoard(new Piece(KING, WHITE), 0);
+        b.addToBoard(new Piece(KING, BLACK), 3);
+        b.addToBoard(new Piece(PAWN, WHITE), 55);
+        b.addToBoard(new Piece(QUEEN, WHITE), 56);
+        b.addToBoard(new Piece(QUEEN, BLACK), 57);
+
+        b.launchApp();
+
+        int[][] movePositions = MoveGenerator.generateMoves(GaussHelper.getPiecesArr(
+                GaussFunction.gaussFunction(b, true)));
+        for (int i = 0; i <= 96; i++) {
+            int[] position = movePositions[i];
+            if (position[0] == 0) break;
+            Board b1 = GaussFunction.inverse(GaussHelper.longFromArr(position));
+            b1.launchApp();
+            Thread.sleep(2000);
+        }
 
         FilePopulator.fullThreePiece();
 
@@ -60,7 +80,7 @@ public class Main {
 
     public static void addRandomKings(Board board) {
         for (int i = 0; i <= 1; i++) {
-            Piece.PieceColor color = i == 0 ? WHITE : Piece.PieceColor.BLACK;
+            Piece.PieceColor color = i == 0 ? WHITE : BLACK;
             int row = random.nextInt(8) + 1;
             int col = random.nextInt(8) + 1;
             Piece piece = new Piece(KING, color);

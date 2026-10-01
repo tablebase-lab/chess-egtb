@@ -2,8 +2,9 @@ package dev.michalrelich.engine.backend.move;
 
 import dev.michalrelich.engine.backend.Constants;
 import dev.michalrelich.engine.backend.helper.Check;
-import dev.michalrelich.engine.backend.helper.GaussHelper;
 import dev.michalrelich.engine.backend.positioncheck.DirectionCheck;
+
+import java.util.Arrays;
 
 public class Move {
 
@@ -11,35 +12,35 @@ public class Move {
     // returns -1 if move can't be performed, else returns modified gauss number
 
     // method works for inCheck positions aswell because the checks at the end.
-    public static long move(long gauss, int fullPieceInt, int movePos, int promotionPiece) {
+    public static int[] move(int[] original, int fullPieceInt, int movePos, int promotionPiece) {
+        int[] pieces = Arrays.copyOf(original, original.length);
+
         int piecePos = fullPieceInt % 100;
         int length = Constants.BOARD_LENGTH;
-        int[] pieces = GaussHelper.getPiecesArr(gauss);
 
-        if (piecePos == movePos) return -1;
+        if (piecePos == movePos) return null;
         if (!canMove(pieces[Constants.TURN_INDEX] == 1, fullPieceInt, movePos) ||
-                !movePosCheck(pieces, movePos)) return -1;
+                !movePosCheck(pieces, movePos)) return null;
 
-        long finalLong;
+        int[] finalArr;
 
         if (fullPieceInt / 100 == 5) {
-            finalLong = PawnMove.pawnMove(gauss, piecePos, movePos, promotionPiece);
-            if (finalLong == -1) return -1;
+            finalArr = PawnMove.pawnMove(pieces, piecePos, movePos, promotionPiece);
+            if (finalArr == null) return null;
         } else {
             // code for all other pieces except pawns
             if (!checkInBetweenPieces(pieces, length, fullPieceInt, movePos))
-                return -1; // horse and king is handled within the method
-            changeValues(pieces, fullPieceInt, movePos, Constants.ENP_DEFAULT); // side effect, therefor dont have to assign
-            finalLong = GaussHelper.longFromArr(pieces);
+                return null; // horse and king is handled within the method
+            finalArr = changeValues(pieces, fullPieceInt, movePos, Constants.ENP_DEFAULT); // side effect, therefore dont have to assign
         }
 
         // code for all pieces
 
-        int longLengthMinusOne = GaussHelper.getLongLength(finalLong) - 1;
-        finalLong = pieces[Constants.TURN_INDEX] == 1 ? finalLong + GaussHelper.POW10[longLengthMinusOne]
-                : finalLong - GaussHelper.POW10[longLengthMinusOne];
+        if (pieces[Constants.TURN_INDEX] == 1) pieces[Constants.TURN_INDEX] = 2;
+        else pieces[Constants.TURN_INDEX] = 1;
 
-        boolean checkCheck = Check.isInCheck(finalLong) != -1;
+        boolean checkCheck = Check.isInCheck(finalArr) != -1;
+
         boolean kingCheck;
         if (fullPieceInt / 100 != 0) {
             kingCheck = true;
@@ -50,11 +51,11 @@ public class Move {
         if (!checkCheck) System.out.println("Somethings wrong with the checks!");
         if (!kingCheck) System.out.println("Kings are near each other!");
 
-        return checkCheck && kingCheck ? finalLong : -1;
+        return checkCheck && kingCheck ? pieces : null;
     }
 
-    public static long move(long gauss, int fullPieceInt, int movePos) {
-        return move(gauss, fullPieceInt, movePos, -1);
+    public static int[] move(int[] pieces, int fullPieceInt, int movePos) {
+        return move(pieces, fullPieceInt, movePos, -1);
     }
 
     // returns an array due to en passant (even after the move is made the en passant index might be changed)

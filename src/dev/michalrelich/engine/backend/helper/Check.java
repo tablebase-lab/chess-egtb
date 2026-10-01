@@ -10,9 +10,8 @@ public class Check {
     // so figures out everything you need to know check-wise about a position
     // DONE
 
-    public static int isInCheck(long gauss) {
+    public static int isInCheck(int[] pieces) {
 
-        int[] pieces = GaussHelper.getPiecesArr(gauss);
         int length = BOARD_LENGTH;
 
         int whiteKing = pieces[WHITE_KING_INDEX];
