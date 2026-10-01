@@ -4,6 +4,7 @@ import dev.michalrelich.engine.backend.Constants;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
 import dev.michalrelich.tablebase.code.EGTBConstants;
+import dev.michalrelich.tablebase.code.three_piece.FilePopulator;
 
 import java.util.Random;
 
@@ -20,6 +21,9 @@ public class Main {
         System.out.println(EGTBConstants.KXKPositions(1));
         System.out.println(EGTBConstants.KXKPositions(2));
         System.out.println(EGTBConstants.KXKPositions(5));
+
+        FilePopulator.fullThreePiece();
+
 
 //        LocalTime currentTime = LocalTime.now();
 //        System.out.println("Begin Time: " + currentTime);
