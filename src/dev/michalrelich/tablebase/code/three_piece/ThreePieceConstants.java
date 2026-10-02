@@ -10,13 +10,14 @@ public class ThreePieceConstants {
     public static final int KPK_POSITIONS = KXKPositions(5);
     public static final String THREE_PIECE_PATH = "data/three_piece";
 
-
-
     public static int KXKPositions(int pieceInt) {
         int count = 0;
         for (int turn = 1; turn <= 2; turn++) {
             for (int kingOne = 0; kingOne <= 27; kingOne++) {
-                kingOne = Helpers.returnEightKingPosition(kingOne);
+                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                        Helpers.isEighthKingPosition(kingOne);
+
+                if (!proceed) continue;
 
                 for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
                     for (int piece = 0; piece <= 63; piece++) {
