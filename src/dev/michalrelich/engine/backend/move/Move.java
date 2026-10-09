@@ -48,8 +48,8 @@ public class Move {
             kingCheck = !DirectionCheck.king(pieces[Constants.WHITE_KING_INDEX], pieces[Constants.BLACK_KING_INDEX]);
         }
 
-        if (!checkCheck) System.out.println("Somethings wrong with the checks!");
-        if (!kingCheck) System.out.println("Kings are near each other!");
+//        if (!checkCheck) System.out.println("Somethings wrong with the checks!");
+//        if (!kingCheck) System.out.println("Kings are near each other!");
 
         return checkCheck && kingCheck ? pieces : null;
     }

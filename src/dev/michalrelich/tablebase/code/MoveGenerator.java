@@ -16,9 +16,14 @@ public class MoveGenerator {
             if (Constants.skipNonPositionIndex(i)) continue;
             if (pieces[Constants.DELIMITER_INDEX] == i - (Constants.DELIMITER_INDEX + 1)) isPieceWhite = false;
 
-            boolean wrongKingTurn = (isTurnWhite && i == Constants.BLACK_KING_INDEX) ||
-                    (!isTurnWhite && i == Constants.WHITE_KING_INDEX);
-            if (isPieceWhite != isTurnWhite || wrongKingTurn) continue;
+            boolean kingTurn = i == Constants.WHITE_KING_INDEX || i == Constants.BLACK_KING_INDEX;
+
+            if (kingTurn) {
+                boolean wrongKingTurn = (isTurnWhite && i == Constants.BLACK_KING_INDEX) ||
+                        (!isTurnWhite && i == Constants.WHITE_KING_INDEX);
+                if (wrongKingTurn) continue;
+            }
+            else if (isPieceWhite != isTurnWhite) continue;
 
             int fullPiece = pieces[i];
             if (fullPiece / 100 != 5) {

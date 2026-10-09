@@ -1,50 +1,57 @@
 package dev.michalrelich;
 
 import dev.michalrelich.engine.backend.Constants;
-import dev.michalrelich.engine.backend.helper.GaussHelper;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
-import dev.michalrelich.engine.gaussfunction.GaussFunction;
-import dev.michalrelich.tablebase.code.MoveGenerator;
+import dev.michalrelich.tablebase.code.Helpers;
 import dev.michalrelich.tablebase.code.three_piece.FilePopulator;
+import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.file.Path;
 import java.util.Random;
 
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.WHITE;
 import static dev.michalrelich.engine.frontend.Piece.PieceType.KING;
-import static dev.michalrelich.engine.frontend.Piece.PieceType.*;
 
 public class Main {
 
     private static final Random random = new Random();
 
     // todo: limit conversions from int[] to long OR (ideally) use bit-packing
+    // todo: pass a position that has checkmate in one to ThreePieceAlgorithm
 
     static void main() throws InterruptedException {
-        Board b = new Board(WHITE);
-
-        b.addToBoard(new Piece(KING, WHITE), 0);
-        b.addToBoard(new Piece(KING, BLACK), 3);
-        b.addToBoard(new Piece(PAWN, WHITE), 55);
-        b.addToBoard(new Piece(QUEEN, WHITE), 56);
-        b.addToBoard(new Piece(QUEEN, BLACK), 57);
-
-        b.launchApp();
-
-        int[][] movePositions = MoveGenerator.generateMoves(GaussHelper.getPiecesArr(
-                GaussFunction.gaussFunction(b, true)));
-        for (int i = 0; i <= 96; i++) {
-            int[] position = movePositions[i];
-            if (position[0] == 0) break;
-            Board b1 = GaussFunction.inverse(GaussHelper.longFromArr(position));
-            b1.launchApp();
-            Thread.sleep(2000);
-        }
 
         FilePopulator.fullThreePiece();
 
+        ThreePieceAlgorithm.KXKLoop(1);
 
+        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(1),
+                Helpers.getFileNameThreePiece(1) + ".bin").toString();
+
+        for (int i = 0; i <= 50000; i++) {
+            // Open file in read-only mode ("r")
+            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+
+                // Jump directly to byte position 10 (0-indexed)
+                file.seek(i);
+
+                // readByte() returns a signed Java byte (-128 to 127)
+                byte signedIndex = file.readByte();
+
+                if (signedIndex == 1) {
+                    System.out.println("Found checkmate at index " + i + ": " + signedIndex);
+                }
+
+//                System.out.println("Signed byte at index " + i + ": " + signedIndex);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 //        LocalTime currentTime = LocalTime.now();
 //        System.out.println("Begin Time: " + currentTime);
 //

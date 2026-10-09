@@ -1,5 +1,7 @@
 package dev.michalrelich.tablebase.code.three_piece;
 
+import dev.michalrelich.tablebase.code.Helpers;
+
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,12 +10,7 @@ public class FilePopulator {
 
     public static void threePiece(int pieceInt) {
 
-        String fileName = switch (pieceInt) {
-            case 1 -> "KQK";
-            case 2 -> "KRK";
-            case 5 -> "KPK";
-            default -> null;
-        };
+        String fileName = Helpers.getFileNameThreePiece(pieceInt);
 
         int totalBytes = ThreePieceConstants.KXKPositions(pieceInt);
         int bufferSize = 8*1024*1024;
