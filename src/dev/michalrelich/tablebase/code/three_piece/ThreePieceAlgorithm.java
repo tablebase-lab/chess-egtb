@@ -6,6 +6,7 @@ import dev.michalrelich.tablebase.code.Helpers;
 import dev.michalrelich.tablebase.code.MoveGenerator;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class ThreePieceAlgorithm {
 
@@ -43,6 +44,8 @@ public class ThreePieceAlgorithm {
                                     if (isACheckmateOrStalemate(moves) && Check.isInCheck(arr) != 0) { // runs isInCheck twice incl. in checkPosition
                                         byte value = (byte) (arr[0] == 1 ? 1 : -1);
                                         Helpers.rewriteByteForIntIndex(path, index, value);
+
+                                        System.out.println("Found a checkmate for position: " + Arrays.toString(arr));
                                     }
                                 } else {
                                     return;

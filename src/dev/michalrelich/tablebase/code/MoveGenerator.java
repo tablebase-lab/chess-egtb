@@ -26,6 +26,7 @@ public class MoveGenerator {
             else if (isPieceWhite != isTurnWhite) continue;
 
             int fullPiece = pieces[i];
+
             if (fullPiece / 100 != 5) {
                 for (int j = 0; j <= 63; j++) {
                     int[] moveResult = Move.move(pieces, fullPiece, j);

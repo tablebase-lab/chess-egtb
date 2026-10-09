@@ -27,22 +27,19 @@ public class Main {
 
         FilePopulator.fullThreePiece();
 
-        ThreePieceAlgorithm.KXKLoop(1);
+        ThreePieceAlgorithm.KXKLoop(2);
 
         String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(1),
                 Helpers.getFileNameThreePiece(1) + ".bin").toString();
 
         for (int i = 0; i <= 50000; i++) {
-            // Open file in read-only mode ("r")
             try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
 
-                // Jump directly to byte position 10 (0-indexed)
                 file.seek(i);
 
-                // readByte() returns a signed Java byte (-128 to 127)
                 byte signedIndex = file.readByte();
 
-                if (signedIndex == 1) {
+                if (signedIndex == 1 || signedIndex == -1) {
                     System.out.println("Found checkmate at index " + i + ": " + signedIndex);
                 }
 
