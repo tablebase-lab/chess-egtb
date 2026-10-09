@@ -15,8 +15,10 @@ public class PositionCheck {
 
     // checks for pieces on same square
     private static boolean piecesOnSameSquareCheck(int[] pieces) {
-        for (int i = Constants.DELIMITER_INDEX + 1; i < pieces.length; i++) {
-            for (int j = Constants.DELIMITER_INDEX + 1; j < pieces.length; j++) {
+        for (int i = Constants.WHITE_KING_INDEX; i < pieces.length; i++) {
+            if (Constants.skipNonPositionIndex(i)) continue;
+            for (int j = Constants.BLACK_KING_INDEX; j < pieces.length; j++) {
+                if (Constants.skipNonPositionIndex(i)) continue;
                 if (pieces[i] % 100 == pieces[j] % 100 && i != j) return false;
             }
         }

@@ -1,5 +1,6 @@
 package dev.michalrelich.tablebase.code.three_piece;
 
+import dev.michalrelich.engine.backend.helper.Check;
 import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.tablebase.code.Helpers;
 import dev.michalrelich.tablebase.code.MoveGenerator;
@@ -39,7 +40,7 @@ public class ThreePieceAlgorithm {
                                 int[][] moves = MoveGenerator.generateMoves(arr);
 
                                 if (firstIteration) {
-                                    if (isACheckmate(moves)) {
+                                    if (isACheckmateOrStalemate(moves) && Check.isInCheck(arr) != 0) { // runs isInCheck twice incl. in checkPosition
                                         byte value = (byte) (arr[0] == 1 ? 1 : -1);
                                         Helpers.rewriteByteForIntIndex(path, index, value);
                                     }
@@ -59,7 +60,7 @@ public class ThreePieceAlgorithm {
         }
     }
 
-    public static boolean isACheckmate(int[][] moves) {
+    public static boolean isACheckmateOrStalemate(int[][] moves) {
         return moves[0][0] == 0;
     }
 
