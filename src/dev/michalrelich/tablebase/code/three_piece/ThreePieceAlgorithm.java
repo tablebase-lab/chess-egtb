@@ -1,6 +1,5 @@
 package dev.michalrelich.tablebase.code.three_piece;
 
-import dev.michalrelich.engine.backend.Constants;
 import dev.michalrelich.engine.backend.helper.Check;
 import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.tablebase.code.Helpers;
@@ -54,7 +53,6 @@ public class ThreePieceAlgorithm {
 
         if (firstIteration) {
             for (int[] move : moves) {
-                if (move[Constants.DELIMITER_INDEX + 1] == 0) continue;
                 if (move[0] == 0) break;
                 int[][] movesOfMoves = MoveGenerator.generateMoves(move); // we get 2 ply deep here
 
