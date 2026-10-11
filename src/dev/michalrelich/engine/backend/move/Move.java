@@ -36,17 +36,20 @@ public class Move {
 
         // code for all pieces
 
+
+
         if (pieces[Constants.TURN_INDEX] == 1) pieces[Constants.TURN_INDEX] = 2;
         else pieces[Constants.TURN_INDEX] = 1;
 
         boolean checkCheck = Check.isInCheck(finalArr) != -1;
-
         boolean kingCheck;
         if (fullPieceInt / 100 != 0) {
             kingCheck = true;
         } else {
             kingCheck = !DirectionCheck.king(pieces[Constants.WHITE_KING_INDEX], pieces[Constants.BLACK_KING_INDEX]);
         }
+
+        pieces = removeZeroes(pieces);
 
 //        if (!checkCheck) System.out.println("Somethings wrong with the checks!");
 //        if (!kingCheck) System.out.println("Kings are near each other!");
@@ -58,8 +61,34 @@ public class Move {
         return move(pieces, fullPieceInt, movePos, -1);
     }
 
+    public static int[] removeZeroes(int[] pieces) {
+
+        int totalSpaces = Constants.DELIMITER_INDEX + 1;
+        for (int i = Constants.DELIMITER_INDEX + 1; i < pieces.length; i++) {
+            if (pieces[i] != 0) totalSpaces++;
+        }
+
+        int[] piecesShortened = new int[totalSpaces];
+        int newIndex = 0;
+        for (int i = 0; i < piecesShortened.length; i++) {
+            if (i <= Constants.DELIMITER_INDEX) {
+                piecesShortened[newIndex] = pieces[i];
+                newIndex++;
+                continue;
+            }
+
+            if (pieces[i] == 0) continue;
+
+            piecesShortened[newIndex] = pieces[i];
+            newIndex++;
+        }
+
+        return piecesShortened;
+    }
+
     // returns an array due to en passant (even after the move is made the en passant index might be changed)
     public static int[] changeValues(int[] pieces, int fullPieceInt, int movePos, int enPassantCol) {
+
         for (int i = 0; i < pieces.length; i++) {
             if (Constants.skipNonPositionIndex(i)) continue;
 
@@ -152,6 +181,8 @@ public class Move {
         boolean isPieceWhite = pieces[0] == 1;
 
         for (int i = 0; i < pieces.length; i++) {
+
+            if (pieces[i] / 100 == 0 && pieces[i] % 100 == 0) continue; // if there's a capture and we have an array with a 0, like [1, 8, 1, 11, 0, 0]
 
             if (Constants.skipNonPositionIndex(i)) continue;
 

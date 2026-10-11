@@ -18,7 +18,7 @@ public class PositionCheck {
         for (int i = Constants.WHITE_KING_INDEX; i < pieces.length; i++) {
             if (Constants.skipNonPositionIndex(i)) continue;
             for (int j = Constants.BLACK_KING_INDEX; j < pieces.length; j++) {
-                if (Constants.skipNonPositionIndex(i)) continue;
+                if (Constants.skipNonPositionIndex(j)) continue;
                 if (pieces[i] % 100 == pieces[j] % 100 && i != j) return false;
             }
         }

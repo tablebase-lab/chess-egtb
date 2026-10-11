@@ -1,15 +1,11 @@
 package dev.michalrelich;
 
 import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.move.Move;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
-import dev.michalrelich.tablebase.code.Helpers;
-import dev.michalrelich.tablebase.code.three_piece.FilePopulator;
-import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
@@ -25,30 +21,43 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        FilePopulator.fullThreePiece();
+        int[] position = {2, 8, 1, 20, 0, 0};
 
-        ThreePieceAlgorithm.KXKLoop(2);
+        System.out.println(Arrays.toString(Move.removeZeroes(position)));
 
-        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(1),
-                Helpers.getFileNameThreePiece(1) + ".bin").toString();
+//        int[][] moves = MoveGenerator.generateMoves(position);
+//        for (int[] move : moves) {
+//            if (move[0] == 0) break;
+//            int[][] movesOfMoves = MoveGenerator.generateMoves(move); // bug here
+//            System.out.println(ThreePieceAlgorithm.isACheckmateOrStalemate(movesOfMoves));
+//        }
 
-        for (int i = 0; i <= 50000; i++) {
-            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
 
-                file.seek(i);
 
-                byte signedIndex = file.readByte();
-
-                if (signedIndex == 1 || signedIndex == -1) {
-                    System.out.println("Found checkmate at index " + i + ": " + signedIndex);
-                }
-
-//                System.out.println("Signed byte at index " + i + ": " + signedIndex);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        FileZeroPopulator.fullThreePiece();
+//
+//        ThreePieceAlgorithm.KXKLoop(2);
+//
+//        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
+//                Helpers.getFileNameThreePiece(2) + ".bin").toString();
+//
+//        for (int i = 0; i <= 50000; i++) {
+//            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+//
+//                file.seek(i);
+//
+//                byte signedIndex = file.readByte();
+//
+//                if (signedIndex == 1 || signedIndex == -1) {
+//                    System.out.println("Found checkmate at index " + i + ": " + signedIndex);
+//                }
+//
+////                System.out.println("Signed byte at index " + i + ": " + signedIndex);
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 //        LocalTime currentTime = LocalTime.now();
 //        System.out.println("Begin Time: " + currentTime);
 //
@@ -67,6 +76,7 @@ public class Main {
 
 //        Path path = Path.of("data", "three_piece", "KRK");
 //        KingFoldersGenerator.generateNumberDirectories(0, 63, path);
+//        }
     }
 
     public static void addRandomPieces(Board board) {

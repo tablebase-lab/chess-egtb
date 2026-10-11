@@ -6,7 +6,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class FilePopulator {
+public class FileZeroPopulator {
 
     public static void threePiece(int pieceInt) {
 
