@@ -13,7 +13,7 @@ public class ThreePieceConstants {
     public static int KXKPositions(int pieceInt) {
         int count = 0;
         for (int turn = 1; turn <= 2; turn++) {
-            for (int kingOne = 0; kingOne <= 27; kingOne++) {
+            for (int kingOne = 0; kingOne <= 63; kingOne++) {
                 boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
                         Helpers.isEighthKingPosition(kingOne);
 

@@ -36,6 +36,7 @@ public class Main {
 
         FileZeroPopulator.fullThreePiece();
         ThreePieceAlgorithm.KXKLoop(2);
+
 //
 //        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
 //                Helpers.getFileNameThreePiece(2) + ".bin").toString();
