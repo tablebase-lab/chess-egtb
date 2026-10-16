@@ -1,10 +1,11 @@
 package dev.michalrelich;
 
 import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
-import dev.michalrelich.tablebase.code.three_piece.FileZeroPopulator;
-import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
+import dev.michalrelich.tablebase.code.Helpers;
+import dev.michalrelich.tablebase.code.three_piece.ThreePieceConstants;
 
 import java.util.Random;
 
@@ -21,21 +22,49 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-//        int[] position = {2, 8, 1, 20, 1, 211};
+        System.out.println(ThreePieceConstants.returnIndexFromArray(2, 2, 12));
+
+        int pieceInt = 2;
+        int count = 0;
+        boolean flag = true;
+        for (int turn = 1; turn <= 2; turn++) {
+            for (int kingOne = 0; kingOne <= 63; kingOne++) {
+                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                        Helpers.isEighthKingPosition(kingOne);
+
+                if (!proceed) continue;
+
+                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                    for (int piece = 0; piece <= 63; piece++) {
+                        int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
+                        if (PositionCheck.checkPosition(arr)) {
+                            if (turn == 2 && kingTwo == 12 && flag) {
+                                flag = false;
+                                System.out.println(count);
+                            }
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+
+//        long start = System.nanoTime();
 //
-//        System.out.println(Arrays.toString(Move.removeZeroes(position)));
-//
-//        int[][] moves = MoveGenerator.generateMoves(position);
-//        for (int[] move : moves) {
-//            if (move[0] == 0) break;
-//            int[][] movesOfMoves = MoveGenerator.generateMoves(move); // bug here
-//            System.out.println(ThreePieceAlgorithm.isACheckmateOrStalemate(movesOfMoves));
+//        Random random = new Random();
+//        for (int i = 0; i <= 1_000_000; i++) {
+//            int index = random.nextInt(0, 50000);
+//            ThreePieceAlgorithm.retrieveValueByIndex(index, 2);
 //        }
+//
+//        long end = System.nanoTime();
+//
+//        double seconds = (end - start) / 1_000_000_000.0;
+//
+//        System.out.println("Elapsed time: " + seconds + " seconds");
 
-
-
-        FileZeroPopulator.fullThreePiece();
-        ThreePieceAlgorithm.KXKLoop(2);
+//        FileZeroPopulator.fullThreePiece();
+//        ThreePieceAlgorithm.KXKLoop(2);
 
 //
 //        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),

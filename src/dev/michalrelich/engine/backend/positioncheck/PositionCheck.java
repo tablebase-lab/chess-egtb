@@ -10,7 +10,7 @@ import dev.michalrelich.engine.backend.helper.Check;
 public class PositionCheck {
 
     public static boolean checkPosition(int[] pieces) {
-        return piecesOnSameSquareCheck(pieces) && kingsCheck(pieces) && pawnsCheck(pieces) && checkCheck(pieces);
+        return kingsCheck(pieces) && pawnsCheck(pieces) &&  piecesOnSameSquareCheck(pieces) && checkCheck(pieces);
     }
 
     // checks for pieces on same square

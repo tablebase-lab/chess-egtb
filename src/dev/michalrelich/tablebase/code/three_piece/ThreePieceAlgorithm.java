@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 public class ThreePieceAlgorithm {
 
+    public static int methodCalls = 0;
 
     public static void KXKLoop(int pieceInt) {
         int allPositions = ThreePieceConstants.KXKPositions(pieceInt);
@@ -45,9 +46,9 @@ public class ThreePieceAlgorithm {
                     boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
                             Helpers.isEighthKingPosition(kingOne);
 
-                    System.out.println("Now checking for white king at: " + kingOne);
-
                     if (!proceed) continue;
+
+                    System.out.println("Now checking for white king at: " + kingOne);
 
                     for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
                         for (int piece = 0; piece <= 63; piece++) {
@@ -73,20 +74,51 @@ public class ThreePieceAlgorithm {
 
         boolean isEven = mateInXPlies % 2 == 0;
 
+        // the method calls for isOdd are about 100x more than for is even, around 6 million per ply
         if (isEven) {
             for (int[] movePos : pieceMoves) {
-                if (retrieveValueByPosition(movePos, pieceInt) != mateInXPlies) return false;
+                if (retrieveValueByPosition(movePos, pieceInt) != mateInXPlies - 1) return false;
             }
             return true;
+
+
+            // todo: use the fact that i can write beginning indexes for turn for example --> turn for black starts at index 33234 for example!!!
         } else {
             for (int[] movePos : pieceMoves) {
-                if (retrieveValueByPosition(movePos, pieceInt) == mateInXPlies) return true;
+                if (retrieveValueByPosition(movePos, pieceInt) == mateInXPlies - 1) return true;
             }
             return false;
         }
     }
 
+    public static int retrieveValueByPosition(int[] position, int pieceInt) {
 
+
+
+        int index = 0;
+        for (int turn = 1; turn <= 2; turn++) {
+            for (int kingOne = 0; kingOne <= 63; kingOne++) {
+                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                        Helpers.isEighthKingPosition(kingOne);
+
+                if (!proceed) continue;
+
+                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                    for (int piece = 0; piece <= 63; piece++) {
+                        int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
+                        if (PositionCheck.checkPosition(arr)) {
+                            if (Arrays.equals(position, arr)) {
+                                return retrieveValueByIndex(index, pieceInt);
+                            }
+                            index++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
 
     public static void firstIteration(int allPositions, int pieceInt, MappedByteBuffer mappedByteBuffer) {
         int index = 0;
@@ -136,34 +168,13 @@ public class ThreePieceAlgorithm {
         return moves[0][0] == 0;
     }
 
-    public static int retrieveValueByPosition(int[] position, int pieceInt) {
-        int index = 0;
-        for (int turn = 1; turn <= 2; turn++) {
-            for (int kingOne = 0; kingOne <= 63; kingOne++) {
-                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
-                        Helpers.isEighthKingPosition(kingOne);
-
-                if (!proceed) continue;
-
-                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
-                    for (int piece = 0; piece <= 63; piece++) {
-                        int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
-                        if (PositionCheck.checkPosition(arr)) {
-                            if (Arrays.equals(position, arr)) {
-                                return retrieveValueByIndex(index, pieceInt);
-                            }
-                            index++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return 0;
-    }
-
     public static int retrieveValueByIndex(int index, int pieceInt) {
         assert Helpers.getFileNameThreePiece(pieceInt) != null;
+
+        methodCalls++;
+        if (methodCalls % 10000 == 0) {
+            System.out.println("Called " + methodCalls);
+        }
 
         String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(pieceInt),
                 Helpers.getFileNameThreePiece(pieceInt) + ".bin").toString();
