@@ -1,5 +1,6 @@
 package dev.michalrelich.tablebase.code.three_piece;
 
+import dev.michalrelich.engine.backend.Constants;
 import dev.michalrelich.engine.backend.helper.Check;
 import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.tablebase.code.Helpers;
@@ -77,15 +78,17 @@ public class ThreePieceAlgorithm {
         // the method calls for isOdd are about 100x more than for is even, around 6 million per ply
         if (isEven) {
             for (int[] movePos : pieceMoves) {
-                if (retrieveValueByPosition(movePos, pieceInt) != mateInXPlies - 1) return false;
+                int result = retrieveValueByPosition(movePos, pieceInt);
+                if (result == -1) break;
+                if (result != mateInXPlies - 1) return false;
             }
             return true;
 
-
-            // todo: use the fact that i can write beginning indexes for turn for example --> turn for black starts at index 33234 for example!!!
         } else {
             for (int[] movePos : pieceMoves) {
-                if (retrieveValueByPosition(movePos, pieceInt) == mateInXPlies - 1) return true;
+                int result = retrieveValueByPosition(movePos, pieceInt);
+                if (result == -1) break;
+                if (result == mateInXPlies - 1) return true;
             }
             return false;
         }
@@ -93,28 +96,28 @@ public class ThreePieceAlgorithm {
 
     public static int retrieveValueByPosition(int[] position, int pieceInt) {
 
+        if (position[0] == 0) return -1;
 
+        int turn = position[Constants.TURN_INDEX];
+        int blackKingPos = position[Constants.BLACK_KING_INDEX];
 
-        int index = 0;
-        for (int turn = 1; turn <= 2; turn++) {
-            for (int kingOne = 0; kingOne <= 63; kingOne++) {
-                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
-                        Helpers.isEighthKingPosition(kingOne);
+        int index = ThreePieceConstants.returnIndexFromArray(pieceInt, turn, blackKingPos);
+        for (int kingOne = 0; kingOne <= 63; kingOne++) {
+            boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                    Helpers.isEighthKingPosition(kingOne);
 
-                if (!proceed) continue;
+            if (!proceed) continue;
 
-                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
-                    for (int piece = 0; piece <= 63; piece++) {
-                        int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
-                        if (PositionCheck.checkPosition(arr)) {
-                            if (Arrays.equals(position, arr)) {
-                                return retrieveValueByIndex(index, pieceInt);
-                            }
-                            index++;
-                        }
+            for (int piece = 0; piece <= 63; piece++) {
+                int[] arr = {turn, 8, kingOne, blackKingPos, 1, pieceInt * 100 + piece};
+                if (PositionCheck.checkPosition(arr)) {
+                    if (Arrays.equals(position, arr)) {
+                        return retrieveValueByIndex(index, pieceInt);
                     }
+                    index++;
                 }
             }
+
         }
 
         return 0;
