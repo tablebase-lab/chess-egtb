@@ -100,8 +100,9 @@ public class ThreePieceAlgorithm {
 
         int turn = position[Constants.TURN_INDEX];
         int blackKingPos = position[Constants.BLACK_KING_INDEX];
+        int piecePos = position[Constants.DELIMITER_INDEX + 1];
 
-        int index = ThreePieceConstants.returnIndexFromArray(pieceInt, turn, blackKingPos);
+        int index = ThreePieceConstants.returnIndexFromArray(pieceInt, turn, blackKingPos, piecePos);
         for (int kingOne = 0; kingOne <= 63; kingOne++) {
             boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
                     Helpers.isEighthKingPosition(kingOne);
