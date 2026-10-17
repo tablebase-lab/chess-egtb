@@ -70,11 +70,11 @@ public class Main {
     }
 
     public static void methodMeasure() {
-        System.out.println(ThreePieceConstants.returnIndexFromArray(2, 2, 12));
+        System.out.println(ThreePieceConstants.returnIndexFromArray(2, 2, 12, 209));
 
         long start = System.nanoTime();
 
-        System.out.println(ThreePieceConstants.returnIndexFromArray(2, 1, 53));
+        System.out.println(ThreePieceConstants.returnIndexFromArray(2, 1, 53, 230));
 
         long end = System.nanoTime();
 

@@ -7,7 +7,6 @@ import dev.michalrelich.tablebase.code.Helpers;
 import dev.michalrelich.tablebase.code.MoveGenerator;
 
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
@@ -55,7 +54,7 @@ public class ThreePieceAlgorithm {
                         for (int piece = 0; piece <= 63; piece++) {
                             int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                             if (PositionCheck.checkPosition(pieces)) {
-                                if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt)) {
+                                if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
                                     assert mappedByteBuffer != null;
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
                                 }
@@ -70,7 +69,7 @@ public class ThreePieceAlgorithm {
         }
     }
 
-    public static boolean searchForSolvedPlies(int mateInXPlies, int[] pieces, int pieceInt) {
+    public static boolean searchForSolvedPlies(int mateInXPlies, int[] pieces, int pieceInt, MappedByteBuffer mappedByteBuffer) {
         int[][] pieceMoves = MoveGenerator.generateMoves(pieces);
 
         boolean isEven = mateInXPlies % 2 == 0;
@@ -78,7 +77,7 @@ public class ThreePieceAlgorithm {
         // the method calls for isOdd are about 100x more than for is even, around 6 million per ply
         if (isEven) {
             for (int[] movePos : pieceMoves) {
-                int result = retrieveValueByPosition(movePos, pieceInt);
+                int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) break;
                 if (result != mateInXPlies - 1) return false;
             }
@@ -86,7 +85,7 @@ public class ThreePieceAlgorithm {
 
         } else {
             for (int[] movePos : pieceMoves) {
-                int result = retrieveValueByPosition(movePos, pieceInt);
+                int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) break;
                 if (result == mateInXPlies - 1) return true;
             }
@@ -94,13 +93,14 @@ public class ThreePieceAlgorithm {
         }
     }
 
-    public static int retrieveValueByPosition(int[] position, int pieceInt) {
+    public static int retrieveValueByPosition(int[] position, int pieceInt, MappedByteBuffer mappedByteBuffer) {
 
-        if (position[0] == 0) return -1;
+        if (position[0] == 0 || position.length <= 5) return -1; // stalemate, checkmate or only two kings
 
         int turn = position[Constants.TURN_INDEX];
         int blackKingPos = position[Constants.BLACK_KING_INDEX];
-        int piecePos = position[Constants.DELIMITER_INDEX + 1];
+
+        int piecePos = position[Constants.DELIMITER_INDEX + 1] % 100;
 
         int index = ThreePieceConstants.returnIndexFromArray(pieceInt, turn, blackKingPos, piecePos);
         for (int kingOne = 0; kingOne <= 63; kingOne++) {
@@ -109,19 +109,28 @@ public class ThreePieceAlgorithm {
 
             if (!proceed) continue;
 
-            for (int piece = 0; piece <= 63; piece++) {
-                int[] arr = {turn, 8, kingOne, blackKingPos, 1, pieceInt * 100 + piece};
-                if (PositionCheck.checkPosition(arr)) {
-                    if (Arrays.equals(position, arr)) {
-                        return retrieveValueByIndex(index, pieceInt);
-                    }
-                    index++;
+            int[] arr = {turn, 8, kingOne, blackKingPos, 1, pieceInt * 100 + piecePos};
+            if (PositionCheck.checkPosition(arr)) {
+                if (Arrays.equals(position, arr)) {
+                    return retrieveValueByIndex(index, pieceInt, mappedByteBuffer);
                 }
+                index++;
             }
 
         }
 
         return 0;
+    }
+
+    public static int retrieveValueByIndex(int index, int pieceInt, MappedByteBuffer mappedByteBuffer) {
+        assert Helpers.getFileNameThreePiece(pieceInt) != null;
+
+        methodCalls++;
+        if (methodCalls % 10000 == 0) {
+            System.out.println("Called " + methodCalls);
+        }
+
+        return mappedByteBuffer.get(index);
     }
 
     public static void firstIteration(int allPositions, int pieceInt, MappedByteBuffer mappedByteBuffer) {
@@ -170,29 +179,5 @@ public class ThreePieceAlgorithm {
 
     public static boolean isACheckmateOrStalemate(int[][] moves) {
         return moves[0][0] == 0;
-    }
-
-    public static int retrieveValueByIndex(int index, int pieceInt) {
-        assert Helpers.getFileNameThreePiece(pieceInt) != null;
-
-        methodCalls++;
-        if (methodCalls % 10000 == 0) {
-            System.out.println("Called " + methodCalls);
-        }
-
-        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(pieceInt),
-                Helpers.getFileNameThreePiece(pieceInt) + ".bin").toString();
-
-        try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
-
-            file.seek(index);
-
-            return file.readByte();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 }
