@@ -27,7 +27,7 @@ public class Main {
         FileZeroPopulator.fullThreePiece();
         ThreePieceAlgorithm.KXKLoop(2);
 
-//
+
 //        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
 //                Helpers.getFileNameThreePiece(2) + ".bin").toString();
 //
@@ -38,8 +38,12 @@ public class Main {
 //
 //                byte signedIndex = file.readByte();
 //
-//                if (signedIndex == 1 || signedIndex == -1) {
-//                    System.out.println("Found checkmate at index " + i + ": " + signedIndex);
+////                if (signedIndex == 1) {
+////                    System.out.println("Found checkmate in 1 moves at " + i + ": " + signedIndex);
+////                }
+//
+//                if (signedIndex == 2 || signedIndex == -20) {
+//                    System.out.println("Found checkmate in 10 moves at " + i + ": " + signedIndex);
 //                }
 //
 ////                System.out.println("Signed byte at index " + i + ": " + signedIndex);

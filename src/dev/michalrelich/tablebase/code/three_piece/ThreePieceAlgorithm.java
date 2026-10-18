@@ -56,6 +56,9 @@ public class ThreePieceAlgorithm {
                             if (PositionCheck.checkPosition(pieces)) {
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
                                     assert mappedByteBuffer != null;
+                                    if (mateInXPlies >= 3) {
+                                        System.out.println("bleh");
+                                    }
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
                                 }
 
@@ -72,13 +75,14 @@ public class ThreePieceAlgorithm {
     public static boolean searchForSolvedPlies(int mateInXPlies, int[] pieces, int pieceInt, MappedByteBuffer mappedByteBuffer) {
         int[][] pieceMoves = MoveGenerator.generateMoves(pieces);
 
+
         boolean isEven = mateInXPlies % 2 == 0;
 
         // the method calls for isOdd are about 100x more than for is even, around 6 million per ply
         if (isEven) {
             for (int[] movePos : pieceMoves) {
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
-                if (result == -1) break;
+                if (result == 0) continue;
                 if (result != mateInXPlies - 1) return false;
             }
             return true;
@@ -86,7 +90,8 @@ public class ThreePieceAlgorithm {
         } else {
             for (int[] movePos : pieceMoves) {
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
-                if (result == -1) break;
+                if (result == 0)
+                    continue;
                 if (result == mateInXPlies - 1) return true;
             }
             return false;
@@ -95,7 +100,7 @@ public class ThreePieceAlgorithm {
 
     public static int retrieveValueByPosition(int[] position, int pieceInt, MappedByteBuffer mappedByteBuffer) {
 
-        if (position[0] == 0 || position.length <= 5) return -1; // stalemate, checkmate or only two kings
+        if (position[0] == 0 || position.length <= 5) return 0; // stalemate, checkmate, only two kings
 
         int turn = position[Constants.TURN_INDEX];
         int blackKingPos = position[Constants.BLACK_KING_INDEX];
