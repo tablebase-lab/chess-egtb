@@ -5,10 +5,12 @@ import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
 import dev.michalrelich.tablebase.code.Helpers;
-import dev.michalrelich.tablebase.code.three_piece.FileZeroPopulator;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceConstants;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.file.Path;
 import java.util.Random;
 
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
@@ -24,53 +26,36 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        FileZeroPopulator.fullThreePiece();
-        ThreePieceAlgorithm.KXKLoop(2);
+//        FileZeroPopulator.fullThreePiece();
+//        ThreePieceAlgorithm.KXKLoop(2);
 
+        int res = ThreePieceAlgorithm.retrieveIndexByPositionOld(2, new int[]{1,8,18,2,1,219}); // 19417
+        System.out.println(res);
 
-//        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
-//                Helpers.getFileNameThreePiece(2) + ".bin").toString();
-//
-//        for (int i = 0; i <= 50000; i++) {
-//            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
-//
-//                file.seek(i);
-//
-//                byte signedIndex = file.readByte();
-//
-////                if (signedIndex == 1) {
-////                    System.out.println("Found checkmate in 1 moves at " + i + ": " + signedIndex);
-////                }
-//
-//                if (signedIndex == 2 || signedIndex == -20) {
-//                    System.out.println("Found checkmate in 10 moves at " + i + ": " + signedIndex);
+        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
+                Helpers.getFileNameThreePiece(2) + ".bin").toString();
+
+        for (int i = 0; i <= 50000; i++) {
+            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+
+                file.seek(i);
+
+                byte signedIndex = file.readByte();
+
+                if (signedIndex == 1) {
+                    System.out.println("Found checkmate in 1 moves at " + i + ": " + signedIndex);
+                }
+
+//                if (i == 19417) {
+//                    System.out.println("Found checkmate in 2? " + signedIndex);
 //                }
-//
-////                System.out.println("Signed byte at index " + i + ": " + signedIndex);
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        LocalTime currentTime = LocalTime.now();
-//        System.out.println("Begin Time: " + currentTime);
-//
-//
-//            for (int j = 0; j <= 9; j++) {
-//                for (int k = 0; k <= 63; k++) {
-//                    for (int l = 0; l <= 63; l++) {
-//                            int[] arr = {1, 8, j, k, 1, 200 + l};
-//                            PositionCheck.checkPosition(GaussHelper.longFromArr(arr));
-//                    }
-//                }
-//            }
-//
-//        currentTime = LocalTime.now();
-//        System.out.println("Current Time: " + currentTime);
 
-//        Path path = Path.of("data", "three_piece", "KRK");
-//        KingFoldersGenerator.generateNumberDirectories(0, 63, path);
-//        }
+//                System.out.println("Signed byte at index " + i + ": " + signedIndex);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void methodMeasure() {

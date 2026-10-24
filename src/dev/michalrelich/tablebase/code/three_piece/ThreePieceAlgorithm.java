@@ -18,8 +18,6 @@ public class ThreePieceAlgorithm {
     public static int methodCalls = 0;
 
     public static void KXKLoop(int pieceInt) {
-        int allPositions = ThreePieceConstants.KXKPositions(pieceInt);
-
         String name = Helpers.getFileNameThreePiece(pieceInt);
         assert name != null;
         Path path = Path.of("data", "three_piece", name, name + ".bin");
@@ -32,7 +30,7 @@ public class ThreePieceAlgorithm {
             e.printStackTrace();
         }
 
-        firstIteration(allPositions, pieceInt, mappedByteBuffer);
+        firstIteration(pieceInt, mappedByteBuffer);
         mainIteration(pieceInt, mappedByteBuffer);
     }
 
@@ -54,11 +52,12 @@ public class ThreePieceAlgorithm {
                         for (int piece = 0; piece <= 63; piece++) {
                             int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                             if (PositionCheck.checkPosition(pieces)) {
+                                if (Arrays.equals(pieces, new int[]{1, 8, 18, 2, 1, 219}) && mateInXPlies == 3) {
+                                    System.out.println("errors go brr");
+                                }
+
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
                                     assert mappedByteBuffer != null;
-                                    if (mateInXPlies >= 3) {
-                                        System.out.println("bleh");
-                                    }
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
                                 }
 
@@ -82,16 +81,16 @@ public class ThreePieceAlgorithm {
         if (isEven) {
             for (int[] movePos : pieceMoves) {
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
-                if (result == 0) continue;
+                if (result == -1) continue;
                 if (result != mateInXPlies - 1) return false;
             }
             return true;
 
         } else {
             for (int[] movePos : pieceMoves) {
+
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
-                if (result == 0)
-                    continue;
+                if (result == -1) continue;
                 if (result == mateInXPlies - 1) return true;
             }
             return false;
@@ -100,7 +99,9 @@ public class ThreePieceAlgorithm {
 
     public static int retrieveValueByPosition(int[] position, int pieceInt, MappedByteBuffer mappedByteBuffer) {
 
-        if (position[0] == 0 || position.length <= 5) return 0; // stalemate, checkmate, only two kings
+        if (position[0] == 0) return 0; // stalemate, checkmate
+
+        if (position.length <= 5) return 0; //  only two kings
 
         int turn = position[Constants.TURN_INDEX];
         int blackKingPos = position[Constants.BLACK_KING_INDEX];
@@ -121,7 +122,6 @@ public class ThreePieceAlgorithm {
                 }
                 index++;
             }
-
         }
 
         return 0;
@@ -138,29 +138,29 @@ public class ThreePieceAlgorithm {
         return mappedByteBuffer.get(index);
     }
 
-    public static void firstIteration(int allPositions, int pieceInt, MappedByteBuffer mappedByteBuffer) {
+    public static void firstIteration(int pieceInt, MappedByteBuffer mappedByteBuffer) {
         int index = 0;
 
-        while (index < allPositions) {
-            for (int turn = 1; turn <= 2; turn++) {
-                for (int kingOne = 0; kingOne <= 63; kingOne++) {
+        for (int turn = 1; turn <= 2; turn++) {
+            for (int kingOne = 0; kingOne <= 63; kingOne++) {
 
-                    boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
-                            Helpers.isEighthKingPosition(kingOne);
+                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                        Helpers.isEighthKingPosition(kingOne);
 
-                    if (!proceed) continue;
-                    for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
-                        for (int piece = 0; piece <= 63; piece++) {
-                            int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
+                if (!proceed) continue;
+                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                    for (int piece = 0; piece <= 63; piece++) {
+                        int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
 
-                            if (PositionCheck.checkPosition(pieces)) {
-                                writerForFirstIteration(pieces, index, mappedByteBuffer);
-                                index++;
-                            }
+                        if (PositionCheck.checkPosition(pieces)) {
+                            System.out.println("Found checkmate: " + pieces);
+                            writerForFirstIteration(pieces, index, mappedByteBuffer);
+                            index++;
                         }
                     }
                 }
             }
+
         }
     }
 
@@ -184,5 +184,27 @@ public class ThreePieceAlgorithm {
 
     public static boolean isACheckmateOrStalemate(int[][] moves) {
         return moves[0][0] == 0;
+    }
+
+    public static int retrieveIndexByPositionOld(int pieceInt, int[] position) {
+        int count = 0;
+        for (int turn = 1; turn <= 2; turn++) {
+            for (int kingOne = 0; kingOne <= 63; kingOne++) {
+                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                        Helpers.isEighthKingPosition(kingOne);
+
+                if (!proceed) continue;
+
+                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                    for (int piece = 0; piece <= 63; piece++) {
+                        int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
+                        if (Arrays.equals(arr, position)) return count;
+                        if (PositionCheck.checkPosition(arr)) count++;
+                    }
+                }
+            }
+        }
+
+        return count;
     }
 }
