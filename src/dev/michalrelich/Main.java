@@ -5,10 +5,10 @@ import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
 import dev.michalrelich.tablebase.code.Helpers;
-import dev.michalrelich.tablebase.code.MoveGenerator;
+import dev.michalrelich.tablebase.code.three_piece.FileZeroPopulator;
+import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceConstants;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
@@ -24,13 +24,12 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        int[][] moves = MoveGenerator.generateMoves(new int[]{1, 8, 0, 2, 1, 208});
-        System.out.println(Arrays.deepToString(moves));
+//        int[][] moves = MoveGenerator.generateMoves(new int[]{1, 8, 0, 2, 1, 208});
+//        System.out.println(Arrays.deepToString(moves));
 
 
-//
-//        FileZeroPopulator.fullThreePiece();
-//        ThreePieceAlgorithm.KXKLoop(2);
+        FileZeroPopulator.fullThreePiece();
+        ThreePieceAlgorithm.KXKLoop(2);
 //
 //        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
 //                Helpers.getFileNameThreePiece(2) + ".bin").toString();

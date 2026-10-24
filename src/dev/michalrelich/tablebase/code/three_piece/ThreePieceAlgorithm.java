@@ -54,14 +54,12 @@ public class ThreePieceAlgorithm {
 //                                    System.out.println("index for {1, 8, 10, 8, 1, 218} : " + index);
 //                                }
 
-                                if (Arrays.equals(pieces, new int[]{1, 8, 0, 2, 1, 208})) { // bugged as hell lowkey
-                                    System.out.println("wrf");
-                                }
+
 
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
                                     assert mappedByteBuffer != null;
-                                    if (mateInXPlies == 3) {
-                                        System.out.println("MATE IN TWO: " + Arrays.toString(pieces));
+                                    if (mateInXPlies == 2) {
+                                        System.out.println("MATE IN TWO PLIES: " + Arrays.toString(pieces));
                                     }
 
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
@@ -80,7 +78,6 @@ public class ThreePieceAlgorithm {
     public static boolean searchForSolvedPlies(int mateInXPlies, int[] pieces, int pieceInt, MappedByteBuffer mappedByteBuffer) {
         int[][] pieceMoves = MoveGenerator.generateMoves(pieces);
 
-
         boolean isEven = mateInXPlies % 2 == 0;
 
         // the method calls for isOdd are about 100x more than for is even, around 6 million per ply
@@ -88,7 +85,7 @@ public class ThreePieceAlgorithm {
             for (int[] movePos : pieceMoves) {
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
-                if (result == (mateInXPlies + 1) / 2) return false;
+                if (result > (mateInXPlies + 1) / 2) return false; // bug will be here. maybe not now
             }
             return true;
 
