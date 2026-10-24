@@ -50,11 +50,6 @@ public class ThreePieceAlgorithm {
                         for (int piece = 0; piece <= 63; piece++) {
                             int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                             if (PositionCheck.checkPosition(pieces)) {
-                                if (Arrays.equals(pieces, new int[]{1, 8, 0, 2, 1, 208}) && mateInXPlies == 2) {
-                                    System.out.println("index for {1, 8, 0, 2, 1, 208} : " + index);
-                                }
-
-
 
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
                                     assert mappedByteBuffer != null;
@@ -77,27 +72,30 @@ public class ThreePieceAlgorithm {
 
     public static boolean searchForSolvedPlies(int mateInXPlies, int[] pieces, int pieceInt, MappedByteBuffer mappedByteBuffer) {
         int[][] pieceMoves = MoveGenerator.generateMoves(pieces);
+        if (isACheckmateOrStalemate(pieceMoves)) return false;
 
         boolean isEven = mateInXPlies % 2 == 0;
 
         // the method calls for isOdd are about 100x more than for is even, around 6 million per ply
         if (isEven) {
             for (int[] movePos : pieceMoves) {
+                if (movePos[0] == 0) break;
+
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
 
-                boolean isACheckmate = isACheckmateOrStalemate(pieceMoves) && Check.isInCheck(pieces) >= 1;
-                boolean cantContinue = result == 0 && !(isACheckmate);
+                boolean cantContinue = result == 0; // can't be even one 0 move we don't know
                 if (cantContinue) return false;
             }
             return true;
 
         } else {
             for (int[] movePos : pieceMoves) {
+                if (movePos[0] == 0) break;
 
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
-                if (result == (mateInXPlies + 1) / 2 - 1) return true;
+                if (result == (mateInXPlies + 1) / 2 - 1) return true; // fault here
             }
             return false;
         }
@@ -209,6 +207,28 @@ public class ThreePieceAlgorithm {
             }
         }
 
-        return count;
+        return -1;
+    }
+
+    public static int[] retrievePositionByIndexOld(int pieceInt, int index) {
+        int count = 0;
+        for (int turn = 1; turn <= 2; turn++) {
+            for (int kingOne = 0; kingOne <= 63; kingOne++) {
+                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                        Helpers.isEighthKingPosition(kingOne);
+
+                if (!proceed) continue;
+
+                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                    for (int piece = 0; piece <= 63; piece++) {
+                        int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
+                        if (count == index) return arr;
+                        if (PositionCheck.checkPosition(arr)) count++;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

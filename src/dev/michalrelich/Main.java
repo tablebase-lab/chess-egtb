@@ -9,6 +9,7 @@ import dev.michalrelich.tablebase.code.three_piece.FileZeroPopulator;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceConstants;
 
+import java.nio.file.Path;
 import java.util.Random;
 
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
@@ -28,10 +29,8 @@ public class Main {
         ThreePieceAlgorithm.KXKLoop(2);
 
 
-
-
-//        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
-//                Helpers.getFileNameThreePiece(2) + ".bin").toString();
+        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
+                Helpers.getFileNameThreePiece(2) + ".bin").toString();
 ////
 ////        int index = ThreePieceAlgorithm.retrieveIndexByPositionOld(2, new int[]{1, 8, 0, 8, 1, 217});
 ////        System.out.println(index);
@@ -44,11 +43,10 @@ public class Main {
 ////            throw new RuntimeException(e);
 ////        }
 //
-//
-//        int nineteenCounter = 0;
-//        int eighteenCounter = 0;
-//        int zeroCounter = 0;
+
 //        int oneCounter = 0;
+//        int twoCounter = 0;
+//        int threeCounter = 0;
 //        int total = ThreePieceConstants.KXKPositions(2);
 //
 //        for (int i = 0; i < total; i++) {
@@ -58,10 +56,9 @@ public class Main {
 //
 //                byte signedIndex = file.readByte();
 //
-//                if (signedIndex == 19) nineteenCounter++;
-//                if (signedIndex == 18) eighteenCounter++;
-//                if (signedIndex == 0) zeroCounter++;
 //                if (signedIndex == 1) oneCounter++;
+//                if (signedIndex == 2) twoCounter++;
+//                if (signedIndex == 3) threeCounter++;
 //
 ////                if (i == 19417) {
 ////                    System.out.println("Found checkmate in 2? " + signedIndex);
@@ -75,13 +72,12 @@ public class Main {
 //            }
 //        }
 //
-//        int rest = total - zeroCounter - oneCounter - nineteenCounter - eighteenCounter;
+//        int rest = total - oneCounter - twoCounter - threeCounter;
 //
 //        System.out.printf("Out of " + total + " positions %n" +
-//                zeroCounter + " were stalamates / checkmates / \"draws\"%n" +
 //                oneCounter + " were checkmates in one move" +
-//                nineteenCounter + " had a mate in 19 moves %n" +
-//                eighteenCounter + " had a mate in 18 moves %n" +
+//                twoCounter + " had a mate in 2 moves %n" +
+//                threeCounter + " had a mate in 3 moves %n" +
 //                rest + " had another result."
 //        );
     }
