@@ -182,7 +182,7 @@ public class Move {
 
         for (int i = 0; i < pieces.length; i++) {
 
-            if (pieces[i] / 100 == 0 && pieces[i] % 100 == 0) continue; // if there's a capture and we have an array with a 0, like [1, 8, 1, 11, 0, 0]
+            if (pieces[i] / 100 == 0 && pieces[i] % 100 == 0 && i > Constants.BLACK_KING_INDEX) continue; // if there's a capture and we have an array with a 0, like [1, 8, 1, 11, 0, 0]
 
             if (Constants.skipNonPositionIndex(i)) continue;
 

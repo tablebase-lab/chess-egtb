@@ -5,12 +5,10 @@ import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
 import dev.michalrelich.tablebase.code.Helpers;
-import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
+import dev.michalrelich.tablebase.code.MoveGenerator;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceConstants;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
@@ -26,36 +24,68 @@ public class Main {
 
     static void main() throws InterruptedException {
 
+        int[][] moves = MoveGenerator.generateMoves(new int[]{1, 8, 0, 2, 1, 208});
+        System.out.println(Arrays.deepToString(moves));
+
+
+//
 //        FileZeroPopulator.fullThreePiece();
 //        ThreePieceAlgorithm.KXKLoop(2);
-
-        int res = ThreePieceAlgorithm.retrieveIndexByPositionOld(2, new int[]{1,8,18,2,1,219}); // 19417
-        System.out.println(res);
-
-        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
-                Helpers.getFileNameThreePiece(2) + ".bin").toString();
-
-        for (int i = 0; i <= 50000; i++) {
-            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
-
-                file.seek(i);
-
-                byte signedIndex = file.readByte();
-
-                if (signedIndex == 1) {
-                    System.out.println("Found checkmate in 1 moves at " + i + ": " + signedIndex);
-                }
-
-//                if (i == 19417) {
-//                    System.out.println("Found checkmate in 2? " + signedIndex);
-//                }
-
-//                System.out.println("Signed byte at index " + i + ": " + signedIndex);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//
+//        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
+//                Helpers.getFileNameThreePiece(2) + ".bin").toString();
+////
+////        int index = ThreePieceAlgorithm.retrieveIndexByPositionOld(2, new int[]{1, 8, 0, 8, 1, 217});
+////        System.out.println(index);
+//
+////        try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+////            file.seek(index);
+////            System.out.println(file.readByte());
+////
+////        } catch (Exception e) {
+////            throw new RuntimeException(e);
+////        }
+//
+//
+//        int nineteenCounter = 0;
+//        int eighteenCounter = 0;
+//        int zeroCounter = 0;
+//        int oneCounter = 0;
+//        int total = ThreePieceConstants.KXKPositions(2);
+//
+//        for (int i = 0; i < total; i++) {
+//            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+//
+//                file.seek(i);
+//
+//                byte signedIndex = file.readByte();
+//
+//                if (signedIndex == 19) nineteenCounter++;
+//                if (signedIndex == 18) eighteenCounter++;
+//                if (signedIndex == 0) zeroCounter++;
+//                if (signedIndex == 1) oneCounter++;
+//
+////                if (i == 19417) {
+////                    System.out.println("Found checkmate in 2? " + signedIndex);
+////                }
+//
+//
+//
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        int rest = total - zeroCounter - oneCounter - nineteenCounter - eighteenCounter;
+//
+//        System.out.printf("Out of " + total + " positions %n" +
+//                zeroCounter + " were stalamates / checkmates / \"draws\"%n" +
+//                oneCounter + " were checkmates in one move" +
+//                nineteenCounter + " had a mate in 19 moves %n" +
+//                eighteenCounter + " had a mate in 18 moves %n" +
+//                rest + " had another result."
+//        );
     }
 
     public static void methodMeasure() {

@@ -29,6 +29,10 @@ public class MoveGenerator {
 
             if (fullPiece / 100 != 5) {
                 for (int j = 0; j <= 63; j++) {
+                    if (j == 0 && fullPiece == 208) {
+                        System.out.println();
+                    }
+
                     int[] moveResult = Move.move(pieces, fullPiece, j);
                     if (moveResult == null) continue;
 

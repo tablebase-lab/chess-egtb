@@ -30,7 +30,7 @@ public class ThreePieceAlgorithm {
             e.printStackTrace();
         }
 
-        firstIteration(pieceInt, mappedByteBuffer);
+        firstIteration(pieceInt, mappedByteBuffer); // seems to be working up to this point, assigning one to mates in 1 ply as a 1
         mainIteration(pieceInt, mappedByteBuffer);
     }
 
@@ -46,18 +46,24 @@ public class ThreePieceAlgorithm {
 
                     if (!proceed) continue;
 
-                    System.out.println("Now checking for white king at: " + kingOne);
-
                     for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
                         for (int piece = 0; piece <= 63; piece++) {
                             int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                             if (PositionCheck.checkPosition(pieces)) {
-                                if (Arrays.equals(pieces, new int[]{1, 8, 18, 2, 1, 219}) && mateInXPlies == 3) {
-                                    System.out.println("errors go brr");
+//                                if (Arrays.equals(pieces, new int[]{1, 8, 10, 8, 1, 218}) && mateInXPlies == 3) {
+//                                    System.out.println("index for {1, 8, 10, 8, 1, 218} : " + index);
+//                                }
+
+                                if (Arrays.equals(pieces, new int[]{1, 8, 0, 2, 1, 208})) { // bugged as hell lowkey
+                                    System.out.println("wrf");
                                 }
 
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
                                     assert mappedByteBuffer != null;
+                                    if (mateInXPlies == 3) {
+                                        System.out.println("MATE IN TWO: " + Arrays.toString(pieces));
+                                    }
+
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
                                 }
 
@@ -82,7 +88,7 @@ public class ThreePieceAlgorithm {
             for (int[] movePos : pieceMoves) {
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
-                if (result != mateInXPlies - 1) return false;
+                if (result == (mateInXPlies + 1) / 2) return false;
             }
             return true;
 
@@ -91,7 +97,7 @@ public class ThreePieceAlgorithm {
 
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
-                if (result == mateInXPlies - 1) return true;
+                if (result == (mateInXPlies + 1) / 2) return true;
             }
             return false;
         }
@@ -130,10 +136,10 @@ public class ThreePieceAlgorithm {
     public static int retrieveValueByIndex(int index, int pieceInt, MappedByteBuffer mappedByteBuffer) {
         assert Helpers.getFileNameThreePiece(pieceInt) != null;
 
-        methodCalls++;
-        if (methodCalls % 10000 == 0) {
-            System.out.println("Called " + methodCalls);
-        }
+//        methodCalls++;
+//        if (methodCalls % 10000 == 0) {
+//            System.out.println("Called " + methodCalls);
+//        }
 
         return mappedByteBuffer.get(index);
     }
@@ -153,7 +159,6 @@ public class ThreePieceAlgorithm {
                         int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
 
                         if (PositionCheck.checkPosition(pieces)) {
-                            System.out.println("Found checkmate: " + pieces);
                             writerForFirstIteration(pieces, index, mappedByteBuffer);
                             index++;
                         }
@@ -176,7 +181,6 @@ public class ThreePieceAlgorithm {
             if (isACheckmateOrStalemate(movesOfMoves) && Check.isInCheck(move) != 0) { // runs isInCheck twice incl. in checkPosition
                 byte value = (byte) (pieces[0] == 1 ? 1 : -1);
                 mappedByteBuffer.put(index, value);
-
                 return;
             }
         }
