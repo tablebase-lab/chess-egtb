@@ -50,9 +50,9 @@ public class ThreePieceAlgorithm {
                         for (int piece = 0; piece <= 63; piece++) {
                             int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                             if (PositionCheck.checkPosition(pieces)) {
-//                                if (Arrays.equals(pieces, new int[]{1, 8, 10, 8, 1, 218}) && mateInXPlies == 3) {
-//                                    System.out.println("index for {1, 8, 10, 8, 1, 218} : " + index);
-//                                }
+                                if (Arrays.equals(pieces, new int[]{1, 8, 0, 2, 1, 208}) && mateInXPlies == 2) {
+                                    System.out.println("index for {1, 8, 0, 2, 1, 208} : " + index);
+                                }
 
 
 
@@ -85,7 +85,10 @@ public class ThreePieceAlgorithm {
             for (int[] movePos : pieceMoves) {
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
-                if (result > (mateInXPlies + 1) / 2) return false; // bug will be here. maybe not now
+
+                boolean isACheckmate = isACheckmateOrStalemate(pieceMoves) && Check.isInCheck(pieces) >= 1;
+                boolean cantContinue = result == 0 && !(isACheckmate);
+                if (cantContinue) return false;
             }
             return true;
 
@@ -94,7 +97,7 @@ public class ThreePieceAlgorithm {
 
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
-                if (result == (mateInXPlies + 1) / 2) return true;
+                if (result == (mateInXPlies + 1) / 2 - 1) return true;
             }
             return false;
         }

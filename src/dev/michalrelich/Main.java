@@ -24,13 +24,12 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-//        int[][] moves = MoveGenerator.generateMoves(new int[]{1, 8, 0, 2, 1, 208});
-//        System.out.println(Arrays.deepToString(moves));
-
-
         FileZeroPopulator.fullThreePiece();
         ThreePieceAlgorithm.KXKLoop(2);
-//
+
+
+
+
 //        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
 //                Helpers.getFileNameThreePiece(2) + ".bin").toString();
 ////
