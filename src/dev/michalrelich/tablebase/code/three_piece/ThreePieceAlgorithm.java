@@ -18,19 +18,9 @@ public class ThreePieceAlgorithm {
     public static int methodCalls = 0;
 
     public static void KXKLoop(int pieceInt) {
-        String name = Helpers.getFileNameThreePiece(pieceInt);
-        assert name != null;
-        Path path = Path.of("data", "three_piece", name, name + ".bin");
+        MappedByteBuffer mappedByteBuffer = initializeMBB(pieceInt);
 
-        MappedByteBuffer mappedByteBuffer = null;
-
-        try (FileChannel channel = FileChannel.open(path, StandardOpenOption.READ, StandardOpenOption.WRITE)) {
-            mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 5 * 1024 * 1024); // 5MBs at a time
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        firstIteration(pieceInt, mappedByteBuffer); // seems to be working up to this point, assigning one to mates in 1 ply as a 1
+        firstIteration(pieceInt, mappedByteBuffer); // is PROVEN to work for ALL rook checkmates in the eighth
         mainIteration(pieceInt, mappedByteBuffer);
     }
 
@@ -40,22 +30,24 @@ public class ThreePieceAlgorithm {
             System.out.println("Now doing mate in " + mateInXPlies + " plies");
             int index = 0;
             for (int turn = 1; turn <= 2; turn++) {
-                for (int kingOne = 0; kingOne <= 63; kingOne++) {
-                    boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
-                            Helpers.isEighthKingPosition(kingOne);
+                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                    for (int piece = 0; piece <= 63; piece++) {
+                        for (int kingOne = 0; kingOne <= 63; kingOne++) { // king has to be here cuz of cached indexes /
+                            boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                                    Helpers.isEighthKingPosition(kingOne);
 
-                    if (!proceed) continue;
-
-                    for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
-                        for (int piece = 0; piece <= 63; piece++) {
+                            if (!proceed) continue;
                             int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                             if (PositionCheck.checkPosition(pieces)) {
+                                if (Arrays.equals(pieces, new int[]{2, 8, 3, 1, 1, 215})) {
+                                    System.out.println();
+                                }
 
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
                                     assert mappedByteBuffer != null;
-                                    if (mateInXPlies == 2) {
-                                        System.out.println("MATE IN TWO PLIES: " + Arrays.toString(pieces));
-                                    }
+//                                    if (mateInXPlies == 2) {
+//                                        System.out.println("MATE IN TWO PLIES: " + Arrays.toString(pieces));
+//                                    }
 
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
                                 }
@@ -122,6 +114,9 @@ public class ThreePieceAlgorithm {
             int[] arr = {turn, 8, kingOne, blackKingPos, 1, pieceInt * 100 + piecePos};
             if (PositionCheck.checkPosition(arr)) {
                 if (Arrays.equals(position, arr)) {
+                    if (index == 5704) {
+                        System.out.println();
+                    }
                     return retrieveValueByIndex(index, pieceInt, mappedByteBuffer);
                 }
                 index++;
@@ -146,16 +141,15 @@ public class ThreePieceAlgorithm {
         int index = 0;
 
         for (int turn = 1; turn <= 2; turn++) {
-            for (int kingOne = 0; kingOne <= 63; kingOne++) {
+            for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                for (int piece = 0; piece <= 63; piece++) {
+                    for (int kingOne = 0; kingOne <= 63; kingOne++) {
 
-                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
-                        Helpers.isEighthKingPosition(kingOne);
+                        boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                                Helpers.isEighthKingPosition(kingOne);
+                        if (!proceed) continue;
 
-                if (!proceed) continue;
-                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
-                    for (int piece = 0; piece <= 63; piece++) {
                         int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
-
                         if (PositionCheck.checkPosition(pieces)) {
                             writerForFirstIteration(pieces, index, mappedByteBuffer);
                             index++;
@@ -176,7 +170,7 @@ public class ThreePieceAlgorithm {
             if (move[0] == 0) break;
             int[][] movesOfMoves = MoveGenerator.generateMoves(move); // we get 2 ply deep here
 
-            if (isACheckmateOrStalemate(movesOfMoves) && Check.isInCheck(move) != 0) { // runs isInCheck twice incl. in checkPosition
+            if (isACheckmateOrStalemate(movesOfMoves) && Check.isInCheck(move) >= 1) { // runs isInCheck twice incl. in checkPosition
                 byte value = (byte) (pieces[0] == 1 ? 1 : -1);
                 mappedByteBuffer.put(index, value);
                 return;
@@ -230,5 +224,21 @@ public class ThreePieceAlgorithm {
         }
 
         return null;
+    }
+
+    public static MappedByteBuffer initializeMBB(int pieceInt) {
+        String name = Helpers.getFileNameThreePiece(pieceInt);
+        assert name != null;
+        Path path = Path.of("data", "three_piece", name, name + ".bin");
+
+        MappedByteBuffer mappedByteBuffer = null;
+
+        try (FileChannel channel = FileChannel.open(path, StandardOpenOption.READ, StandardOpenOption.WRITE)) {
+            mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 5 * 1024 * 1024); // 5MBs at a time
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return mappedByteBuffer;
     }
 }

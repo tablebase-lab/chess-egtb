@@ -9,6 +9,7 @@ public class ThreePieceConstants {
     public static final int KRK_POSITIONS = KXKPositions(2);
     public static final int KPK_POSITIONS = KXKPositions(5);
     public static final String THREE_PIECE_PATH = "data/three_piece";
+    public static final int[][][][] indexes = initiateIndex();
 
     public static int KXKPositions(int pieceInt) {
         int count = 0;
@@ -22,7 +23,9 @@ public class ThreePieceConstants {
                 for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
                     for (int piece = 0; piece <= 63; piece++) {
                         int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
-                        if (PositionCheck.checkPosition(arr)) count++;
+                        if (PositionCheck.checkPosition(arr)) {
+                            count++;
+                        }
                     }
                 }
             }
@@ -30,8 +33,6 @@ public class ThreePieceConstants {
 
         return count;
     }
-
-    public static final int[][][][] indexes = initiateIndex();
 
     public static int returnIndexFromArray(int pieceInt, int turn, int kingTwo, int pieceOne) {
         int pieceIndex = pieceInt == 5 ? 2 : pieceInt - 1;
@@ -62,14 +63,14 @@ public class ThreePieceConstants {
 
         int count = 0;
         for (int turn = 1; turn <= 2; turn++) {
-            for (int kingOne = 0; kingOne <= 63; kingOne++) {
-                boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
-                        Helpers.isEighthKingPosition(kingOne);
 
-                if (!proceed) continue;
+            for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
+                for (int piece = 0; piece <= 63; piece++) {
+                    for (int kingOne = 0; kingOne <= 63; kingOne++) {
+                        boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
+                                Helpers.isEighthKingPosition(kingOne);
 
-                for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
-                    for (int piece = 0; piece <= 63; piece++) {
+                        if (!proceed) continue;
                         int[] arr = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                         if (PositionCheck.checkPosition(arr)) {
                             if (turn == desiredTurn && kingTwoPos == kingTwo && pieceOne == piece) return count;
