@@ -39,15 +39,15 @@ public class ThreePieceAlgorithm {
                             if (!proceed) continue;
                             int[] pieces = {turn, 8, kingOne, kingTwo, 1, pieceInt * 100 + piece};
                             if (PositionCheck.checkPosition(pieces)) {
-                                if (Arrays.equals(pieces, new int[]{2, 8, 3, 1, 1, 215})) {
-                                    System.out.println();
+                                if (mappedByteBuffer.get(index) != 0) {
+                                    index++;
+                                    continue;
                                 }
 
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
-                                    assert mappedByteBuffer != null;
-//                                    if (mateInXPlies == 2) {
-//                                        System.out.println("MATE IN TWO PLIES: " + Arrays.toString(pieces));
-//                                    }
+                                    if (mateInXPlies == 16) {
+                                        System.out.println("MATE IN 16 PLIES: " + Arrays.toString(pieces));
+                                    }
 
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
                                 }
@@ -114,9 +114,6 @@ public class ThreePieceAlgorithm {
             int[] arr = {turn, 8, kingOne, blackKingPos, 1, pieceInt * 100 + piecePos};
             if (PositionCheck.checkPosition(arr)) {
                 if (Arrays.equals(position, arr)) {
-                    if (index == 5704) {
-                        System.out.println();
-                    }
                     return retrieveValueByIndex(index, pieceInt, mappedByteBuffer);
                 }
                 index++;
