@@ -21,7 +21,7 @@ public class ThreePieceAlgorithm {
         MappedByteBuffer mappedByteBuffer = initializeMBB(pieceInt);
 
         firstIteration(pieceInt, mappedByteBuffer); // is PROVEN to work for ALL rook checkmates in the eighth
-        mainIteration(pieceInt, mappedByteBuffer);
+        mainIteration(pieceInt, mappedByteBuffer); // WORKS for mate in 2 plies
     }
 
     public static void mainIteration(int pieceInt, MappedByteBuffer mappedByteBuffer) {
@@ -32,7 +32,7 @@ public class ThreePieceAlgorithm {
             for (int turn = 1; turn <= 2; turn++) {
                 for (int kingTwo = 0; kingTwo <= 63; kingTwo++) {
                     for (int piece = 0; piece <= 63; piece++) {
-                        for (int kingOne = 0; kingOne <= 63; kingOne++) { // king has to be here cuz of cached indexes /
+                        for (int kingOne = 0; kingOne <= 63; kingOne++) { // king HAS to be here cuz of cached indexes
                             boolean proceed = pieceInt == 5 ? Helpers.isLeftHalfKingPosition(kingOne) :
                                     Helpers.isEighthKingPosition(kingOne);
 
@@ -45,8 +45,8 @@ public class ThreePieceAlgorithm {
                                 }
 
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
-                                    if (mateInXPlies == 16) {
-                                        System.out.println("MATE IN 16 PLIES: " + Arrays.toString(pieces));
+                                    if (mateInXPlies == 5) {
+                                        System.out.println("MATE IN 5 PLIES: " + Arrays.toString(pieces));
                                     }
 
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
@@ -87,7 +87,22 @@ public class ThreePieceAlgorithm {
 
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
-                if (result == (mateInXPlies + 1) / 2 - 1) return true; // fault here
+                if (result == (mateInXPlies + 1) / 2 - 1) { // at this point both a position with one ply mate and two ply mates satisfy the three ply mate rule
+                    int[][] plyCheckMoves = MoveGenerator.generateMoves(movePos);
+                    int minCheckmate = 1000; // arbitrary large number
+
+                    for (int[] plyCheckMove : plyCheckMoves) {
+                        if (plyCheckMove[0] == 0) break;
+
+                        int helperResult = retrieveValueByPosition(plyCheckMove, pieceInt, mappedByteBuffer);
+                        if (helperResult == -1) continue;
+                        minCheckmate = Math.min(helperResult, minCheckmate);
+                    }
+
+                    if (minCheckmate < result) break;
+
+                    return true;
+                }
             }
             return false;
         }
