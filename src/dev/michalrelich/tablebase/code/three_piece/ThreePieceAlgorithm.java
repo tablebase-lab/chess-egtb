@@ -20,8 +20,8 @@ public class ThreePieceAlgorithm {
     public static void KXKLoop(int pieceInt) {
         MappedByteBuffer mappedByteBuffer = initializeMBB(pieceInt);
 
-        firstIteration(pieceInt, mappedByteBuffer); // is PROVEN to work for ALL rook checkmates in the eighth
-        mainIteration(pieceInt, mappedByteBuffer); // WORKS for mate in 2 plies
+        firstIteration(pieceInt, mappedByteBuffer); // is PROVEN to work for ALL rook and queen checkmates in the eighth (didn't check pawn yet)
+        mainIteration(pieceInt, mappedByteBuffer); // WORKS for mate in even plies, odd plies so far is correct but incomplete
     }
 
     public static void mainIteration(int pieceInt, MappedByteBuffer mappedByteBuffer) {
@@ -44,9 +44,13 @@ public class ThreePieceAlgorithm {
                                     continue;
                                 }
 
+                                if (Arrays.equals(pieces, new int[]{1, 8, 11, 5, 1, 222})) {
+                                    System.out.println();
+                                }
+
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
-                                    if (mateInXPlies == 5) {
-                                        System.out.println("MATE IN 5 PLIES: " + Arrays.toString(pieces));
+                                    if (mateInXPlies == 3) {
+                                        System.out.println("MATE IN 3 PLIES: " + Arrays.toString(pieces));
                                     }
 
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));

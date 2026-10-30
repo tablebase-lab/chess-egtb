@@ -28,7 +28,6 @@ public class Main {
         FileZeroPopulator.fullThreePiece();
         ThreePieceAlgorithm.KXKLoop(2);
 
-
         String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
                 Helpers.getFileNameThreePiece(2) + ".bin").toString();
 ////
@@ -80,6 +79,52 @@ public class Main {
 //                threeCounter + " had a mate in 3 moves %n" +
 //                rest + " had another result."
 //        );
+    }
+
+    // will probably take some time as it is, like a few days
+    public static void fivePieceCounter() {
+        long count = 0;
+        int[] pos;
+        for (int pieceOne = 1; pieceOne <= 5; pieceOne++) {
+            for (int pieceTwo = 1; pieceTwo <= 5; pieceTwo++) {
+                for (int pieceThree = 1; pieceThree <= 5; pieceThree++) {
+                    for (int whitePieces = 0; whitePieces <= 3; whitePieces++) {
+                        for (int turn = 1; turn <= 2; turn++) {
+                            for (int whiteKing = 0; whiteKing <= 63; whiteKing++) {
+                                boolean proceed = pieceOne == 5 || pieceTwo == 5 || pieceThree == 5 ? Helpers.isLeftHalfKingPosition(whiteKing) :
+                                        Helpers.isEighthKingPosition(whiteKing);
+                                if (!proceed) continue;
+                                for (int blackKing = 0; blackKing <= 63; blackKing++) {
+                                    for (int onePos = 0; onePos <= 63; onePos++) {
+                                        for (int twoPos = 0; twoPos <= 63; twoPos++) {
+                                            for (int threePos = 0; threePos <= 63; threePos++) {
+                                                if ((pieceOne == 5 && pieceTwo == 5) || (pieceOne == 5 && pieceThree == 5) || (pieceTwo == 5 && pieceThree == 5)) {
+                                                    for (int enPas = 0; enPas <= 8; enPas++) {
+                                                        pos = new int[]{turn, enPas, whiteKing, blackKing, whitePieces, pieceOne * 100 + onePos, pieceTwo * 100 + twoPos, pieceThree * 100 + threePos};
+                                                        if (PositionCheck.checkPosition(pos)) {
+                                                            count++;
+                                                            if (count % 1_000_000_000 == 0)
+                                                                System.out.println(count / 1_000_000_000 + " billion");
+                                                        }
+                                                    }
+                                                } else {
+                                                    pos = new int[]{turn, 8, whiteKing, blackKing, whitePieces, pieceOne * 100 + onePos, pieceTwo * 100 + twoPos, pieceThree * 100 + threePos};
+                                                    if (PositionCheck.checkPosition(pos)) {
+                                                        count++;
+                                                        if (count % 1_000_000_000 == 0)
+                                                            System.out.println(count / 1_000_000_000 + " billion");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static void methodMeasure() {
