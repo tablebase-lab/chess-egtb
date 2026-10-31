@@ -25,6 +25,8 @@ public class Helpers {
             }
         }
 
+
+
         return posNew;
     }
 
@@ -47,8 +49,23 @@ public class Helpers {
         return fullPos;
     }
 
-    public static int[] flipVertical() {
-        return null;
+    public static int[] flipVertical(int[] fullPos) {
+        int length = Constants.BOARD_LENGTH;
+
+        for (int i = 0; i < fullPos.length; i++) {
+            if (Constants.skipNonPositionIndex(i)) continue;
+
+            int pos = fullPos[i] % 100;
+            boolean isOnBottomHalf = pos / length <= 3;
+
+            if (isOnBottomHalf) {
+                fullPos[i] = (fullPos[i] / 100 * 100) + pos + length * ((length / 2 - pos / length - 1) * 2 + 1);
+            } else {
+                fullPos[i] =  (fullPos[i] / 100 * 100) + pos + length * ((length / 2 - pos / length) * 2 - 1);
+            }
+        }
+
+        return fullPos;
     }
 
     public static String getFileNameThreePiece(int pieceInt) {

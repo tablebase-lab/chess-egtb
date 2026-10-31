@@ -25,11 +25,11 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        int[] some = {1, 8, 8, 10, 1, 200};
+        int[] some = {1, 8, 38, 54, 1, 263};
         Board original = GaussFunction.inverse(GaussHelper.longFromArr(some));
         original.launchApp();
 
-        int[] flipPosition = Helpers.flipHorizontal(some);
+        int[] flipPosition = Helpers.flipVertical(some);
         Board b = GaussFunction.inverse(GaussHelper.longFromArr(flipPosition));
         b.launchApp();
 
