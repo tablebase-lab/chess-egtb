@@ -1,12 +1,12 @@
 package dev.michalrelich;
 
 import dev.michalrelich.engine.backend.Constants;
+import dev.michalrelich.engine.backend.helper.GaussHelper;
 import dev.michalrelich.engine.backend.positioncheck.PositionCheck;
 import dev.michalrelich.engine.frontend.Board;
 import dev.michalrelich.engine.frontend.Piece;
+import dev.michalrelich.engine.gaussfunction.GaussFunction;
 import dev.michalrelich.tablebase.code.Helpers;
-import dev.michalrelich.tablebase.code.three_piece.FileZeroPopulator;
-import dev.michalrelich.tablebase.code.three_piece.ThreePieceAlgorithm;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceConstants;
 
 import java.nio.file.Path;
@@ -25,8 +25,16 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        FileZeroPopulator.fullThreePiece();
-        ThreePieceAlgorithm.KXKLoop(2);
+        int[] some = {1, 8, 8, 10, 1, 200};
+        Board original = GaussFunction.inverse(GaussHelper.longFromArr(some));
+        original.launchApp();
+
+        int[] flipPosition = Helpers.flipHorizontal(some);
+        Board b = GaussFunction.inverse(GaussHelper.longFromArr(flipPosition));
+        b.launchApp();
+
+//        FileZeroPopulator.fullThreePiece();
+//        ThreePieceAlgorithm.KXKLoop(2);
 
         String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
                 Helpers.getFileNameThreePiece(2) + ".bin").toString();
