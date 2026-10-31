@@ -3,7 +3,7 @@ package dev.michalrelich.engine.backend;
 public class Constants {
 
     // board constants
-    public static final int BOARD_LENGTH = 8;
+    public static final int BOARD_LENGTH = 8; // most likely won't work for odd lengths, probably for other than 8 as well
     public static final int MAX_NON_KING_PIECES = 3;
 
     // arrays location constants
