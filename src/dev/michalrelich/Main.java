@@ -9,7 +9,7 @@ import dev.michalrelich.engine.gaussfunction.GaussFunction;
 import dev.michalrelich.tablebase.code.Helpers;
 import dev.michalrelich.tablebase.code.three_piece.ThreePieceConstants;
 
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Random;
 
 import static dev.michalrelich.engine.frontend.Piece.PieceColor.BLACK;
@@ -25,19 +25,24 @@ public class Main {
 
     static void main() throws InterruptedException {
 
-        int[] some = {1, 8, 38, 54, 1, 263};
+        System.out.println(Arrays.toString(Helpers.turnIndices));
+
+        int[] some = new int[] {1, 8, 21, 34, 2, 109, 215, 540};
         Board original = GaussFunction.inverse(GaussHelper.longFromArr(some));
         original.launchApp();
 
-        int[] flipPosition = Helpers.flipVertical(some);
+        int[] flipPosition = Arrays.copyOf(some, some.length);
+        Helpers.turnToLeftByOne(flipPosition);
         Board b = GaussFunction.inverse(GaussHelper.longFromArr(flipPosition));
         b.launchApp();
 
+
+
 //        FileZeroPopulator.fullThreePiece();
 //        ThreePieceAlgorithm.KXKLoop(2);
-
-        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
-                Helpers.getFileNameThreePiece(2) + ".bin").toString();
+//
+//        String filePath = Path.of("data", "three_piece", Helpers.getFileNameThreePiece(2),
+//                Helpers.getFileNameThreePiece(2) + ".bin").toString();
 ////
 ////        int index = ThreePieceAlgorithm.retrieveIndexByPositionOld(2, new int[]{1, 8, 0, 8, 1, 217});
 ////        System.out.println(index);
