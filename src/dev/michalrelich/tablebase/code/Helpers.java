@@ -18,6 +18,7 @@ public class Helpers {
         return pos % length < length / 2 + 1;
     }
 
+    // only one i didnt check yet
     public static int[] flipPos(int[] pos, boolean isEndgameWithPawn) {
         int whiteKingPos = pos[Constants.WHITE_KING_INDEX];
         if (isEighthKingPosition(whiteKingPos)) return pos;
@@ -35,6 +36,7 @@ public class Helpers {
 
         boolean failed = false;
         switch (eight) {
+            case 1 -> { return pos; }
             case 4 -> flipVertical(posNew);
             case 5 -> {
                 flipVertical(posNew);
@@ -53,7 +55,6 @@ public class Helpers {
                     flipVertical(posNew);
                     flipHorizontal(posNew);
                 }
-                default -> { return null; }
             }
         }
 
@@ -190,20 +191,16 @@ public class Helpers {
             default -> -1;
         };
 
-        if (mainDiagonalCheck(pos)) return onDiagonalResult;
-        else if (mainDiagonalCheck(pos + 8) || mainDiagonalCheck(pos + 16) || mainDiagonalCheck(pos + 24)) return addResult;
+        if (mainDiagonalCheck(pos, quarter)) return onDiagonalResult;
+        else if (mainDiagonalCheck(pos + 8, quarter) || mainDiagonalCheck(pos + 16, quarter)
+                || mainDiagonalCheck(pos + 24, quarter)) {
+            return addResult;
+        }
         else return rest;
     }
 
-    public static boolean mainDiagonalCheck(int pos) {
-
+    public static boolean mainDiagonalCheck(int pos, int quarter) {
         int length = Constants.BOARD_LENGTH;
-        boolean leftHalf = pos % length < length / 2;
-        boolean bottomHalf = pos / length < length / 2;
-
-        int quarter = bottomHalf
-                ? (leftHalf ? 1 : 4)
-                : (leftHalf ? 2 : 3);
 
         boolean ascendingDiagonal = quarter == 1 || quarter == 3;
 

@@ -44,14 +44,9 @@ public class ThreePieceAlgorithm {
                                     continue;
                                 }
 
-                                if (Arrays.equals(pieces, new int[]{1, 8, 11, 5, 1, 222})) {
-                                    System.out.println();
-                                }
-
                                 if (searchForSolvedPlies(mateInXPlies, pieces, pieceInt, mappedByteBuffer)) {
-                                    if (mateInXPlies == 3) {
-                                        System.out.println("MATE IN 3 PLIES: " + Arrays.toString(pieces));
-                                    }
+
+                                    System.out.println("MATE IN 3 PLIES: " + Arrays.toString(pieces));
 
                                     mappedByteBuffer.put(index, (byte) ((mateInXPlies + 1) / 2));
                                 }
@@ -72,12 +67,18 @@ public class ThreePieceAlgorithm {
 
         boolean isEven = mateInXPlies % 2 == 0;
 
+        if (Arrays.equals(pieces, new int[]{1, 8, 18, 16, 1, 210})) {
+            System.out.println();
+        }
+
         // the method calls for isOdd are about 100x more than for is even, around 6 million per ply
         if (isEven) {
             for (int[] movePos : pieceMoves) {
                 if (movePos[0] == 0) break;
 
-                int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
+                movePos = Helpers.flipPos(movePos, pieceInt == 5);
+
+                int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer); // fault here
                 if (result == -1) continue;
 
                 boolean cantContinue = result == 0; // can't be even one 0 move we don't know
@@ -88,6 +89,8 @@ public class ThreePieceAlgorithm {
         } else {
             for (int[] movePos : pieceMoves) {
                 if (movePos[0] == 0) break;
+
+                movePos = Helpers.flipPos(movePos, pieceInt == 5);
 
                 int result = retrieveValueByPosition(movePos, pieceInt, mappedByteBuffer);
                 if (result == -1) continue;
